@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ 
  
- session_start();
+session_start();
  
 include '../includes/debug.php';
 include '../includes/config.php'; 

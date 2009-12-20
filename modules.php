@@ -59,7 +59,7 @@ if(!empty($error_stack_messages))
 	$messageBuffer = NULL;
 	foreach($error_stack_messages as $order => $error)
 	{
-		$messageBuffer .= "<p><b>Stack Order:</b>$order<br/>$error</p>";
+		$messageBuffer .= "<p><b>Stack Order:</b> $order<br/>$error</p>";
 	}
 	ReportError($messageBuffer);
 	//exit(1);

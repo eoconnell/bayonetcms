@@ -40,6 +40,36 @@
  function NewAdmin()
  {
  	 $maxLevel = $_SESSION['level'];
+?> 	 
+<div style="text-align:right"><img src="images/cancel.png" />Cancel</div>
+<center>
+		<form method="POST" action="<?php $_SERVER['PHP_SELF']?>">
+		<table>
+			<tr><th>Username:</th><td><input type="text" value="" name="username" /></td></tr>
+			<tr><th>First Name:</th><td><input type="text" value="" name="first" /></td></tr>
+			<tr><th>Last Name:</th><td><input type="text" value="" name="last" /></td></tr>
+			<tr><th>Email Address:</th><td><input type="text" value="" name="email" /></td></tr>
+			<tr>
+				<th>Level:</th>
+				<td>
+					<select name="level">
+					<?php 
+						for($x=$maxLevel; $x>0;$x--){
+							echo "<option value=\"{$x}\">{$x}</option>";						
+						}
+					?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:center;">
+					<input type="submit" name="processed" value="Submit" />
+				</td>
+			</tr>
+		</table>
+		</form>
+</center>
+<?php
  }
  
  function EditAdmin($user_id)
