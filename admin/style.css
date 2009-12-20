@@ -1,0 +1,272 @@
+body {
+	background-color:#225eac;
+	text-align:center;
+	font-family:sans-serif;
+	font-size:10pt;
+}
+
+img {
+	border:0px;
+}
+
+a, a:visited, a:active {
+	font-family:sans-serif;
+	font-size:10pt;
+	color:black;
+	text-decoration:none;	
+}
+
+a:hover {
+	font-family:sans-serif;
+	font-size:10pt;
+	color: #225eac;
+	text-decoration:none;	
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Century Gothic';
+	font-weight: normal;	
+}
+h2 {
+	font-size:26px;
+}
+h3 {
+	font-size:20px;
+}
+
+div.content {
+	width:1024px;
+	background-color:white;
+	padding:15px;
+}
+
+td {
+	font-family:sans-serif;
+	font-size:10pt;
+	color:black;	
+}
+
+table.panel {
+	height:435px;
+	border:1px solid #848484;
+}
+
+.panel-none {
+	width:201px;
+	vertical-align:top;
+}
+
+.panel-shadow {
+	background-image:url("../images/rightshadow.png");
+	background-position: left;
+	background-repeat: repeat-y; 
+	width:201px;
+	padding-left: 10px;
+	vertical-align:top;
+}
+
+.panel-box {
+	background-image:url("../images/rightshadow.png");
+	background-position: left;
+	background-repeat: repeat-y; 
+	padding-left: 10px;
+	vertical-align:top;
+}
+
+.option-box {
+	background-color: #6f6f6f;
+}
+
+table.panelitems {
+	font-family:sans-serif;
+	font-size:10pt;
+	color:black;
+}
+
+table.panelitems tr {
+	height:20px;
+}
+
+table.panelitems tr.highlight {
+	background-color: #5b8dda;
+}
+
+/* Panel Links */
+table.panel a, table.panel a:hover, table.panel a:visited, table.panel a:active {
+    font-family:sans-serif;
+	font-size:10pt;
+	color:black;
+	text-decoration:none;
+}
+
+/* Panel Highlight Links << must be after Panel Links */
+tr.highlight a, tr.highlight a:visited, tr.highlight a:hover, tr.highlight a:active {
+	font-family:sans-serif;
+	font-size:10pt;
+	color:white;
+}
+fieldset {
+	padding:0px;
+	border: 1px solid #a1a1a1;
+}
+/* START>> CALENDAR STYLES*/
+		.monthTitle{
+  			color:black;
+            text-align:center;
+            font-size:12px;
+            font-weight:bold;
+			font-family:arial;			
+		}
+		td.weekday {
+			width:40px;
+			height:20px;
+            background-color:#cb2121;
+            color:green;
+            text-align:center;
+            font-size:10px;
+            font-weight:bold;
+		}
+		th.weekday {
+			width:40px;
+			height:29px;
+            background-color:white;
+            color:black;
+            text-align:center;
+            font-size:11px;
+            font-weight:bold;
+		}
+		.monthday {
+			width:40px;
+			height:20px;
+            background-color:#aea2a2;
+            color:white;
+            text-align:left;
+            font-size:10pt;
+            font-weight:bold;
+                        
+		}
+		.monthtoday {
+			width:38px;
+			height:38px;
+           /* background-color:#3666ba; */
+            color:#225eac;
+   			text-align:center;
+   			font-size:14px;
+            font-weight:bold;
+            border:1px solid #333333;
+		}
+		.event {
+			width:38px;
+			height:38px;
+            background-color:#225eac;
+   			text-align:center;
+            border:1px solid #333333;					
+		}
+		table.calendar a, table.calendar a:visited, table.calendar a:active, table.calendar a:hover {
+			color:white;		
+		}
+		.eventtoday{
+		 	width:38px;
+			height:38px;
+            background-color:#225eac;
+            color:#ef8e25;
+   			text-align:center;
+   			font-size:14px;
+            font-weight:bold;
+            border:1px solid #333333;			
+		}
+		td.cal_weekday {
+			width:40px;
+			height:40px;
+            background-color:#a1a1a1;
+            vertical-align:top;
+            color:#eeeeee;
+            font-family:arial;
+            text-align:center;
+            font-size:14px;
+		}
+		td.cal_weekend {
+			width:40px;
+			height:40px;
+            background-color:#8f8f8f;
+            vertical-align:top;
+            color:#eeeeee;
+            font-family:arial;
+            text-align:center;
+            font-size:14px;
+		}
+		td.cal_notmonth {
+			width:40px;
+			height:40px;
+            background-color:#6e6e6e;
+            vertical-align:top;
+            color:#d4d4d4;
+            text-align:left;
+            font-size:11px;
+		}
+/* END>> CALENDAR STYLES */
+
+/* START>> PASSWORD STYLES */
+
+input{
+	font-family: "Lucida Grande", "Verdana", sans-serif;
+}
+
+#pwordCont{
+	font-family: "Lucida Grande", "Verdana", sans-serif;
+	width: 820px;
+	font-size:12px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 50px 0 0 0;
+}
+
+#complexity{
+	color: #000;
+	font-size: 10px;
+	text-align: center;
+}
+
+.outer {
+	width:180px;
+	height:5px;
+	background-color: #CCC;
+}
+
+.default {
+	height:5px;
+	background-color: #CCC; 
+	width:0px;
+}
+.short {
+	height:5px;
+	background-color: #aa0033; 
+	width:15px; 	
+}
+.weak {
+	height:5px;
+	background-color: #aa0033; 
+	width:45px; 
+}
+.good {
+	height:5px;
+	background-color: #6699cc; 
+	width:90px; 
+}
+.strong {
+	height:5px;
+	background-color: #008000; 
+	width:135px; 
+}
+.secure {
+	height:5px;
+	background-color: #008000; 
+	width:180px;
+}
+
+span.value{
+	font-weight:bold;
+	float: right;
+}
+
+/* END>> PASSWORD STYLES */

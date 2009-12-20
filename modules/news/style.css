@@ -1,0 +1,234 @@
+	/*********************************
+ 	 **  	 Comment Styles			**
+ 	 *********************************/
+	
+	div.comment_author a, div.comment_author a:visited {
+		font-size: 10px;
+		font-family: verdana;
+		color:#3666ba;	
+	}
+
+	div.comment_author a:hover, div.comment_author a:visited:hover {
+		font-size: 10px;
+		font-family: verdana;
+		color:#42423d;
+	}
+	
+/* Comments */
+#comments {
+	background: #ededed;
+	padding: 25px 25px;
+	padding-top:0px;
+	border: 1px solid #dcdddd;
+	color: #42423d;	
+}
+#comments a {
+	text-decoration: none;
+}
+#comments_wrap h3 {
+	font-size: 22px;
+	font-weight: normal;
+	margin: 0px;
+	padding-bottom: 20px;
+	margin-top: 10px;
+}
+#comments_wrap h3 a, #comments_wrap h3 a:hover {
+	color: #242323;
+	text-decoration: none;
+}
+#comments_wrap .get_avatar {
+	color: #a7a7a7;
+	font-size: 10px;
+	letter-spacing: -1px;
+	padding-top: 10px;
+}
+#comments ol.parent {
+	padding-bottom: 25px
+}
+#comments ol {
+	margin: 0px;
+	padding: 0px;
+	padding-left: 120px;
+}
+#comments ol li {
+	list-style: none;
+	padding: 0px;
+	margin: 10px 0px;
+	padding-top: 1px;
+}
+#comments span.comment-reply {
+	position: absolute;
+	bottom: 10px;
+	left: 20px;
+	font-size: 10px;
+	text-transform: uppercase;
+}
+#comments .comment_wrap {
+	position: relative;
+	background: #fff;
+	border: 1px solid #dcdddd;
+}
+#comments .single_comment {
+	padding: 20px;
+	padding-bottom: 60px;
+	color: #42423d;	
+}
+#comments .comment_arrow {
+	position: absolute;
+	top: 20px;
+	left: -32px;
+}
+#comments .comment_author {
+	position: absolute;
+	left: -120px;
+	width: 100px;
+	color: #8d8d8d;
+	font-size: 10px;
+	line-height: 14px;
+}
+#comments .comment_author span {
+	display: block;
+}
+#comments .children {
+	padding-left: 0px;
+	border-left: 1px solid #ced0d0;
+}
+#comments .children li {
+	padding-left: 25px;
+	background: url(images/comment_li_bg.gif) no-repeat 0px 25px;
+}
+#comments .children .comment_wrap {
+	background: #f8f8f8;
+	border: 1px solid #d3d5d5;
+}
+#comments .children .comment_arrow {
+	display: none;
+}
+#comments .children .comment_author {
+	position: absolute;
+	left: auto;
+	right: 20px;
+	bottom: 10px;
+	width: 200px;
+	height: 40px;
+}
+#comments .children .comment_author p {
+	position: absolute;
+	right: 50px;
+	bottom: -20px;
+	text-align: right;
+}
+#comments .children .comment_author span {
+	display: block;
+}
+#comments .children .comment_author img {
+	width: 40px;
+	height: 40px;
+	float: right;
+}
+/* Comments Form */
+#respond {
+	position: relative;
+}
+#comments .comment_form_wrap {
+	position: relative;
+	padding-left: 120px;
+}
+#comments .parent .comment_form_wrap {
+	position: relative;
+	padding-left: 0px;
+}
+#comments .textarea_arrow {
+	position: absolute;
+	top: 25px;
+	left: 89px;
+}
+#comments .children .textarea_arrow,
+#comments .parent .textarea_arrow {
+	display: none;
+}
+#comments .comment_form_wrap .comment_author {
+	position: absolute;
+	left: 0px;
+}
+#comments .children .comment_form_wrap {
+	position: relative;
+	padding-left: 0px;
+}
+#comments .children .comment_form_wrap .comment_author,
+#comments .parent .comment_form_wrap .comment_author,
+#comments .children .form_header,
+#comments .parent .form_header  {
+	display: none;
+}
+#comments .input {
+	width: 456px;
+	padding: 4px 5px;
+	background: #fff;
+	border: 1px solid #ced0d0;
+	color: #5f6565;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	display: block;
+	margin-bottom: 10px;
+}
+#comments .children .input {
+	width: 431px;
+}
+#comments .textarea {
+	padding-top: 20px;
+	padding-left: 20px;
+	width: 448px;
+  	max-width: 468px;
+	height: 135px;
+	font-size: 12px;
+	color: #5f6565;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+#comments .children .textarea {
+	width: 423px;
+}
+#comments #submit_comment {
+	width: 12.0em;
+	height: 3.0em;
+	float: right;
+	margin-right: 7px;
+	margin-top: 10px;
+}
+#wpUserLinks_form #submit_comment {
+	width: 12.0em;
+	height: 3.0em;
+	margin-top: 10px;
+}
+#comments .inputerror {
+	border-color: #555;
+}
+#cancel-comment-reply {
+	float: left;
+	width: 120px;
+	height: 30px;
+	margin-top: 8px;
+}
+#cancel-comment-reply-link {
+	background: #fdfdfd url(images/button_bg.png) repeat-x 0 100%;
+	border: 1px solid #bbbbbb;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	text-transform: uppercase;
+	height: 22px;
+	width: 70px;
+	text-align: center;
+	padding-bottom: 2px;
+	letter-spacing: -0.05em;
+	cursor: pointer;
+	display: block;
+	line-height: 22px;
+}
+*+html #cancel-comment-reply-link {
+	height: 22px;
+	padding-bottom: 0px;
+}
+#cancel-comment-reply-link:hover {
+	color: #232323;
+	background: #eeeeee url(images/button_bg_hover.png) repeat-x 0 100%;
+	text-decoration: none;
+}
