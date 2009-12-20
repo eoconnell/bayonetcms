@@ -1,4 +1,3 @@
-<?php try { ?>
 <?php
 /**
  * Bayonet Conent Management System
@@ -8,11 +7,18 @@
  * with ease and without needing to have any coding knowledge in order 
  * to maintain it. Visit www.eodesign.com/cms for any updates or feedback. 
  */
- 
+
+/* Begin try/catch block */
+try {
+
 include './includes/debug.php';
 include './includes/config.php'; 
 include './includes/sql.class.php';
 include './includes/functions.php';
+
+/* Setup error handing callbacks */
+ob_start("fatal_error_handler");
+set_error_handler("handle_error");
 
 $db = new Bayonet_SQL();
 $db->Connect(
@@ -21,7 +27,6 @@ $db->Connect(
   $config['sql']['password']
   );
 $db->Select_db($config['sql']['database']);
-
 
 include 'header.php';
 //session_start(); 
@@ -54,7 +59,10 @@ include 'header.php';
 
 </div>
 <?php include 'footer.php'; ?>
-<?php 
+<?php
+/* Flushing is needed by the error handler */
+ob_end_flush();
+
 } //try ^^    
 catch(Exception $e)
 {

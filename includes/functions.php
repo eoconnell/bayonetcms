@@ -322,6 +322,34 @@ function CloseBlock()
   echo "</div>";
   CloseTable();
 }
+
+static $error_stack_messages = array(); //global stack of errors accumulated throughout execution
+function push_error_stack($message)
+{
+	global $error_stack_messages;
+	array_push($error_stack_messages, $message);
+}
+
+function fatal_error_handler($buffer) {
+  if (ereg("(error</b>:)(.+)(<br)", $buffer, $regs) ) {
+    $err = preg_replace("/<.*?>/","",$regs[2]);
+    //ReportError($err);
+  }
+  return $buffer;
+}
+
+function handle_error ($errno, $errstr, $errfile, $errline)
+{
+    //error_log("$errstr in $errfile on line $errline");
+    //ReportError("<pre>$errstr</pre>");
+    push_error_stack("<b>Error Number:</b> $errno<br/><b>Error:</b> $errstr<br/><b>In File:</b> $errfile<br/><b>Line:</b> $errline");
+    if($errno == FATAL || $errno == ERROR){
+    	push_error_stack($errstr);
+        ob_end_flush();
+        exit(0);
+    }
+}
+
 /**
  * ReportError()
  * 

@@ -51,6 +51,20 @@ for($chars = 0; $chars <= strlen($load_temp); ++$chars)
   }
 }
 */
+
+/* If the error stack has recieved messages, output each failure in a clean fashion */
+global $error_stack_messages;
+if(!empty($error_stack_messages))
+{
+	$messageBuffer = NULL;
+	foreach($error_stack_messages as $order => $error)
+	{
+		$messageBuffer .= "<p><b>Stack Order:</b>$order<br/>$error</p>";
+	}
+	ReportError($messageBuffer);
+	//exit(1);
+}
+
 if(isset($load) && !empty($load) && !isset($file))
 {
   if(file_exists("modules/" . $load))
