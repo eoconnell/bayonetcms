@@ -1,12 +1,11 @@
 <link rel="stylesheet" type="text/css" href="blocks/rss_agw/style.css" media="screen"/>
 <?php
-/*
+
 function stripBBCode($text_to_search) {
  $pattern = '|[[\/\!]*?[^\[\]]*?]|si';
  $replace = '';
  return preg_replace($pattern, $replace, $text_to_search);
-} */
-
+}
 	include 'rssreader.php';
 	
     $rss = new rss_php;
@@ -57,9 +56,11 @@ function stripBBCode($text_to_search) {
     foreach($items as $story){
     	if($story['category']=="Tournament Announcements"){
     		$numFeeds++;
-    	//	$text = $story['description'];
-    	//	$text = stripBBCode($text);
-    	//	$text = preg_replace("(\[font(.+?)...)","",$text);
+    		//$text = $story['description'];
+    		//$text = strip_tags($text);
+			//$text = preg_replace("(\[font(.+?)...)","", $text);
+    		//$text = stripBBCode($text);
+    		
     		echo "<a href=\"{$story['link']}\" target=\"_blank\"><span class=\"title\">{$story['title']}</span></a><br />
     				<span class=\"date\">{$story['pubDate']}</span><br />";
 			//echo "{$text}<br /><br />";
