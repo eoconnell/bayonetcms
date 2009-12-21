@@ -26,6 +26,38 @@ if(!defined("MODULE_FILE"))
 
 global $db;
 
+/**
+ * List available pages.
+ * Only right now I don't know if the _pages table has been deprecated.
+ * I'm confused.  -jhunk
+ */
+if(isset($_GET['list']))
+{
+	if($_GET['list'] == "true")
+	{
+		$result = $db->Query("SELECT title, page_id FROM bayonet_articles");
+		while(($row = $db->Fetch($result)) !== false)
+		{
+			$pages[] = $row;
+		}
+		mysql_free_result($result);
+		
+		OpenTable();
+		echo "<div class=\"contentHeading\">Page Map</div>";
+		echo "<div class=\"content\">";
+		echo "<ul>";
+		foreach($pages as $page)
+		{
+			echo "<li>" . LinkPage($page['page_id'], $page['title']) . "</li>";	
+		}
+		echo "</ul>";
+		echo "</div>";
+		CloseTable();
+		
+		/* Kill module execution to prevent odd page results */
+		return;
+	}
+}
 
 if(!isset($_GET['id']))
 {
