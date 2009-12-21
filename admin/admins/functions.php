@@ -40,6 +40,10 @@
  function NewAdmin()
  {
  	 $maxLevel = $_SESSION['level'];
+ 	 
+ 	 if(isset($_POST['processed'])){
+ 	 	 	 
+ 	 }
 ?> 	 
 <div style="text-align:right"><img src="images/cancel.png" />Cancel</div>
 <center>

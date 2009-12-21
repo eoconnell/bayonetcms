@@ -102,6 +102,7 @@ function EditBlock($block_id)
     $dir_name = addslashes($_POST['dir_name']);
     $position = (int) addslashes($_POST['position']);
     $active = addslashes($_POST['active']);
+    $title = addslashes($_POST['title']);
     
     if(!is_int($weight) || empty($dir_name) || empty($title) || !is_int($position))
     {

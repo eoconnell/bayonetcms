@@ -93,6 +93,7 @@ include 'header.php';
         $th = array('Module Administration','');
         $td = array(
           LinkInternal('<img src="images/editpage.png" /><br />Pages','?op=pages'),
+          LinkInternal('<img src="images/image.png" /><br />News Reel','?op=newsreel'),
           LinkInternal('<img src="images/news.png" /><br />News','?op=news'),
           LinkInternal('<img src="images/calendar.png" /><br />Calendar','?op=calendar'),
           LinkInternal('<img src="images/box_download.png" /><br />Downloads', '?op=downloads'),

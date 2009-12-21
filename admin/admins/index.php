@@ -25,29 +25,30 @@ if(!defined("ADMIN_FILE"))
 }
 
 include $basedir.'admins/functions.php';
+?>
 
-if(isset($_GET['edit']))
-{
+<table class="panel" width="100%" cellspacing="0">
+	<tr>
+	<td class="panel-none">
+		<table align="center" width="200px">
+			<tr><th><?php echo LinkInternal('<img src="images/add.png" />Add New Admin','?op=admins&create=true'); ?></th></tr>
+		</table>
+		<?php ListAdmins(); ?>
+	</td>
+	<td class="panel-box">
+<?php
+if(isset($_GET['edit'])){
   $user_id = $_GET['edit'];
   EditAdmin($user_id);
-  return;
 }
-
-if(isset($_GET['delete']))
-{
+else if(isset($_GET['delete'])){
   $user_id = $_GET['delete'];
   DeleteAdmin($user_id);
-  return;
 }
-
-if(isset($_GET['create']))
-{
+else if(isset($_GET['create'])){
   NewAdmin();
-  return;
 }
-
-echo "<table align=\"center\" width=\"200px\"><tr><th>".LinkInternal('<img src="images/add.png" />Add New Admin','?op=admins&create=true')."</th></tr></table>";
-
-ListAdmins();
-
 ?>
+	</td>
+	</tr>
+</table>
