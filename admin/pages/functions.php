@@ -94,6 +94,7 @@ function NewArticle($page_id)
     //Update the database with the new data.
     $db->Query("INSERT INTO `bayonet_articles` (`article_id` ,`page_id` ,`title` ,`text`, `weight`)VALUES (NULL , $page_id, '$title', '$text', '$weight')");
     echo "New article, '$title', has been added.\n";
+    PageRedirect(2, "?op=pages&edit={$_GET['edit']}");
     //die, because we have completed what we wanted to do.
     return;
   }
@@ -130,9 +131,8 @@ function EditArticle($article_id){
     echo "Article, '$title', has been edited.\n <br /><br /> Please wait while you are redirected. <br /><br /> 
 			<a href=\"?op=pages&edit=".$_GET['edit']."&aid=".$article_id."\">Click here if you don't feel like waiting.</a>";
     
-    // 3 second redirect to go back to the edit page
     //echo "<meta http-equiv=\"Refresh\" content=\"3;url=?op=pages&edit=".$_GET['edit']."&aid=".$article_id."\">";
-   	PageRedirect(3,"?op=pages&edit={$_GET['edit']}&aid={$article_id}");
+   	PageRedirect(2,"?op=pages&edit={$_GET['edit']}&aid={$article_id}");
     
     //die, because we have completed what we wanted to do.
     return;
@@ -173,11 +173,13 @@ function DeleteArticle($article_id)
   {
     echo "Article '{$article['title']}', was deleted.";
     $db->Query("DELETE FROM bayonet_articles WHERE article_id = '$article_id' LIMIT 1");
+    PageRedirect(2, "?op=pages");
     return;
   }
   if(isset($_POST['cancel']))
   {
     echo "User cancelled deletion of article: '{$article['title']}'";
+    PageRedirect(2, "?op=pages&edit={$_GET['edit']}&aid={$article_id}");
     return;
   }  
   ?>

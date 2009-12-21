@@ -24,7 +24,7 @@
 
 
 function changePassword(){
-	
+echo "<script type=\"text/javascript\" src=\"scripts/mocha.js\"></script>";	
 	global $db;
 	
 	if(isset($_POST['processed']))

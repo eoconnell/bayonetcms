@@ -34,28 +34,33 @@ if($_COOKIE['mybbuser'] != '')
 	<center>
 
 		Your IP: <?php echo $_SERVER['REMOTE_ADDR']; ?><br />
-<?php						
+<?php				
 		if ($logged_in == 'true'){
-			//echo '<img src="'.$avatar.'" alt="'.$logged_username.'"/><br /><br />
-			echo $postnum.' post(s)<br /><br />';
-					echo '</center>
+?>
+			<!-- <img src="<?php echo $avatar; ?>" alt="<?php echo $logged_username; ?>"/><br /><br /> -->
+			<?php echo $postnum;?> post(s)<br /><br />
+			</center>
 					
-
-			Welcome, '.$logged_username.' <br />
-			<a href="logout.php"><img src="images/arrow-blk.gif" border="0" alt="" />&nbsp;Logout</a><br />';
+			Welcome, <?php echo $logged_username; ?> <a href="logout.php">Logout</a><br />
+			<hr />
+			Private Messages <br />
+			Unread: <a href="forums/private.php"><?php echo $pm_unread; ?></a><br />
+			Total: <a href="forums/private.php"><?php echo $pm_total; ?></a><br />
+			<hr />
+<?php
 		}
 		else{
-			echo 'Welcome Guest.<br />
-				</center>
-				<br />';
-		}						
-		if ($logged_in == 'true'){					
-			?>
-			<hr />
-			<!-- <img src="images/email-y.gif" /> -->Private Messages <br />
-			<!-- <img src="images/email-r.gif" /> -->Unread: <a href="forums/private.php"><?php echo $pm_unread; ?></a><br />
-			<!-- <img src="images/email-g.gif" /> -->Total: <a href="forums/private.php"><?php echo $pm_total; ?></a><br /><hr />
-			<?php
-		}
 ?>
-	</center>
+			Welcome Guest.<br /><br />
+			
+			<form method="POST" action="">
+			<table>
+				<tr><td><input type="text" name="username" /></td></tr>
+				<tr><td><input type="password" name="password" /></td><td><input type="submit" value="Login" /></td></tr>
+			</table>
+			</form>
+			
+			</center>
+<?php 
+		}		
+?>

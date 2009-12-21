@@ -10,8 +10,8 @@ var timing=7000;		//value is in milliseconds, used for 3 seconds on each image
 <?php
 	$x=0;	
 
-	$get_slides = mysql_query("SELECT * FROM `news_slideshow` WHERE `visable`=1 ORDER BY `order` DESC LIMIT 0,6");
-	//$get_slides = mysql_query("SELECT * FROM `news_slideshow` WHERE `visable`=1");
+	$get_slides = mysql_query("SELECT * FROM `bayonet_newsreel` WHERE `visible`= 1 ORDER BY `weight` ASC LIMIT 0,6");
+	//$get_slides = mysql_query("SELECT * FROM `news_slideshow` WHERE `visible`=1");
 
 	while($echo_slides = mysql_fetch_array($get_slides)){
 		
@@ -99,7 +99,7 @@ window.onload = init_Slides;	//starts the reels movement
 	<tr>
 <?php
 $y=0;
-	$get_slidenav = mysql_query("SELECT * FROM `news_slideshow` WHERE `visable`=1 ORDER BY `order` DESC LIMIT 0, 6");
+	$get_slidenav = mysql_query("SELECT * FROM `bayonet_newsreel` WHERE `visible`= 1 ORDER BY `weight` ASC LIMIT 0, 6");
 	while($echo_slidenav = mysql_fetch_array($get_slidenav)){
 
 		echo '<td id="'.$y.'" width="'.$width.'%" class="slidenav" onClick="nextSlide(this.id,true)" onmouseover="mouseOverBG(this.id)" onmouseout="mouseOutBG(this.id)">'.$echo_slidenav['title'].'</td>';
