@@ -1,6 +1,6 @@
 <?php
 /**
- * Xoma Content Management System
+ * Bayonet Content Management System
  * Copyright (C) 2008  Joseph Hunkeler & Evan O'Connell
  *
  * This program is free software: you can redistribute it and/or modify

@@ -51,7 +51,7 @@ include $basedir.'calendar/functions.php';
  <table class="panel" width="100%">
  	<tr>
  		<td style="width:325px; vertical-align:top; text-align:center;">
-		 	<a href="?op=calendar&create=true"><img src="images/add.gif" /> Add New Event</a><br /><br />
+		 	<a href="?op=calendar&create=true"><img src="images/add.png" /> Add New Event</a><br /><br />
 			 <?php PrintCalendar(); ?>
 			 Click on a day to add/edit/delete events
 	 	</td>

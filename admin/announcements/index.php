@@ -1,6 +1,6 @@
 <?php
 /**
- * Xoma Content Management System
+ * Bayonet Content Management System
  * Copyright (C) 2008  Joseph Hunkeler & Evan O'Connell
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,6 @@
  ?>
  
  <div style="text-align:left;"><h2>- Edit Announcements</h2></div>
- -Maybe see if this can go into more depth (ie. selecting whether to display announcements or not and on what pages)<br /><br />
  
  <?php
 

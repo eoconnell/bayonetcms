@@ -83,7 +83,7 @@
  	<table width="100%"><tr><td>
  	<h3>Events for: <?php echo date_format(date_create($date),'F jS, Y'); ?></h3>
  	</td><td align="right">
- 	<a href="?op=calendar&create=true&date=<?php echo $date; ?>"><img src="images/add.gif" /> Add New Event</a>
+ 	<a href="?op=calendar&create=true&date=<?php echo $date; ?>"><img src="images/add.png" /> Add New Event</a>
  	</td></tr></table>
 <?php
 
@@ -100,7 +100,7 @@
 
 <tr>
 	<td><strong><?php echo $time." - ".$row['title']; ?></strong></td>
-	<td><span style="border:1px solid black;background-color:#<?php echo $row['color'];?>;">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+	<td><span style="border:1px solid black;background-color:<?php echo $row['color'];?>;">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
 	<td>
 		<a href="?op=calendar&month=<?php echo $_GET['month']; ?>&year=<?php echo $_GET['year']; ?>&edit=<?php echo $row['event_id'];?>">Edit</a>
 		&nbsp;|&nbsp;
@@ -140,6 +140,22 @@
 	echo $date_arr['year']; */
 	
 	global $db;
+	
+	if(isset($_POST['processed'])){
+		$title = addslashes($_POST['title']);
+	    $text = addslashes($_POST['text']);
+	    $year = addslashes($_POST['year']);
+	    $month = addslashes($_POST['month']);
+	    $day = addslashes($_POST['day']);
+	    $time = addslashes($_POST['time']);
+	    $color = addslashes($_POST['color']);
+	    
+	    $date = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
+	    
+$db->Query("UPDATE `bayonet_events` SET `title` = '$title', `text` = '$text', `color` = '$color', `date` = '$date', `time` = '$time' WHERE `event_id` ='$event_id' LIMIT 1");
+
+	}
+	
 	$result = $db->Query("SELECT * FROM `bayonet_events` WHERE `event_id` = $event_id LIMIT 1");
 	while(($row = $db->Fetch($result))!=false)
 	{
@@ -152,6 +168,7 @@
   <tr><th>Title</th><td><input type="text" name="title" value="<?php echo $event['title']; ?>" /></td></tr>
   <tr><th>Color</th><td><input type="text" name="color" value="<?php echo $event['color']; ?>" /></td></tr>
   <tr><th>Date</th><td><?php SelectDate($event['date']); ?></td></tr>
+  <tr><th>Time</th><td><input type="text" name="time" value="<?php echo substr($event['time'],0,-3); ?>" maxlength="5" size="5" /></td></tr>
   <tr><th>Text</th><td><textarea id="markItUp" rows="30" cols="80" name="text"><?php echo $event['text']; ?></textarea></td>
   <tr><th colspan="2"><input type="submit" name="processed" value="Submit" /></th></tr>
   </table>
@@ -192,6 +209,7 @@
     
    
     echo "New event, '$title', has been added.\n";
+    PageRedirect(2,"?op=calendar");
     //die, because we have completed what we wanted to do.
     return;
   }

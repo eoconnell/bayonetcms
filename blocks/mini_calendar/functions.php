@@ -132,7 +132,7 @@
  	
 		$date = time();
 		date_default_timezone_set("America/New_York");  //EASTERN TIME ZONE
-		
+				
 		//GET values for month and year
 		$month = "";
 		$year = "";
@@ -252,14 +252,16 @@
 		       $isEvent=false;
 
 			 	global $db;
-		  		$result = $db->Query("SELECT title,color FROM `bayonet_events` WHERE `date` = '$sqlDate' LIMIT 1");
+		  		$result = $db->Query("SELECT title,color FROM `bayonet_events` WHERE `date` = '$sqlDate' ORDER BY `date` DESC");
 		  		while(($row = $db->Fetch($result))!=false)
 		  		{
 		    		$isEvent = true;
-		  		}  
-		  					  				
+		    		if($day_num == $today){
+		    			$todaysEvents[] = $row; 		    		
+		    		}
+		  		}  		  				
 				if($day_num == $today && $isEvent==true){
-					echo '<div class="eventtoday">'.$day_num.'</div>'; 					
+					echo '<div class="eventtoday">'.$day_num.'</div>';				
 				}else if($day_num == $today && $isEvent==false){
 					echo '<div class="monthtoday">'.$day_num.'</div>'; 
 				}else if($day_num != $today && $isEvent==true){
@@ -295,7 +297,13 @@
 		</table>
 		</center>
 <?php
-
+	//list events for today
+	if(count($todaysEvents)>0){
+		echo "<h3>Today's Events</h3>";
+		foreach($todaysEvents as $event){
+			echo "<span style=\"background-color: {$event['color']}\">&nbsp;&nbsp;</span>&nbsp;{$event['title']}<br />";
+		}
+	}
  }
   
  ?>
