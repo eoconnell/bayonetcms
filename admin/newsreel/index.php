@@ -23,6 +23,10 @@ if(!defined("ADMIN_FILE"))
 }
 
 include $basedir.'newsreel/functions.php';
-
-ListSlides();
 ?>
+	<table class="panel" width="100%">
+		<tr>
+			<td class="panel"><?php EditOrder(); ?></td>
+			<td class="panel-box" width="50%"></td>
+		</tr>
+	</table>

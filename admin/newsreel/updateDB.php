@@ -36,4 +36,6 @@ if ($action == "updateReelOrder"){
 else{
 	echo "<img src=\"images/rejected.png\" />";
 }
+date_default_timezone_set("America/New_York");
+echo " Updated at ".date("g:i:s a", time());
 ?>

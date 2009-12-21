@@ -15,6 +15,7 @@ ul {
 	background-color:#a1a1a1;
 	border: #CCCCCC solid 1px;
 	color:#fff;
+	text-align:center;
 }
 
 </style>
@@ -53,7 +54,7 @@ $(document).ready(function(){
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-  function ListSlides(){
+  function EditOrder(){
  	
 	 global $db;
 	 	 
@@ -66,12 +67,13 @@ $(document).ready(function(){
 		 	</table>
 			<ul>";
 	 
-	 $result = $db->Query("SELECT `title`, `slide_id` FROM `bayonet_newsreel` WHERE `visible` = 1 ORDER BY `weight` ASC");
+	 $result = $db->Query("SELECT `title`, `slide_id`, `src` FROM `bayonet_newsreel` WHERE `visible` = 1 ORDER BY `weight` ASC");
 	 while(($row = $db->fetch($result))!= false){
-	 	echo "<li id=\"recordsArray_{$row['slide_id']}\">{$row['title']}</li>";	 
+	 	echo "<li id=\"recordsArray_{$row['slide_id']}\">{$row['title']}<br /><img src=\"../modules/newsreel/slides/{$row['src']}\" width=\"100px\" /></li>";	 
 	 }  
 ?>	 
 		  </ul>
+		  Click and drag on a slide to change the order. Wait for confirmation indicating the changes have been saved.
 	 	</div> 
 <?php
  }
