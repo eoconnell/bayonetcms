@@ -27,6 +27,18 @@ include $basedir.'newsreel/functions.php';
 	<table class="panel" width="100%">
 		<tr>
 			<td class="panel"><?php EditOrder(); ?></td>
-			<td class="panel-box" width="50%"></td>
+			<td class="panel-box" width="50%">
+			<?php
+				if(isset($_GET['enable'])){
+					$slide_id = $_GET['enable'];
+					EnableSlide($slide_id);
+				}else if(isset($_GET['disable'])){
+					$slide_id = $_GET['disable'];
+					DisableSlide($slide_id);				
+				}else{
+					ListInactive();				
+				}
+			?>
+			</td>
 		</tr>
 	</table>

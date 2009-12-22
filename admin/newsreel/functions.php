@@ -69,7 +69,9 @@ $(document).ready(function(){
 	 
 	 $result = $db->Query("SELECT `title`, `slide_id`, `src` FROM `bayonet_newsreel` WHERE `visible` = 1 ORDER BY `weight` ASC");
 	 while(($row = $db->fetch($result))!= false){
-	 	echo "<li id=\"recordsArray_{$row['slide_id']}\">{$row['title']}<br /><img src=\"../modules/newsreel/slides/{$row['src']}\" width=\"100px\" /></li>";	 
+	 	echo "<li id=\"recordsArray_{$row['slide_id']}\">";
+		 PrintSlide($row);
+	 	echo "<br /><a href=\"?op=newsreel&disable={$row['slide_id']}\"><input type=\"button\" value=\"Disable\" /></a></li>";	 
 	 }  
 ?>	 
 		  </ul>
@@ -78,6 +80,53 @@ $(document).ready(function(){
 <?php
  }
  
+ function EnableSlide($slide_id){
+ 	
+	 global $db;
+	 $lastspot = GetLastPosition();
+	 if($lastspot >= 6){
+	 	ReportError("There are already 6 active slides. You must disable one in order to enable another.");
+	 	PageRedirect(3,"?op=newsreel");
+		return;	 
+	 }
+	 $weight = $lastspot+1;
+	 $db->Query("UPDATE `bayonet_newsreel` SET `visible` = 1, `weight` = '$weight' WHERE `slide_id` = '$slide_id' LIMIT 1");
+	 PageRedirect(0,"?op=newsreel");
+ }
+ 
+ function DisableSlide($slide_id){
+ 	
+	 global $db;
+	 echo "Disable: ".$slide_id;
+	 $db->Query("UPDATE `bayonet_newsreel` SET `visible` = 0, `weight` = 0 WHERE `slide_id` = '$slide_id' LIMIT 1");
+	 PageRedirect(0,"?op=newsreel");
+ }
+ 
+ function ListInactive(){
+ 	
+	 global $db;
+	 $result = $db->query("SELECT `slide_id`, `title`, `src` FROM `bayonet_newsreel` WHERE `visible` = 0 ORDER BY `slide_id` DESC");
+	 while(($row = $db->fetch($result))!= false){
+	 	
+		echo PrintSlide($row);
+		echo "<br /><a href=\"?op=newsreel&enable={$row['slide_id']}\"><input type=\"button\" value=\"Enable\" /></a><br /><br />";	
+	 }    
+ }
+ 
+ function PrintSlide($slide){
+	echo "{$slide['title']}";
+	if(file_exists("../modules/newsreel/slides/{$slide['src']}") && $slide['src'] != ""){
+	  echo "<br /><img src=\"../modules/newsreel/slides/{$slide['src']}\" width=\"100px\" />";
+ 	}
+ }
+ 
+ function GetLastPosition(){
+ 	
+	global $db;
+	$result = $db->query("SELECT `weight` FROM `bayonet_newsreel` ORDER BY `weight` DESC LIMIT 1");
+	$row = $db->Fetch($result);
+ 	return $row['weight']; 
+ }
 		
 
 ?>

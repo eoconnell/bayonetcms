@@ -231,8 +231,7 @@ function ListPages($pid = NULL)
 	</tr>
 	
 	<?php
-  }
-  
+  }	  
  	?>
 <!--
  		<tr style="vertical-align:bottom; background-color:green; text-overflow:ellipsis; overflow:hidden;">
@@ -240,17 +239,19 @@ function ListPages($pid = NULL)
 			<table class="panelitems">
 				<tr><td>
 				<?php echo LinkInternal('<img src="images/add.png" />&nbsp;Create New Page','?op=pages&create=true'); ?> <br />
-				<?php echo LinkInternal('<img src="images/view.gif" />&nbsp;View this Page','../index.php?load=page&id='.$page_id); ?> <br />
+				<?php echo LinkInternal('<img src="images/view.png" />&nbsp;View this Page','../index.php?load=page&id='.$page_id); ?> <br />
 	   			<?php echo LinkInternal('<img src="images/cancel.png" />&nbsp;Delete this Page','?op=pages&delete='.$page_id); ?> <br />
 	   			</td></tr>
 			</table>
 		<td>
 		</tr> -->
-		
+<?php
+    if(isset($_GET['edit'])){
+ ?>		
 
 	<tr>
  	 <td style="text-align:center; text-overflow:ellipsis; overflow:hidden;">
-		<?php echo LinkInternal('<img src="images/view.gif" />&nbsp;View this Page','../index.php?load=page&id='.$pid); ?>
+		<?php echo LinkInternal('<img src="images/view.png" />&nbsp;View this Page','../index.php?load=page&id='.$pid.'" target=\"blank'); ?>
   	 </td>
 	</tr>
 	<tr>
@@ -259,7 +260,7 @@ function ListPages($pid = NULL)
   	 </td>
 	</tr>
   	<?php
-  
+ 	} 
   	echo "</table>";
  	
 }
