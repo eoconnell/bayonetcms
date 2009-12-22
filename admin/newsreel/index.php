@@ -24,6 +24,7 @@ if(!defined("ADMIN_FILE"))
 
 include $basedir.'newsreel/functions.php';
 ?>
+ <div style="text-align:left;"><h2>- Manage News Reel</h2></div>
 	<table class="panel" width="100%">
 		<tr>
 			<td class="panel"><?php EditOrder(); ?></td>

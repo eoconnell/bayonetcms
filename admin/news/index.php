@@ -21,4 +21,18 @@ if(!defined("ADMIN_FILE"))
 {
   die("Access denied.");
 }
- ?>
+
+include $basedir.'news/functions.php';
+
+echo "<table class=\"panel\" width=\"100%\">
+		<tr><td class=\"panel\">";
+
+if(isset($_GET['edit'])){
+	$news_id = $_GET['edit'];
+	EditNews($news_id);
+	return;
+}
+
+
+?>
+	</td></tr></table>

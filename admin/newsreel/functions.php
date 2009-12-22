@@ -16,6 +16,7 @@ ul {
 	border: #CCCCCC solid 1px;
 	color:#fff;
 	text-align:center;
+	cursor:move;
 }
 
 </style>
@@ -105,6 +106,7 @@ $(document).ready(function(){
  function ListInactive(){
  	
 	 global $db;
+	 echo "<h3>Disabled Slides</h3>";
 	 $result = $db->query("SELECT `slide_id`, `title`, `src` FROM `bayonet_newsreel` WHERE `visible` = 0 ORDER BY `slide_id` DESC");
 	 while(($row = $db->fetch($result))!= false){
 	 	
