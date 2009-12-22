@@ -25,39 +25,44 @@ define('REPEAT','repeat');
 static $last_message = NULL;
 static $last_message_count = 0;
 
-static $log_message_last = 0;
+static $log_message_last = NULL;
 static $log_message_queue = array();
 static $log_message_pos = 0;
 function decho2($message)
 {
-	global $log_message_last, $log_message_queue;
-	$log_message_last_count = 0;
-	
-	if($log_message_queue[$log_message_pos] !== $log_message_last)
-	{
-		array_push($log_message_queue, $message);
-		$log_message_pos++;
-	}
-	else
-	{
-		$log_message_last_count++;
-		if($log_message_last_count > 3)
-		{
-			echo "Previous message recieved $log_message_last_count times<br/>\n";
-			$log_message_last_count = 0;
-		}
-	}
+	global $log_message_last, $log_message_queue, $log_message_pos;
+	array_push($log_message_queue, $message);
+	$log_message_pos++;
 }
 
 function logQueueFlush()
 {
 	global $log_message_queue;
 	$messageCount = 0;
+	static $log_message_last_count = 0;
+	
 	echo "<div class=\"contentHeading\">Bayonet Debug Messages</div>";
 	echo "<div class=\"content\">";
 	foreach($log_message_queue as $message)
 	{
-		echo "{$messageCount}: $message<br/>\n";
+		if($message != $log_message_queue[$messageCount - 1])
+		{
+			echo "{$messageCount}: $message<br/>\n";
+		}
+		else
+		{
+			if($message == $log_message_queue[$messageCount - 1])
+			{
+				echo "incrementing</br>\n";
+				$log_message_last_count++;
+			}
+			else
+			{
+				echo "Previous message received $log_message_last_count times<br/>\n";
+				$log_message_last_count = 0;
+			}
+		}
+		
 		$messageCount++;
 	}
 	echo "</div>";

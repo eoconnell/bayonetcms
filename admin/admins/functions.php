@@ -1,3 +1,26 @@
+<script type="text/javascript"> 
+	$(document).ready(function(){
+	$(".flip").click(function(){
+	$(".slidepanel").slideToggle("slow");
+	});
+	});
+</script>
+ 
+<style type="text/css"> 
+	p.flip
+	{
+		margin:0px;
+		padding:5px;
+		text-align:center;
+		background:#e5eecc;
+		border:solid 1px #c3c3c3;
+	}
+	div.slidepanel
+	{
+		height:75px;
+		display:none;
+	}
+</style>
 <?php
 /**
  * Bayonet Content Management System
@@ -42,9 +65,11 @@
  	 $maxLevel = $_SESSION['level'];
  	 
  	 if(isset($_POST['processed'])){
- 	 	 	 
+ 	 
+ 	 	echo GeneratePassword(8);
+ 	 	return;
  	 }
-?> 	 
+?>
 <div style="text-align:right"><img src="images/cancel.png" />Cancel</div>
 <center>
 		<form method="POST" action="<?php $_SERVER['PHP_SELF']?>">
@@ -71,9 +96,64 @@
 				</td>
 			</tr>
 		</table>
+		<br />
+		<?php GetPermissions(); ?>
 		</form>
 </center>
 <?php
+ }
+ 
+ function GetPermissions($user)
+ {
+ ?>
+ 		<div class="slidepanel">
+			<table width="100%" style="text-align:center;">
+				<tr><th>Everything else</th><th>Adjutant</th><th>Quartermaster</th></tr>
+				<tr>
+					<td>
+						<input type="hidden" name="all" value="0" />
+					<?php
+						if(isset($user['all']) && $user['all'] == 1)
+							echo "<input type=\"checkbox\" name=\"all\" value=\"1\" checked/>";
+						else
+							echo "<input type=\"checkbox\" name=\"all\" value=\"1\" />";
+					?>
+					</td>
+					<td>
+						<input type="hidden" name="adjutant" value="0" />
+					<?php
+						if(isset($user['adjutant']) && $user['adjutant'] == 1)
+							echo "<input type=\"checkbox\" name=\"adjutant\" value=\"1\" checked/>";
+						else
+							echo "<input type=\"checkbox\" name=\"adjutant\" value=\"1\" />";
+					?>
+					</td>
+					<td>
+						<input type="hidden" name="quartermaster" value="0" />
+					<?php
+						if(isset($user['quartermaster']) && $user['quartermaster'] == 1)
+							echo "<input type=\"checkbox\" name=\"quartermaster\" value=\"1\" checked/>";
+						else
+							echo "<input type=\"checkbox\" name=\"quartermaster\" value=\"1\" />";
+					?>
+					</td>
+				</tr>
+			</table>
+		</div>
+ 
+		<p class="flip">Show/Hide Permissions</p> 
+ <?php
+ }
+ 
+ function GeneratePassword($length)
+ {
+ 	srand(date("s")); 
+    $possible_charactors = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
+    $string = ""; 
+    while(strlen($string)<$length) { 
+        $string .= substr($possible_charactors, rand()%(strlen($possible_charactors)),1); 
+    } 
+    return($string); 
  }
  
  function EditAdmin($user_id)
@@ -86,29 +166,30 @@
 			$username = addslashes($_POST['username']);
 			$level = addslashes($_POST['level']);
 			
+			$all = $_POST['all'];
+			$adjutant = $_POST['adjutant'];
+			$quartermaster = $_POST['quartermaster'];
+			
 			if(empty($username))
 		    {
 		      echo "You must fill everything out before proceeding.";
 		      return;
 		    }
 				
-			$db->Query("UPDATE `bayonet_users` SET `username` = '$username', `level` = '$level' WHERE `user_id` = '$user_id' LIMIT 1");
+			$db->Query("UPDATE `bayonet_users` SET `username` = '$username', `level` = '$level', `all` = '$all', `adjutant` = '$adjutant', `quartermaster` = '$quartermaster' WHERE `user_id` = '$user_id' LIMIT 1");
 		    
 		    echo "Admin, '$username' level '$level' has been edited.\n <br /><br /> 
 					Please wait while you are redirected. <br /><br /> 
 					<a href=\"?op=admins\">Click here if you don't feel like waiting.</a>";
 					
 		    // 3 second redirect to go back to the edit page
-    		PageRedirect(3, "?op=admins");
+    		PageRedirect(2, "?op=admins&edit={$user_id}");
 		    return;
 		}
 		
 		$result = $db->Query("SELECT * FROM `bayonet_users` WHERE `user_id` = '$user_id' LIMIT 1");
-		while(($rows = $db->fetch($result))!=false)
-		{
-			$admin = $rows;
-		} 	  
-		
+		$admin = $db->fetch($result);
+	  		
   		if($maxLevel < $admin['level']){
   			ReportError("You do not have permission to access this user.");
 	    	return;	    	
@@ -141,6 +222,8 @@
 				</td>
 			</tr>
 		</table>
+		<br />
+		<?php GetPermissions($admin); ?>
 		</form>
 </center>
 <?php		
