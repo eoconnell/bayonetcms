@@ -11,8 +11,8 @@
 /* Begin try/catch block */
 try {
 
-include './includes/debug.php';
 include './includes/config.php'; 
+include './includes/debug.php';
 include './includes/sql.class.php';
 include './includes/functions.php';
 

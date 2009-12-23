@@ -94,7 +94,7 @@ function EditNews($news_id){
   	  global $db;
   	  
   	  echo "<select name=\"author\">";
-  	  $result = $db->Query("SELECT `user_id`, `lastname` FROM `bayonet_users` WHERE `active` = 1 ORDER BY `username` ASC");
+  	  $result = $db->Query("SELECT `user_id`, `lastname` FROM `bayonet_users` ORDER BY `username` ASC");
   	  while(($row = $db->Fetch($result))!= false){
   	  	  if($author_id == $row['user_id'])
   	  	  	echo "<option value=\"{$row['user_id']}\" selected>{$row['lastname']}</option>";

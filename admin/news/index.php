@@ -16,7 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+ ?>
  
+ <div style="text-align:left;"><h2>- Manage News</h2></div>
+ -Everything needs to be completed.
+<?php
+
 if(!defined("ADMIN_FILE"))
 {
   die("Access denied.");
@@ -30,7 +35,6 @@ echo "<table class=\"panel\" width=\"100%\">
 if(isset($_GET['edit'])){
 	$news_id = $_GET['edit'];
 	EditNews($news_id);
-	return;
 }
 
 

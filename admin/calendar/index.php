@@ -19,7 +19,6 @@
  ?>
  
  <div style="text-align:left;"><h2>- Manage Calendar & Events</h2></div>
- -Edit events needs to be completed.
 <?php
 
 if(!defined("ADMIN_FILE"))

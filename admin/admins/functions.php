@@ -62,12 +62,55 @@
  
  function NewAdmin()
  {
+ 	 
+ 	 global $db;
  	 $maxLevel = $_SESSION['level'];
  	 
  	 if(isset($_POST['processed'])){
  	 
- 	 	echo GeneratePassword(8);
- 	 	return;
+ 	 	$username = addslashes($_POST['username']);
+		$level = addslashes($_POST['level']);
+		$email = addslashes($_POST['email']);
+		$first = addslashes($_POST['first']);
+		$last = addslashes($_POST['last']);
+			
+		$all = $_POST['all'];
+		$squadleader = $_POST['squadleader'];
+		$adjutant = $_POST['adjutant'];
+		$quartermaster = $_POST['quartermaster'];
+		
+		$password = GeneratePassword(8);		
+		$cryptpassword = crypt(md5($password),'iamnotadirtywhorebitch');
+			
+		if(empty($username))
+		{
+			ReportError("This user must have a username to continue.");
+			return;
+		}
+		
+		$Name = "Rocky the Marne Dog";
+		$subject = "3rd ID Admin Password";
+		$header = "From: ". $Name . " < DO NOT RESPOND >\r\n"; //optional headerfields 
+		$mail_body = "Do not respond to this email.\n\n------------------------------\nUsername: ".$username."\nPassword: ".$password."\n------------------------------\n\nTo login click on this link. http://testbed.3rd-infantry-division.org/cms/admin/ \n\nIt is recommended that you change your password once you login. To do so, click on Account Settings>Change Password.";
+		
+		//$sent = mail($email, $subject, $mail_body, $header);
+		if(!$sent){
+			ReportError("Error validating email. This user was not saved.");
+			//return;		
+		}
+				
+	//	$db->Query("INSERT INTO `bayonet_users` (`user_id` ,`username` ,`password` ,`lastname` ,`firstname` ,`email` ,`joined` ,`level` ,`all` ,`squadleader` ,`adjutant` ,`quartermaster`) VALUES (NULL, '$username', '$cryptpassword', '$last', '$first', '$email', '', $level, $all, $squadleader, $adjutant, $quartermaster)");
+	
+		$db->Query("INSERT INTO `bayonet_users` SET `username` = '$username'");
+		
+						
+   		echo "Admin, '$username' level '$level' has been added. An email has been sent to him with his username and password.\n <br /><br /> 
+			Please wait while you are redirected. <br /><br /> 
+			<a href=\"?op=admins\">Click here if you don't feel like waiting.</a>";
+					
+	    // 3 second redirect to go back to the edit page
+   		//PageRedirect(2, "?op=admins");
+	    return;
  	 }
 ?>
 <div style="text-align:right"><img src="images/cancel.png" />Cancel</div>
@@ -103,14 +146,14 @@
 <?php
  }
  
- function GetPermissions($user)
+ function GetPermissions($user = NULL)
  {
  ?>
  		<div class="slidepanel">
 			<table width="100%" style="text-align:center;">
-				<tr><th>Everything else</th><th>Adjutant</th><th>Quartermaster</th></tr>
+				<tr><th>Everything else</th><th>Squad Leader</th><th>Adjutant</th><th>Quartermaster</th></tr>
 				<tr>
-					<td>
+					<td width="25%">
 						<input type="hidden" name="all" value="0" />
 					<?php
 						if(isset($user['all']) && $user['all'] == 1)
@@ -119,7 +162,16 @@
 							echo "<input type=\"checkbox\" name=\"all\" value=\"1\" />";
 					?>
 					</td>
-					<td>
+					<td width="25%">
+						<input type="hidden" name="squadleader" value="0" />
+					<?php
+						if(isset($user['squadleader']) && $user['squadleader'] == 1)
+							echo "<input type=\"checkbox\" name=\"squadleader\" value=\"1\" checked/>";
+						else
+							echo "<input type=\"checkbox\" name=\"squadleader\" value=\"1\" />";
+					?>
+					</td>
+					<td width="25%">
 						<input type="hidden" name="adjutant" value="0" />
 					<?php
 						if(isset($user['adjutant']) && $user['adjutant'] == 1)
@@ -128,7 +180,7 @@
 							echo "<input type=\"checkbox\" name=\"adjutant\" value=\"1\" />";
 					?>
 					</td>
-					<td>
+					<td width="25%">
 						<input type="hidden" name="quartermaster" value="0" />
 					<?php
 						if(isset($user['quartermaster']) && $user['quartermaster'] == 1)
@@ -167,6 +219,7 @@
 			$level = addslashes($_POST['level']);
 			
 			$all = $_POST['all'];
+			$squadleader = $_POST['squadleader'];
 			$adjutant = $_POST['adjutant'];
 			$quartermaster = $_POST['quartermaster'];
 			
@@ -176,7 +229,7 @@
 		      return;
 		    }
 				
-			$db->Query("UPDATE `bayonet_users` SET `username` = '$username', `level` = '$level', `all` = '$all', `adjutant` = '$adjutant', `quartermaster` = '$quartermaster' WHERE `user_id` = '$user_id' LIMIT 1");
+			$db->Query("UPDATE `bayonet_users` SET `username` = '$username', `level` = '$level', `all` = '$all', `squadleader` = '$squadleader', `adjutant` = '$adjutant', `quartermaster` = '$quartermaster' WHERE `user_id` = '$user_id' LIMIT 1");
 		    
 		    echo "Admin, '$username' level '$level' has been edited.\n <br /><br /> 
 					Please wait while you are redirected. <br /><br /> 

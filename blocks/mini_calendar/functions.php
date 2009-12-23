@@ -252,7 +252,7 @@
 		       $isEvent=false;
 
 			 	global $db;
-		  		$result = $db->Query("SELECT title,color FROM `bayonet_events` WHERE `date` = '$sqlDate' ORDER BY `date` DESC");
+		  		$result = $db->Query("SELECT title,color,date,time FROM `bayonet_events` WHERE `date` = '$sqlDate' ORDER BY `date` DESC");
 		  		while(($row = $db->Fetch($result))!=false)
 		  		{
 		    		$isEvent = true;
@@ -301,7 +301,8 @@
 	if(count($todaysEvents)>0){
 		echo "<h3>Today's Events</h3>";
 		foreach($todaysEvents as $event){
-			echo "<span style=\"background-color: {$event['color']}\">&nbsp;&nbsp;</span>&nbsp;{$event['title']}<br />";
+			$time = date("g:i a", strtotime($event['date']." ".$event['time']));
+			echo "<span style=\"background-color: {$event['color']}\">&nbsp;&nbsp;</span>&nbsp;{$event['title']} @ {$time}<br />";
 		}
 	}
  }

@@ -42,6 +42,11 @@ class Bayonet_SQL
     //return mysql_close($link);
   }
   
+  public function Stat()
+  {
+  	return mysql_stat();
+  }
+  
   public function Select_db($db)
   {
     decho("Selecting database ('$db')");
