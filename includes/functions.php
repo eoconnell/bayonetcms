@@ -77,9 +77,10 @@ function bbcode_format ($str)
   return $str;
 }
 
-   //BBcode 2 HTML was written by WAY2WEB.net
-
-   function BBCode($Text)
+/**
+ * BBcode 2 HTML was written by WAY2WEB.net
+ */
+function BBCode($Text)
        {
          // Replace any html brackets with HTML Entities to prevent executing HTML or script
             // Don't use strip_tags here because it breaks [url] search by replacing & with amp
@@ -574,6 +575,7 @@ function GetBlocks($position = BLOCK_LEFT)
       	OpenBlock($block['title']);
         include $load;
         CloseBlock();
+        decho("'{$block['dir_name']}' block loaded");
       }
       else
       {

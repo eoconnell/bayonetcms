@@ -70,6 +70,7 @@ if(isset($load) && !empty($load) && !isset($file))
   if(file_exists("modules/" . $load))
   {
     include 'modules/' . $load . '/index.php';
+  	decho("'$load' module loaded");
   }
   else
   {
@@ -86,8 +87,9 @@ elseif(isset($load) && isset($file))
     $run = "modules/" . $load . "/" . $file;
     
     if(file_exists($run))
-    {
-      include $run;     
+    {	
+      include $run;
+	  decho("Loaded '$file' file from $load module");     
     }
     else
     {

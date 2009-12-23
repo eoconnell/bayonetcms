@@ -25,26 +25,17 @@ define('REPEAT',true);
 static $last_message = NULL;
 static $last_message_count = 0;
 
-static $debug_ident = NULL;
 static $log_message_last = NULL;
 static $log_message_queue = array();
 static $log_message_pos = 0;
 
-function debug_set_ident($str)
-{
-	global $debug_ident;
-	$debug_ident = $str;
-}
-
-function debug_clear_ident()
-{
-	global $debug_ident;
-	$debug_ident = "";
-}
-
 function decho($message, $from = "GENERIC")
 {
-	global $debug_ident, $log_message_last, $log_message_queue, $log_message_pos, $config;
+	global $log_message_last, $log_message_queue, $log_message_pos, $config;
+	
+	if($config['debug']['enabled'] == false ||
+		$config['debug']['show_messages'] == false) return;
+	
 	date_default_timezone_set($config['logs']['timezone']);
 	$timestamp = date('H:i:s T');
 	$message = "[$timestamp]: $message";
@@ -55,6 +46,11 @@ function decho($message, $from = "GENERIC")
 
 function queuePrint($obj)
 {
+	global $config;
+	
+	if($config['debug']['enabled'] == false ||
+		$config['debug']['show_messages'] == false) return;
+	
 	if(is_array($obj))
 	{
 		$array_dump = print_r($obj,true);

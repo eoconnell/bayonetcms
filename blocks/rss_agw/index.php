@@ -9,7 +9,7 @@ function stripBBCode($text_to_search) {
 	include 'rssreader.php';
 	
     $rss = new rss_php;
-    $cacheReadLength = 1024;
+    $cacheReadLength = 2048;
     $cacheFile = dirname(__FILE__) . "/rss.cache";
 	$url = 'http://www.armedglobalwarfare.com/index.php?type=rss;action=.xml;limit=150';
 	
@@ -23,29 +23,33 @@ function stripBBCode($text_to_search) {
 	decho("Reading internal RSS cache state");
 	$internal = fopen($cacheFile, "r");
 	$cacheRead = fread($internal, $cacheReadLength);
+	decho(strlen($cacheRead) . " bytes read");
 	fclose($internal);
 	
 	decho("Reading inbound RSS cache data");
 	$inbound = fopen($url, "r");
 	$cacheTempRead = fread($inbound, $cacheReadLength);
+	decho(strlen($cacheTempRead) . " bytes downloaded");
 	fclose($inbound);
 	
 	decho("Comparing RSS caches");
-	if((strncmp($cacheTempRead, $cacheRead, $cacheReadLength)) == 0)
+	if((strncmp($cacheTempRead, $cacheRead, $cacheReadLength)) != 0)
 	{
+		decho("Downloading updated RSS feed");
 		$cacheTemp = implode('', file($url));
-		decho("Length of cached RSS is " . strlen($cacheTemp));
+		decho("Length of updated RSS is " . strlen($cacheTemp));
 		decho("Writing cached RSS data to file");
 		$cachefp = fopen($cacheFile, "w+");
 		$cacheWritten = fwrite($cachefp, $cacheTemp, strlen($cacheTemp));
 		fclose($cachefp);
-		decho("$cacheWritten bytes written to RSS cache.<br/>");			
+		decho("$cacheWritten bytes written to RSS cache");			
 	}
 	else
 	{
 		decho("RSS cache matches external source, using internal");			
 	}		
 
+	decho("Loading RSS cache into aggregator");
 	$rss->load($cacheFile);
 	
     $items = $rss->getItems(); #returns all rss items
