@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ 
- 
+
 static $db_queries = 0;
 static $db_connections = 0;
 static $db_frees = 0;
@@ -68,6 +68,7 @@ class Bayonet_SQL
     }catch(Exception $e){
     	    
     } */
+   
     return mysql_query($str);
   }
   
@@ -75,12 +76,12 @@ class Bayonet_SQL
   {
     global $db_frees;
     ++$db_frees;
-    //decho("Freeing ('$result')");
+    decho("Freeing result");
     return mysql_free_result($result);
   }
   
   public function Fetch($result)
-  {    
+  {
     return $this->FetchArray($result);
   }
   
@@ -88,7 +89,8 @@ class Bayonet_SQL
   {
     global $db_fetches;
     ++$db_fetches;    
-    /* Alias Fetch() prefered, so no decho information */  
+    /* Alias Fetch() prefered, so no decho information */
+	decho("Fetching result");  
     return mysql_fetch_array($result,MYSQL_ASSOC);
   }
     
@@ -96,6 +98,7 @@ class Bayonet_SQL
   {
     global $db_fetches;
     ++$db_fetches;
+    decho("Fetching object result");
     return mysql_fetch_object($result,$class);
   }
   
@@ -103,16 +106,19 @@ class Bayonet_SQL
   {
     global $db_fetches;
     ++$db_fetches;    
+    decho("Fetching assoc result");
     return mysql_fetch_assoc($result);
   }
   
   public function FetchRow($result)
   {
+  	decho("Fetching single row");
     return mysql_fetch_row($result);
   }
   
   public function Rows($result)
   {
+  	decho("Fetching number of rows");
     return mysql_num_rows($result);
   }
 }

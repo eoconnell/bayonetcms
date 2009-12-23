@@ -340,8 +340,7 @@ function fatal_error_handler($buffer) {
 
 function handle_error ($errno, $errstr, $errfile, $errline)
 {
-    //error_log("$errstr in $errfile on line $errline");
-    //ReportError("<pre>$errstr</pre>");
+    //decho("<b>Warning:</b> $errfile:$errline, $errstr");
     push_error_stack("<b>Error Number:</b> $errno<br/><b>Error:</b> $errstr<br/><b>In File:</b> $errfile<br/><b>Line:</b> $errline");
     if($errno == FATAL || $errno == ERROR){
     	push_error_stack($errstr);

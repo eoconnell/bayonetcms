@@ -16,8 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ 
-
-global $config;
  
 define("RUDI_DEBUG",true);
 define("RUDI_DEBUG_LEVEL",true);
@@ -27,23 +25,66 @@ define('REPEAT',true);
 static $last_message = NULL;
 static $last_message_count = 0;
 
+static $debug_ident = NULL;
 static $log_message_last = NULL;
 static $log_message_queue = array();
 static $log_message_pos = 0;
 
-function decho2($message)
+function debug_set_ident($str)
 {
-	global $log_message_last, $log_message_queue, $log_message_pos, $config;
+	global $debug_ident;
+	$debug_ident = $str;
+}
+
+function debug_clear_ident()
+{
+	global $debug_ident;
+	$debug_ident = "";
+}
+
+function decho($message, $from = "GENERIC")
+{
+	global $debug_ident, $log_message_last, $log_message_queue, $log_message_pos, $config;
 	date_default_timezone_set($config['logs']['timezone']);
-	$timestamp = date('Y-M-d H:i:s T');
+	$timestamp = date('H:i:s T');
 	$message = "[$timestamp]: $message";
+	
 	array_push($log_message_queue, $message);
 	$log_message_pos++;
+}
+
+function queuePrint($obj)
+{
+	if(is_array($obj))
+	{
+		$array_dump = print_r($obj,true);
+		echo $array_dump . "<br/>\n";
+		//WriteLog($array_dump,BAYONET_LOG_INFO);
+	}  
+	elseif(is_object($obj))
+	{
+		ob_start();
+		var_dump($obj);
+		$obj_dump = ob_get_contents();
+		ob_end_clean(); 
+		//htmlentities($obj_dump,ENT_QUOTES);
+		//WriteLog($obj_dump,BAYONET_LOG_INFO);
+		echo $obj_dump . "<br/>\n"; 
+	}
+	elseif(is_string($obj))
+	{
+		$message = wordwrap($obj,80,'<br />');
+		echo $obj . "<br/>\n";
+		//WriteLog($message,BAYONET_LOG_INFO);
+	}
 }
 
 function logQueueFlush()
 {
 	global $log_message_queue, $config;
+	if($config['debug']['show_messages'] == false) return; 
+	
+	
 	$messageCount = 0;
 	static $log_message_last_count = 0;
 	static $next = false;
@@ -54,36 +95,39 @@ function logQueueFlush()
 	{
 		if($message != $log_message_queue[$messageCount - 1])
 		{
-			echo "{$messageCount}: $message<br/>\n";
+			queuePrint($message);
 		}
 		elseif($message == $log_message_queue[$messageCount - 1])
 		{
 			$log_message_last_count++;
-			if($config['debug']['repeat_messages'] == false)
+			if($config['debug']['repeat_messages'] == true)
 			{
-				echo "{$messageCount}: $message<br/>\n";
-		 		if($config['debug']['repeat_messages'] == true)
- 				{
- 					if($log_message_queue[$messageCount + 1] != $message)
-					{
-						$next = true;
-					}
+				//echo "{$messageCount}: $message<br/>\n";
+				queuePrint($message);
+			}
+ 			if($config['debug']['repeat_messages'] == false)
+ 			{
+ 				if($log_message_queue[$messageCount + 1] != $message)
+				{
+					$next = true;
 				}
 			}
+
 		}
 		
 		if($next == true)
 		{
-			echo "$messageCount: <b>Last message recieved $log_message_last_count times</b><br/>\n";
+			queuePrint("<b>Last message recieved $log_message_last_count times</b><br/>\n");
 			$log_message_last_count = 0;
 			$next = false;
 		}
 		
-		$messageCount++;
+		++$messageCount;
 	}
 	echo "</div>";
 }
 
+/*
 function decho($message, $flag = REPEAT)
 {
   global $last_message, $last_message_count;
@@ -130,7 +174,7 @@ function decho($message, $flag = REPEAT)
   $last_message = $message;
   
 }
-
+*/
 
 
 ?> 
