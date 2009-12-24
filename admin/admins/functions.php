@@ -69,16 +69,22 @@
  	 if(isset($_POST['processed'])){
  	 
  	 	$username = addslashes($_POST['username']);
-		$level = addslashes($_POST['level']);
 		$email = addslashes($_POST['email']);
 		$first = addslashes($_POST['first']);
 		$last = addslashes($_POST['last']);
-			
+		
+		$level = $_POST['level'];	
 		$all = $_POST['all'];
 		$squadleader = $_POST['squadleader'];
 		$adjutant = $_POST['adjutant'];
 		$quartermaster = $_POST['quartermaster'];
 		
+		$level = (int)$level;
+		$all = (int)$all;
+		$squadleader = (int)$squadleader;
+		$adjutant = (int)$adjutant;
+		$quartermaster = (int)$quartermaster;
+				
 		$password = GeneratePassword(8);		
 		$cryptpassword = crypt(md5($password),'iamnotadirtywhorebitch');
 			
@@ -88,28 +94,32 @@
 			return;
 		}
 		
+		$result = $db->Query("SELECT `level` FROM `bayonet_users` WHERE `username` = '$username' OR `email` = '$email'");
+		if($db->Rows($result) > 0){
+			ReportError("The email and or username you entered is already in use.");
+			return;
+		}
+		
+		
 		$Name = "Rocky the Marne Dog";
 		$subject = "3rd ID Admin Password";
 		$header = "From: ". $Name . " < DO NOT RESPOND >\r\n"; //optional headerfields 
 		$mail_body = "Do not respond to this email.\n\n------------------------------\nUsername: ".$username."\nPassword: ".$password."\n------------------------------\n\nTo login click on this link. http://testbed.3rd-infantry-division.org/cms/admin/ \n\nIt is recommended that you change your password once you login. To do so, click on Account Settings>Change Password.";
 		
-		//$sent = mail($email, $subject, $mail_body, $header);
+		$sent = mail($email, $subject, $mail_body, $header);
 		if(!$sent){
 			ReportError("Error validating email. This user was not saved.");
-			//return;		
-		}
+			return;		
+		} 
 				
-	//	$db->Query("INSERT INTO `bayonet_users` (`user_id` ,`username` ,`password` ,`lastname` ,`firstname` ,`email` ,`joined` ,`level` ,`all` ,`squadleader` ,`adjutant` ,`quartermaster`) VALUES (NULL, '$username', '$cryptpassword', '$last', '$first', '$email', '', $level, $all, $squadleader, $adjutant, $quartermaster)");
-	
-		$db->Query("INSERT INTO `bayonet_users` SET `username` = '$username'");
-		
-						
+		$db->Query("INSERT INTO `bayonet_users` (`user_id` ,`username` ,`password` ,`lastname` ,`firstname` ,`email` ,`joined` ,`level` ,`all` ,`squadleader` ,`adjutant` ,`quartermaster`) VALUES (NULL, '$username', '$cryptpassword', '$last', '$first', '$email', CURRENT_TIMESTAMP, $level, $all, $squadleader, $adjutant, $quartermaster)");
+									
    		echo "Admin, '$username' level '$level' has been added. An email has been sent to him with his username and password.\n <br /><br /> 
 			Please wait while you are redirected. <br /><br /> 
 			<a href=\"?op=admins\">Click here if you don't feel like waiting.</a>";
 					
 	    // 3 second redirect to go back to the edit page
-   		//PageRedirect(2, "?op=admins");
+   		PageRedirect(2, "?op=admins");
 	    return;
  	 }
 ?>
@@ -300,7 +310,7 @@
 	if(isset($_POST['cancel']))
 	{
 		echo "User cancelled deletion of admin: '{$admin['username']}'";
-		PageRedirect(3,"?op=admins");
+		PageRedirect(1,"?op=admins");
 		return;
 	}  
 	?>

@@ -57,8 +57,8 @@ include 'header.php';
       ?>
 
  <center>
- <div class="content">            
-
+ <div class="content">     
+ 
 <table width="100%">
 	<tr>
 		<td><a href="index.php"><img src="images/bayonet_logo.jpg" alt="bayonet online web admin" /></a></td>

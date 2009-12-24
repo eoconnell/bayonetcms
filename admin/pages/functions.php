@@ -111,6 +111,11 @@ function NewArticle($page_id)
   <?php
 }
 
+ /**
+  * EditArticle($article_id)
+  * Edits an article for a page
+  * @param id - article_id cooresponding to `bayonet_articles`
+  */  
 function EditArticle($article_id){
 
   global $db;
@@ -166,14 +171,14 @@ function DeleteArticle($article_id)
 {
   global $db;
   
-  $result = $db->Query("SELECT title FROM bayonet_articles WHERE article_id = '$article_id'");
+  $result = $db->Query("SELECT `title` FROM `bayonet_articles` WHERE `article_id` = '$article_id'");
   $article = $db->Fetch($result);
   
   if(isset($_POST['proceed']))
   {
     echo "Article '{$article['title']}', was deleted.";
     $db->Query("DELETE FROM bayonet_articles WHERE article_id = '$article_id' LIMIT 1");
-    PageRedirect(2, "?op=pages");
+    PageRedirect(2, "?op=pages&edit={$_GET['edit']}");
     return;
   }
   if(isset($_POST['cancel']))
@@ -219,48 +224,42 @@ function ListPages($pid = NULL)
  
   foreach($pages as $page)
   {
-  	 if($pid == $page['page_id'])
+  	$edit = false;
+  	 if($pid == $page['page_id']){
+  	 	$edit = true;
     	echo '<tr class="highlight">';
-   	 else 
+   	 }else 
    	 	echo '<tr>';
    	 ?>	
    	 
  	 <td style="text-align:center; text-overflow:ellipsis; overflow:hidden;">
-		<a href="?op=pages&edit=<?php echo $page['page_id']?>"><?php echo $page['title']; ?></a>
+		<a href="?op=pages&edit=<?php echo $page['page_id']?>">
+			<img src="images/page.png" />
+			<?php echo $page['title']; ?>
+		</a>
   	 </td>
 	</tr>
-	
-	<?php
-  }	  
- 	?>
-<!--
- 		<tr style="vertical-align:bottom; background-color:green; text-overflow:ellipsis; overflow:hidden;">
- 		<td>
-			<table class="panelitems">
-				<tr><td>
-				<?php echo LinkInternal('<img src="images/add.png" />&nbsp;Create New Page','?op=pages&create=true'); ?> <br />
-				<?php echo LinkInternal('<img src="images/view.png" />&nbsp;View this Page','../index.php?load=page&id='.$page_id); ?> <br />
-	   			<?php echo LinkInternal('<img src="images/cancel.png" />&nbsp;Delete this Page','?op=pages&delete='.$page_id); ?> <br />
-	   			</td></tr>
-			</table>
-		<td>
-		</tr> -->
-<?php
-    if(isset($_GET['edit'])){
- ?>		
-
+<?php		
+	if($edit){
+?>
 	<tr>
- 	 <td style="text-align:center; text-overflow:ellipsis; overflow:hidden;">
+ 	 <td style="text-align:center; text-overflow:ellipsis; overflow:hidden; background-color:#dfe4df;">
 		<?php echo LinkInternal('<img src="images/view.png" />&nbsp;View this Page','../index.php?load=page&id='.$pid.'" target=\"blank'); ?>
   	 </td>
 	</tr>
 	<tr>
- 	 <td style="text-align:center; text-overflow:ellipsis; overflow:hidden;">
+ 	 <td style="text-align:center; text-overflow:ellipsis; overflow:hidden; background-color:#dfe4df;">
+		<?php echo LinkInternal('<img src="images/pencil.png" />&nbsp;Edit this Page','?op=pages&edit=true&pid='.$pid); ?>
+  	 </td>
+	</tr>
+	<tr>
+ 	 <td style="text-align:center; text-overflow:ellipsis; overflow:hidden; background-color:#dfe4df;">
 		<?php echo LinkInternal('<img src="images/cancel.png" />&nbsp;Delete this Page','?op=pages&delete='.$pid); ?>
   	 </td>
 	</tr>
   	<?php
  	} 
+  }	  
   	echo "</table>";
  	
 }

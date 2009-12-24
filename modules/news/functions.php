@@ -184,7 +184,7 @@ function displayNews($data){
 						<td style="text-align:left;">
 							View Comments: <a href="?load=news&id=<?php echo $news['news_id']; ?>"><?php echo $numComments;?> Comments</a>
 						</td>
-						<td style="text-align:right;">Posted on: <?php echo date('D M j, Y H:i a T', strtotime($news['date'])); ?></td>
+						<td style="text-align:right;">Posted on: <?php echo date('D M j, Y g:i a T', strtotime($news['date'])); ?></td>
 					</tr>
 				</table>
 			</div>

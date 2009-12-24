@@ -19,7 +19,8 @@
  ?>
  
  <div style="text-align:left;"><h2>- Manage News</h2></div>
- -Everything needs to be completed.
+ -Add/Edit(-)/Delete news
+ -Add/Edit/Delete categories
 <?php
 
 if(!defined("ADMIN_FILE"))
@@ -36,6 +37,10 @@ if(isset($_GET['edit'])){
 	$news_id = $_GET['edit'];
 	EditNews($news_id);
 }
+else{
+	ListNews();
+}
+
 
 
 ?>

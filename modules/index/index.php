@@ -11,14 +11,13 @@
 
 <?php
   
-   	$result = $db->Query("SELECT `index_modules` FROM `bayonet_settings` WHERE `title` = 'Default'");
+  
+   	$result = $db->Query("SELECT `dir_name` FROM `bayonet_modules` ORDER BY `weight` ASC");
  	while(($row = $db->Fetch($result))!==false)
 	{
-		$indexModules = $row['index_modules'];
+		$indexModules[] = $row['dir_name'];
 	}
 	
-	$indexModules = explode(',',$indexModules);
-
 	foreach($indexModules as $module)
 	{ 
 		  if(file_exists("modules/" . $module))

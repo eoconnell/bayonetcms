@@ -25,6 +25,7 @@ if(!defined("ADMIN_FILE"))
 include $basedir.'newsreel/functions.php';
 ?>
  <div style="text-align:left;"><h2>- Manage News Reel</h2></div>
+ -Add/Edit/Delete needs to be completed.
 	<table class="panel" width="100%">
 		<tr>
 			<td class="panel"><?php EditOrder(); ?></td>
