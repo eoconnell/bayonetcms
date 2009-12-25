@@ -21,6 +21,7 @@ define("RUDI_DEBUG",true);
 define("RUDI_DEBUG_LEVEL",true);
 define('NO_REPEAT',false);
 define('REPEAT',true);
+define('FORCE', true);
 
 static $last_message = NULL;
 static $last_message_count = 0;
@@ -29,32 +30,44 @@ static $log_message_last = NULL;
 static $log_message_queue = array();
 static $log_message_pos = 0;
 
-function decho($message, $from = "GENERIC")
+function decho($message, $force = false)
 {
 	global $log_message_last, $log_message_queue, $log_message_pos, $config;
-	
-	if($config['debug']['enabled'] == false ||
+	/*
+	if($force == false)
+	{
+		if($config['debug']['enabled'] == false ||
 		$config['debug']['show_messages'] == false) return;
+	}
+	*/	
 	
 	date_default_timezone_set($config['logs']['timezone']);
 	$timestamp = date('H:i:s T');
-	$message = "[$timestamp]: $message";
+	if(!is_array($message) && !is_object($message))
+		$message = "[$timestamp]: $message";
+	else
+	{
+		$message = $message;
+	}
 	
 	array_push($log_message_queue, $message);
 	$log_message_pos++;
 }
 
-function queuePrint($obj)
+function queuePrint($obj, $force = false)
 {
 	global $config;
 	
-	if($config['debug']['enabled'] == false ||
+	if($force == false)
+	{
+		if($config['debug']['enabled'] == false ||
 		$config['debug']['show_messages'] == false) return;
-	
+	}
+		
 	if(is_array($obj))
 	{
 		$array_dump = print_r($obj,true);
-		echo $array_dump . "<br/>\n";
+		echo "<pre>" . $array_dump . "</pre><br/>\n";
 		//WriteLog($array_dump,BAYONET_LOG_INFO);
 	}  
 	elseif(is_object($obj))
@@ -65,7 +78,7 @@ function queuePrint($obj)
 		ob_end_clean(); 
 		//htmlentities($obj_dump,ENT_QUOTES);
 		//WriteLog($obj_dump,BAYONET_LOG_INFO);
-		echo $obj_dump . "<br/>\n"; 
+		echo "<pre>" . $obj_dump . "</pre><br/>\n"; 
 	}
 	elseif(is_string($obj))
 	{
@@ -75,11 +88,14 @@ function queuePrint($obj)
 	}
 }
 
-function logQueueFlush()
+function logQueueFlush($force = false)
 {
 	global $log_message_queue, $config;
-	if($config['debug']['show_messages'] == false) return; 
 	
+	if($force == false)
+	{
+		if($config['debug']['show_messages'] == false) return;
+	} 
 	
 	$messageCount = 0;
 	static $log_message_last_count = 0;
@@ -91,8 +107,11 @@ function logQueueFlush()
 	foreach($log_message_queue as $message)
 	{
 		if($message != $log_message_queue[$messageCount - 1])
-		{
-			queuePrint($message);
+		{	
+			if($force)
+				queuePrint($message, true);
+			else
+				queuePrint($message);
 		}
 		elseif($message == $log_message_queue[$messageCount - 1])
 		{
@@ -100,7 +119,10 @@ function logQueueFlush()
 			if($config['debug']['repeat_messages'] == true)
 			{
 				//echo "{$messageCount}: $message<br/>\n";
-				queuePrint($message);
+				if($force)
+					queuePrint($message,true);
+				else
+					queuePrint($message);
 			}
  			if($config['debug']['repeat_messages'] == false)
  			{

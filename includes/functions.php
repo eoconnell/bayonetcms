@@ -175,13 +175,13 @@ function BBCode($Text)
          
             // Images
             // [img]pathtoimage[/img]
-            $Text = preg_replace("/\[img\](.+?)\[\/img\]/", '<img src="$1">', $Text);
+            $Text = preg_replace("/\[img\](.+?)\[\/img\]/", '<img src="$1" />', $Text);
             
             //[img=align]image source[/img]
             $Text = preg_replace("(\[img align\=(.+?)\](.+?)\[\/img\])is","<img src=\"$2\" align=\"$1\" />",$Text);
          
             // [img=widthxheight]image source[/img]
-            $Text = preg_replace("/\[img\=([0-9]*)x([0-9]*)\](.+?)\[\/img\]/", '<img src="$3" height="$2" width="$1">', $Text);
+            $Text = preg_replace("/\[img\=([0-9]*)x([0-9]*)\](.+?)\[\/img\]/", '<img src="$3" height="$2" width="$1" />', $Text);
             
             // Alignment
             // [align=type]text[/align]
@@ -250,6 +250,20 @@ function LinkModule($module_name,$args = NULL,$link_name)
   return "<a href=\"?load={$module_name}{$args}\">{$link_name}</a>";
 }
 
+/**
+ * LinkModuleFile()
+ * 
+ * Helper function to link to Bayonet internal module files.
+ * 
+ * @param mixed $module_name
+ * @param mixed $link_name
+ * @return
+ */
+ function LinkModuleFile($module_name, $file_name, $link_name)
+ {
+ 	return "<a href=\"?load={$module_name}&amp;file={$file_name}\">{$link_name}</a>";
+ }
+ 
 /**
  * LinkPage()
  * 
