@@ -26,9 +26,9 @@
 		  }
 		  else
 		  {
-		    OpenTable();
+		    OpenContent();
 		    ReportError("Cannot load module '{$module}' directory.<br>\n");
-		    CloseTable();    
+		    CloseContent();    
 		  }
 		  echo "<br />";
 	}

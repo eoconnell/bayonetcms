@@ -29,7 +29,7 @@ function bbcode_format ($str)
 {
   $str = htmlentities($str);
   $str = strip_tags($str);
-  $str = wordwrap($str,100,"\n",true);
+  //$str = wordwrap($str,100,"\n",true);
   
   $simple_search = array(
     '/\[b\](.*?)\[\/b\]/is',                               
@@ -247,7 +247,8 @@ function LinkList($array)
  */
 function LinkModule($module_name,$args = NULL,$link_name)
 {
-  return "<a href=\"?load={$module_name}{$args}\">{$link_name}</a>";
+	
+	return "<a href=\"index.php?load={$module_name}{$args}\">{$link_name}</a>";
 }
 
 /**
@@ -297,29 +298,43 @@ if(!defined("CALLED_FROM_ADMIN"))
 {
   /**
    * OpenTable()
-   * 
    * Begins a Bayonet site table.
-   * 
    * @return
    */
   function OpenTable()
   {
     //width="100%" is important.  Otherwise all of our tables will be text width.
-    //echo "<table width=\"100%\" align=\"center\" class=\"cleartable\">\n";
-  	echo "<div class=\"contentBorder1\">";
-	echo "<div class=\"contentBorder2\">";
+    echo "<table width=\"100%\" align=\"center\" class=\"cleartable\">\n";
   }
   
   /**
    * CloseTable()
-   * 
    * Closes a Bayonet site table.
-   * 
    * @return
    */
   function CloseTable()
   {
     //echo "</table>";
+  }
+  
+  /**
+   * OpenContent()
+   * Begins a Bayonet site table.
+   * @return
+   */
+  function OpenContent()
+  {
+  	echo "<div class=\"contentBorder1\">";
+	echo "<div class=\"contentBorder2\">";
+  }
+  
+  /**
+   * CloseContent()
+   * Closes a Bayonet site table.
+   * @return
+   */
+  function CloseContent()
+  {
     echo "</div>";
    	echo "</div>";
   }
@@ -327,7 +342,7 @@ if(!defined("CALLED_FROM_ADMIN"))
 
 function OpenBlock($title = 'New Block')
 {
-  OpenTable();
+  OpenContent();
   echo "<div class=\"contentHeading\">{$title}</div>";
   echo "<div class=\"content\">";
 }
@@ -335,7 +350,7 @@ function OpenBlock($title = 'New Block')
 function CloseBlock()
 {
   echo "</div>";
-  CloseTable();
+  CloseContent();
 }
 
 static $error_stack_messages = array(); //global stack of errors accumulated throughout execution
@@ -375,9 +390,9 @@ function handle_error ($errno, $errstr, $errfile, $errline)
 function ReportError($message)
 {
   //WriteLog($message,BAYONET_LOG_ERROR);
-  OpenTable();
+  OpenContent();
   echo "<div class=\"contentHeading\">Error Message</div><div class=\"content\">{$message}</div>";
-  CloseTable();
+  CloseContent();
 }
 
 /**
@@ -587,7 +602,7 @@ function GetBlocks($position = BLOCK_LEFT)
       if(file_exists($load))
       {
       	OpenBlock($block['title']);
-        include $load;
+        include_once $load;
         CloseBlock();
         decho("'{$block['dir_name']}' block loaded");
       }

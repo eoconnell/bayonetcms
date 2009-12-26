@@ -43,7 +43,7 @@
  function ListAdmins()
  {
  	  global $db;
-	  $result = $db->Query("SELECT `user_id`, `username`, `level` FROM `bayonet_users` ORDER BY `level` DESC");
+	  $result = $db->Query("SELECT `user_id`, `username`, `level` FROM `bayonet_users` ORDER BY `level` DESC, `username` ASC");
 	  while(($rows = $db->fetch($result))!=false)
 	  {
 	    $admins[] = $rows;
@@ -51,9 +51,13 @@
 	  
 	  $num = 1;
 	  OpenTable("300px");
-	  echo "<tr><th></th><th>Username</th><th>Level</th></tr>";
+	  echo "<tr><th></th><th style=\"text-align:left;\">Username</th><th style=\"text-align:left;\">Level</th></tr>";
 	  foreach($admins as $admin)
 	  {
+	  	if($admin['level'] != $level){
+	  		$level = $admin['level'];
+	  		echo "<tr><td colspan=\"3\"><hr /></td></tr>";
+  		}
 	  	echo "<tr><td>{$num}.</td><td><a href=\"?op=admins&edit={$admin['user_id']}\">{$admin['username']}</a></td><td>{$admin['level']}</td></tr>";
 	  	$num++;
 	  }
@@ -127,10 +131,10 @@
 <center>
 		<form method="POST" action="<?php $_SERVER['PHP_SELF']?>">
 		<table>
-			<tr><th>Username:</th><td><input type="text" value="" name="username" /></td></tr>
+			<tr><th>Username:</th><td><input type="text" value="" name="username" />*</td></tr>
 			<tr><th>First Name:</th><td><input type="text" value="" name="first" /></td></tr>
 			<tr><th>Last Name:</th><td><input type="text" value="" name="last" /></td></tr>
-			<tr><th>Email Address:</th><td><input type="text" value="" name="email" /></td></tr>
+			<tr><th>Email Address:</th><td><input type="text" value="" name="email" />*</td></tr>
 			<tr>
 				<th>Level:</th>
 				<td>

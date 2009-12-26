@@ -38,13 +38,13 @@ include 'header.php';
 <div class="banner"><a href="index.php"><img src="images/logo.jpg" alt="3rd Infantry Division - ArmAII Unit" /></a></div>
 
 <!-- navigation -->
- <div class="nav"><?php require 'navigation.php'; ?></div>
+ <div class="nav"><?php require_once 'navigation.php'; ?></div>
 
 <!-- content -->
 <table border="0" cellspacing="10px" cellpadding="0"  class="main" width="100%">
 	<tr>
 		<td class="leftcol">
-	    	<?php  require 'modules.php'; ?>
+	    	<?php  require_once 'modules.php'; ?>
  		</td>
  		
 	  <!-- block area RIGHT -->

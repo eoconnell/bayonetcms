@@ -49,7 +49,7 @@ function getNewsComments($id){
 function displayComments($data){
 	
 	date_default_timezone_set("America/New_York");
-	OpenTable();
+	OpenContent();
 	?>
 	
 	<div id="comments">
@@ -104,7 +104,7 @@ function displayComments($data){
 	
 	commentForm();
 	
-	CloseTable();
+	CloseContent();
 }
 
  /**
@@ -164,7 +164,7 @@ function displayNews($data){
 	{
 		$numComments = getNumOfComments($news['news_id']);
 		
-		OpenTable(); ?>
+		OpenContent(); ?>
 	
 			<div class="contentHeading">
 					<table width="100%">
@@ -190,7 +190,7 @@ function displayNews($data){
 			</div>
 	
 	<?php	
-		CloseTable();
+		CloseContent();
 		echo "<br />";
 	}
 }
@@ -245,7 +245,7 @@ function commentForm(){
 				?>
 				<br><span><?php echo date('F jS', time()); ?></span></p>
 			</div>
-			<form action="<?php $_SERVER['PHP_SELF']?>" method="POST" id="comment_form">
+			<form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST" id="comment_form">
 				<!-- <fieldset> -->
 					<textarea name="comment" id="comment" rows="8" cols="10" tabindex="1" class="input textarea required"></textarea> 
 					<input type="hidden" value="<?php echo $cur_user_id; ?>" name="author" />

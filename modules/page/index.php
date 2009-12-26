@@ -42,7 +42,7 @@ if(isset($_GET['list']))
 		}
 		mysql_free_result($result);
 		
-		OpenTable();
+		OpenContent();
 		echo "<div class=\"contentHeading\">Page Map</div>";
 		echo "<div class=\"content\">";
 		echo "<ul>";
@@ -52,7 +52,7 @@ if(isset($_GET['list']))
 		}
 		echo "</ul>";
 		echo "</div>";
-		CloseTable();
+		CloseContent();
 		
 		/* Kill module execution to prevent odd page results */
 		return;
@@ -76,7 +76,7 @@ if($proceed > 0)
   while(($row = $db->Fetch($result))!==false)
   {
     $page = $row;
-    OpenTable();
+    OpenContent();
     echo "<div class=\"content\">";
    	$aresult = $db->Query("SELECT * FROM `bayonet_articles` WHERE `page_id` = $id ORDER BY `weight` ASC");
     while(($article = $db->Fetch($aresult))!==false)
@@ -84,10 +84,10 @@ if($proceed > 0)
 		$articleTitle = $article['title'];
 		echo '<h2>'.$articleTitle.'</h2>';
 		//echo "<h3>".$article['title']."</h3>";
-		echo BBCode($article['text']);	 
+		echo bbcode_format($article['text']);	 
 	} 
 	echo "</div>";
-	CloseTable();
+	CloseContent();
 	  
   }
   ?>

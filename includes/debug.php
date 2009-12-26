@@ -101,7 +101,7 @@ function logQueueFlush($force = false)
 	static $log_message_last_count = 0;
 	static $next = false;
 	
-	OpenTable();
+	OpenContent();
 	echo "<div class=\"contentHeading\">Bayonet Debug Messages</div>";
 	echo "<div class=\"content\">";
 	foreach($log_message_queue as $message)
@@ -143,8 +143,8 @@ function logQueueFlush($force = false)
 		
 		++$messageCount;
 	}
-	echo "</div></div>";
-	CloseTable();
+	echo "</div>";
+	CloseContent();
 }
 
 /*

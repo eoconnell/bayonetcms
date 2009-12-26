@@ -377,9 +377,9 @@ function DeletePage($page_id)
   
   ?>
 
-  <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
   <table>
-  <th>Are you <u>SURE</u> you want to delete the page titled: '<?php echo $page['title']?>'?<br />All articles attached to this page will be deleted as well.</th>
+  <th>Are you <u>SURE</u> you want to delete the page titled: '<?php echo $page['title'];?>'?<br />All articles attached to this page will be deleted as well.</th>
   <tr><th><button name="proceed">Yes</button>&nbsp;&nbsp;&nbsp;<button name="cancel">No</button></th></tr>
   </table>
   </form>

@@ -1,5 +1,5 @@
 <!-- START News Reel -->
-<?php OpenTable(); ?>
+<?php OpenContent(); ?>
 <script type="text/javascript">
 
 var current = "0";
@@ -102,12 +102,12 @@ $y=0;
 	$get_slidenav = mysql_query("SELECT * FROM `bayonet_newsreel` WHERE `visible`= 1 ORDER BY `weight` ASC LIMIT 0, 6");
 	while($echo_slidenav = mysql_fetch_array($get_slidenav)){
 
-		echo '<td id="'.$y.'" width="'.$width.'%" class="slidenav" onClick="nextSlide(this.id,true)" onmouseover="mouseOverBG(this.id)" onmouseout="mouseOutBG(this.id)">'.$echo_slidenav['title'].'</td>';
+		echo '<td id="'.$y.'" width="'.$width.'%" class="slidenav" onclick="nextSlide(this.id,true)" onmouseover="mouseOverBG(this.id)" onmouseout="mouseOutBG(this.id)">'.$echo_slidenav['title'].'</td>';
 		$y++;
 	}
 ?>
 	</tr>
 	</table>
 </div></div>
-<?php CloseTable(); ?>
+<?php CloseContent(); ?>
 <!-- END News Reel -->
