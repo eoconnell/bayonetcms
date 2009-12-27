@@ -33,13 +33,13 @@ static $log_message_pos = 0;
 function decho($message, $force = false)
 {
 	global $log_message_last, $log_message_queue, $log_message_pos, $config;
-	/*
+	
 	if($force == false)
 	{
 		if($config['debug']['enabled'] == false ||
 		$config['debug']['show_messages'] == false) return;
 	}
-	*/	
+		
 	
 	date_default_timezone_set($config['logs']['timezone']);
 	$timestamp = date('H:i:s T');

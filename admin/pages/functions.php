@@ -22,52 +22,48 @@
  * You MUST declare $db as global inside your functions in order access MySQL from here.
  */
 
-function ListArticles($pageid){
-  
-  global $db;
-  $result = $db->Query("SELECT article_id,title FROM bayonet_articles WHERE `page_id` = $pageid ORDER BY `weight`");
-  while(($row = $db->Fetch($result))!=false)
-  {
-    $articles[] = $row;
-  }
-  
-  	echo "<table class=\"panelitems\" width=\"100%\" cellspacing=\"0\">";
-  	
-  	?>
+function ListArticles($pageid)
+{	
+	global $db;
+	$result = $db->Query("SELECT article_id,title FROM bayonet_articles WHERE `page_id` = $pageid ORDER BY `weight`");
+	$articles = $row = $db->Fetch($result);
+	
+	echo "<table class=\"panelitems\" width=\"100%\" cellspacing=\"0\">";
+	
+	?>
 	<tr>
- 	 <td colspan="3" style="text-align:center; text-overflow:ellipsis; overflow:hidden; background-color:#dfe4df; border-bottom: 1px solid #848484;">
+	 <td colspan="3" style="text-align:center; text-overflow:ellipsis; overflow:hidden; background-color:#dfe4df; border-bottom: 1px solid #848484;">
 		<?php echo LinkInternal('<img src="images/add.png" />&nbsp;Add New Article','?op=pages&edit='.$pageid.'&newarticle=true'); ?>
-  	 </td>
-	</tr>
-  	
-  	<?php
-
-  if(count($articles)==0){
-  	echo "<tr><td>No Articles Found.<br /></td></tr></table>";
-  	return;
-  }
-  foreach($articles as $article)
-  {
-  	 if($_GET['aid'] == $article['article_id'])
-    	echo '<tr class="highlight">';
-   	 else 
-   	 	echo '<tr>';
-   	 ?>	
-   	 
- 	 <td>^</td>
- 	 <td style="text-align:center; text-overflow:ellipsis; overflow:hidden;">
-		<a href="?op=pages&edit=<?php echo $pageid; ?>&aid=<?php echo $article['article_id']?>"><?php echo $article['title']; ?></a>
-  	 </td>
- 	 <td>v</td>	
+	 </td>
 	</tr>
 	
 	<?php
-  }
+
+	if(count($articles)==0)
+	{
+		echo "<tr><td>No Articles Found.<br /></td></tr></table>";
+		return;
+	}
+
+	foreach($articles as $article)
+	{
+		if($_GET['aid'] == $article['article_id'])
+			echo '<tr class="highlight">';
+		else 
+			echo '<tr>';
+		?>	
+	 
+		<td>^</td>
+		<td style="text-align:center; text-overflow:ellipsis; overflow:hidden;">
+		<a href="?op=pages&edit=<?php echo $pageid; ?>&aid=<?php echo $article['article_id']?>"><?php echo $article['title']; ?></a>
+		</td>
+		<td>v</td>	
+		</tr>
+	
+		<?php
+	}
   
   	echo "</table>";
-  
-
-	
 }
 
 function NewArticle($page_id)
@@ -83,13 +79,13 @@ function NewArticle($page_id)
       echo "You must fill everything out before proceeding.";
       return;
     }
-       $weight = 0;
-       	$result = $db->Query("SELECT * FROM `bayonet_articles` WHERE `page_id` = $page_id ORDER BY `weight` DESC LIMIT 1");
-  		while(($row = $db->Fetch($result))!=false)
-  		{
-    		$weight = $row['weight'];
-  		}
-       $weight++;
+	
+	$weight = 0;
+    $result = $db->Query("SELECT * FROM `bayonet_articles` WHERE `page_id` = $page_id ORDER BY `weight` DESC LIMIT 1");
+  	$row = $db->Fetch($result);
+	
+	$weight = $row['weight'];		
+    $weight++;
     
     //Update the database with the new data.
     $db->Query("INSERT INTO `bayonet_articles` (`article_id` ,`page_id` ,`title` ,`text`, `weight`)VALUES (NULL , $page_id, '$title', '$text', '$weight')");
@@ -146,12 +142,8 @@ function EditArticle($article_id){
   
   //Grab the page from the database according to the $article_id passed to the function.
   $result = $db->Query("SELECT title,text FROM bayonet_articles WHERE article_id = '$article_id'");
-  while(($row = $db->Fetch($result))!=false)
-  {
-    //We only want one row, so we don't have to $article[]...  No foreach necessary.
-    $article = $row; 
-  } 
-  
+  $article = $db->Fetch($result);
+  $article = $row;  
   
   ?>
   	<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
@@ -201,23 +193,21 @@ function ListPages($pid = NULL)
 { 
   global $db;
   $result = $db->Query("SELECT page_id,title FROM bayonet_pages");
-  while(($row = $db->Fetch($result))!=false)
-  {
-    $pages[] = $row;
-  }
+  $pages = $db->Fetch($result);
   
-  	echo "<table class=\"panelitems\" width=\"100%\" cellspacing=\"0\">";
+  echo "<table class=\"panelitems\" width=\"100%\" cellspacing=\"0\">";
   	
-  	?>
-	<tr>
- 	 <td style="text-align:center; text-overflow:ellipsis; overflow:hidden; background-color:#dfe4df; border-bottom: 1px solid #848484;">
+  ?>
+  <tr>
+  	<td style="text-align:center; text-overflow:ellipsis; overflow:hidden; background-color:#dfe4df; border-bottom: 1px solid #848484;">
 		<?php echo LinkInternal('<img src="images/add.png" />&nbsp;Create New Page','?op=pages&create=true'); ?>
-  	 </td>
-	</tr>
+  	</td>
+  </tr>
   	
-  	<?php
+  <?php
 
-  if(count($pages)==0){
+  if(count($pages)==0)
+  {
   	echo "<tr><td>No Pages Found.<br /></td></tr></table>";
   	return;
   }

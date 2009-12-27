@@ -26,10 +26,7 @@ function ListArticles($pageid){
   
   global $db;
   $result = $db->Query("SELECT article_id,title FROM bayonet_articles WHERE `page_id` = $pageid ORDER BY `weight`");
-  while(($row = $db->Fetch($result))!=false)
-  {
-    $articles[] = $row;
-  }
+  $articles = $db->Fetch($result);
   
   	echo "<table class=\"cleartable\" width=\"100%\" cellspacing=\"0\">";
 
@@ -65,12 +62,16 @@ function EditArticle($article_id){
 
   global $db;
   //Grab the page from the database according to the $article_id passed to the function.
+  // {{{ XXX: FIXME -- Needs to be re-written
+  /*
   $result = $db->Query("SELECT title,text FROM bayonet_articles WHERE article_id = '$article_id'");
   while(($row = $db->Fetch($result))!=false)
   {
     //We only want one row, so we don't have to $article[]...  No foreach necessary.
     $article = $row; 
-  } 
+  }
+  */
+  // }}}
   ?>
   	<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
   	<table class="cleartable">
@@ -87,11 +88,7 @@ function EditArticle($article_id){
 function ListPages($pid = NULL)
 {
   global $db;
-  $result = $db->Query("SELECT page_id,title FROM bayonet_pages");
-  while(($row = $db->Fetch($result))!=false)
-  {
-    $pages[] = $row;
-  }
+  $pages = $db->Query("SELECT page_id,title FROM bayonet_pages");
 
   echo 'Select page: <select id="pagenames" onchange="gotoEditPage(this.id)">';
   echo '<option value="0">-&nbsp;-&nbsp;-&nbsp;-&nbsp;-&nbsp;-&nbsp;-&nbsp;-</option>';

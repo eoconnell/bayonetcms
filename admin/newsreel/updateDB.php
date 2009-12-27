@@ -3,7 +3,7 @@
 include '../../includes/debug.php';
 include '../../includes/config.php'; 
 include '../../includes/sql.class.php';
-include '../functions.php';
+include '../../includes/functions.php';
 
 $action = $_POST['action'];
 $updateRecordsArray = $_POST['recordsArray'];
@@ -22,7 +22,6 @@ if ($action == "updateReelOrder"){
 	foreach ($updateRecordsArray as $recordIDValue) {
 	
 		$db->Query("UPDATE `bayonet_newsreel` SET `weight` = '$listingCounter' WHERE `slide_id` = '$recordIDValue'");
-		//mysql_query($query) or die('Error, insert query failed');
 		$listingCounter = $listingCounter + 1;
 	}
 	echo "<img src=\"images/accepted.png\" />";

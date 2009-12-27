@@ -526,12 +526,7 @@ function GetBlocks($position = BLOCK_LEFT)
   $db->Select_db($config['sql']['database']);
   
   $result = $db->Query("SELECT * FROM `bayonet_blocks` ORDER BY weight, position");
-  //$result = mysql_query("SELECT * FROM bayonet_blocks ORDER BY weight, position");
-  while(($row = $db->Fetch($result))!==false)
-  {
-    $blocks[] = $row;
-  }
-  $db->Free($result);
+  $blocks = $db->Fetch($result);
   
   foreach($blocks as $block)
   {

@@ -44,10 +44,7 @@
  {
  	  global $db;
 	  $result = $db->Query("SELECT `user_id`, `username`, `level` FROM `bayonet_users` ORDER BY `level` DESC, `username` ASC");
-	  while(($rows = $db->fetch($result))!=false)
-	  {
-	    $admins[] = $rows;
-	  } 
+	  $admins = $db->fetch($result);
 	  
 	  $num = 1;
 	  OpenTable("300px");

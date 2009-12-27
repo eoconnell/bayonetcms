@@ -21,10 +21,7 @@ function ListModules()
 {
   global $db;
   $result = $db->Query("SELECT * FROM `bayonet_blocks` ORDER BY `active` DESC, `weight` ASC, `position`");
-  while(($rows = $db->fetch($result))!=false)
-  {
-    $blocks[] = $rows;
-  }
+  $blocks = $db->fetch($result);
   
   echo "<table align=\"center\"><tr><th colspan=\"3\">Existing Blocks</th></tr>";
   foreach($blocks as $block)
@@ -121,11 +118,7 @@ function EditModule($module_id)
   
   //Grab the page from the database according to the $page_id passed to the function.
   $result = $db->Query("SELECT weight,dir_name,position,active,title FROM bayonet_blocks WHERE block_id = '$block_id'");
-  while(($row = $db->Fetch($result))!=false)
-  {
-    //We only want one row, so we don't have to $block[]...  No foreach necessary.
-    $block = $row; 
-  }    
+  $block = $db->Fetch($result)   
 
   ?>
   <form action="<?php $_SERVER['PHP_SELF']?>" method="post">

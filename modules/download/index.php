@@ -26,11 +26,7 @@ $download = NULL;
 $download_relative_path = "modules/" . basename(dirname(__FILE__)) . "/files/";
 $download_absolute_path = dirname(__FILE__) . "/files/"; 
 
-$result = $db->Query("SELECT `file_id`, `name`, `description`, `filename` FROM `bayonet_downloads`");
-while(($row = $db->Fetch($result)) !== false)
-{
-	$download[] = $row;
-}
+$download = $db->Query("SELECT `file_id`, `name`, `description`, `filename` FROM `bayonet_downloads`");
 
 OpenContent();
 echo "<div class=\"contentHeading\">Downloads</div>";

@@ -26,10 +26,7 @@ function ListNavigation(){
   
   global $db;
   $result = $db->Query("SELECT `nav_id`, `title`, `weight` FROM `bayonet_navigation` ORDER BY `weight`");
-  while(($row = $db->Fetch($result))!=false)
-  {
-    $data[] = $row;
-  }
+  $data = $db->Fetch($result);
   
   echo "|0|Home|0|<br />";
   

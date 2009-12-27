@@ -31,13 +31,15 @@ function getNewsComments($id){
                      "LEFT OUTER JOIN `mybb_users` AS u ON u.uid = c.author_id ".
                      "WHERE c.news_id = '$id' ".
                      "ORDER BY date ASC");
+ 	$comments = $db->Fetch($result);
+ /*
 	while(($row = $db->Fetch($result)) != false)
 	{
 	  $comments[] = $row;
 	}
 	
 	$db->Free($result);
-	
+ */	
 	return $comments;
 }
 
@@ -117,7 +119,7 @@ function getNumOfComments($id){
 	global $db;
 	$result = $db->Query("SELECT `comment_id` FROM `bayonet_news_comments` WHERE `news_id` = '$id'");	
 		
-	return $db->Rows($result);;
+	return $db->Rows($result);
 }
 
  /**
@@ -142,12 +144,18 @@ function getNews($id = NULL){
  	}
  		
 	$result = $db->Query($query);
+	$data = $db->Fetch($result);
+	//decho($data);
+	// {{{ XXX: FIXME -- Re-write
+	/*
 	while(($row = $db->Fetch($result)) != false)
 	{
 	  $data[] = $row;
 	} 
 	
 	$db->Free($result);
+	*/
+	// }}}
 	
 	return $data;
 }
@@ -160,10 +168,12 @@ function getNews($id = NULL){
 function displayNews($data){
 	
 	date_default_timezone_set("America/New_York");
+	
+
 	foreach($data as $news)
-	{
+	{	
 		$numComments = getNumOfComments($news['news_id']);
-		
+		//echo "<pre>".print_r($news,true)."</pre>";
 		OpenContent(); ?>
 	
 			<div class="contentHeading">
@@ -177,12 +187,12 @@ function displayNews($data){
 			<div class="content">
 				<img src="modules/news/categories/<?php echo $news['catimage']; ?>" alt="<?php echo $news['catname']; ?>" align="right" />
 				<?php echo BBCode($news['message']); ?>
-			</div>
+			</div>	
 			<div class="contentFooter">
 				<table width="100%">
 					<tr>
 						<td style="text-align:left;">
-							View Comments: <a href="?load=news&id=<?php echo $news['news_id']; ?>"><?php echo $numComments;?> Comments</a>
+							View Comments: <a href="<?php echo $_SERVER['PHP_SELF']; ?>?load=news&amp;id=<?php echo $news['news_id']; ?>"><?php echo $numComments;?> Comments</a>
 						</td>
 						<td style="text-align:right;">Posted on: <?php echo date('D M j, Y g:i a T', strtotime($news['date'])); ?></td>
 					</tr>
@@ -192,7 +202,8 @@ function displayNews($data){
 	<?php	
 		CloseContent();
 		echo "<br />";
-	}
+		
+	} 
 }
 
 /** This was coded on Coda with a MacBook Pro **/
@@ -212,6 +223,8 @@ function commentForm(){
 	$cur_user_id = 0; //testing variable, until i get the login system working for this
 	
 	$logged_in = false;
+	// {{{ XXX: FIXME -- Re-write this
+	/*
 	$result = $db->Query("SELECT `username`, `avatar` FROM `mybb_users` WHERE `uid` = '$cur_user_id' LIMIT 1");
 	while(($row = $db->Fetch($result)) != false)
 	{
@@ -219,7 +232,8 @@ function commentForm(){
 		$avatar = $row['avatar'];
 		$logged_in = true;
 	}
-
+	*/
+	// }}}
 ?>
 <a name="add"></a>
 <h2>Add Your Comment</h2>

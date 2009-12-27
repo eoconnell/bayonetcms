@@ -58,22 +58,24 @@ $(document).ready(function(){
   function EditOrder(){
  	
 	 global $db;
-	 	 
-	 echo "<div id=\"contentLeft\">
+	 ?>
+	 	 <div id="contentLeft">
 	 		<table> 
 	 			<tr>
 				 	<th>News Reel Order</th>
-			 		<td id=\"updateStatus\"></td>
+			 		<td id="updateStatus"></td>
 			 	</tr>
 		 	</table>
-			<ul>";
-	 
+			<ul>
+	 <?php
 	 $result = $db->Query("SELECT `title`, `slide_id`, `src` FROM `bayonet_newsreel` WHERE `visible` = 1 ORDER BY `weight` ASC");
-	 while(($row = $db->fetch($result))!= false){
-	 	echo "<li id=\"recordsArray_{$row['slide_id']}\">";
-		 PrintSlide($row);
-	 	echo "<br /><a href=\"?op=newsreel&disable={$row['slide_id']}\"><input type=\"button\" value=\"Disable\" /></a></li>";	 
-	 }  
+	 $row = $db->Fetch($result);
+	 
+	 foreach($row as $slide){
+ 		echo "<li id=\"recordsArray_{$slide['slide_id']}\">";
+		 PrintSlide($slide);
+	 	echo "<br /><a href=\"?op=newsreel&disable={$slide['slide_id']}\"><input type=\"button\" value=\"Disable\" /></a></li>";		 
+	 }	 
 ?>	 
 		  </ul>
 		  Click and drag on a slide to change the order. Wait for confirmation indicating the changes have been saved.
@@ -99,6 +101,11 @@ $(document).ready(function(){
  	
 	 global $db;
 	 echo "Disable: ".$slide_id;
+	 $result = $db->Query("SELECT `weight` FROM `bayonet_newsreel` WHERE `slide_id` = '$slide_id' LIMIT 1");
+	 $row = $db->Fetch($result);
+	 foreach($row as $slide){
+	 	$oldWeight = $slide['weight'];	 
+	 }
 	 $db->Query("UPDATE `bayonet_newsreel` SET `visible` = 0, `weight` = 0 WHERE `slide_id` = '$slide_id' LIMIT 1");
 	 PageRedirect(0,"?op=newsreel");
  }
@@ -107,12 +114,13 @@ $(document).ready(function(){
  	
 	 global $db;
 	 echo "<h3>Disabled Slides</h3>";
-	 $result = $db->query("SELECT `slide_id`, `title`, `src` FROM `bayonet_newsreel` WHERE `visible` = 0 ORDER BY `slide_id` DESC");
-	 while(($row = $db->fetch($result))!= false){
-	 	
-		echo PrintSlide($row);
-		echo "<br /><a href=\"?op=newsreel&enable={$row['slide_id']}\"><input type=\"button\" value=\"Enable\" /></a><br /><br />";	
-	 }    
+	 $result = $db->Query("SELECT `slide_id`, `title`, `src` FROM `bayonet_newsreel` WHERE `visible` = 0 ORDER BY `slide_id` DESC");
+	 $row = $db->Fetch($result);
+	 
+	 foreach($row as $slide){
+	 	echo PrintSlide($slide);
+		echo "<br /><a href=\"?op=newsreel&enable={$slide['slide_id']}\"><input type=\"button\" value=\"Enable\" /></a><br /><br />";	
+	 }
  }
  
  function PrintSlide($slide){
@@ -125,9 +133,12 @@ $(document).ready(function(){
  function GetLastPosition(){
  	
 	global $db;
-	$result = $db->query("SELECT `weight` FROM `bayonet_newsreel` ORDER BY `weight` DESC LIMIT 1");
+	$result = $db->Query("SELECT `weight` FROM `bayonet_newsreel` WHERE `visible` = 1 ORDER BY `weight` DESC LIMIT 1");
 	$row = $db->Fetch($result);
- 	return $row['weight']; 
+	foreach($row as $slide){
+		$weight = $slide['weight'];	
+	}
+ 	return $weight;
  }
 		
 

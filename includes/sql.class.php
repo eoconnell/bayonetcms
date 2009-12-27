@@ -33,51 +33,38 @@ class Bayonet_SQL
     $this->hostname = $hostname;
     
     decho("Connecting ('$hostname')");
-    return mysql_connect($hostname, $username, $passwd);
+    return ($GLOBALS['___mysqli_ston'] = mysqli_connect($hostname,  $username,  $passwd));
   }
   
   public function Disconnect($link)
   {
     decho("Disconnecting ('$link' from '$this->hostname')");
-    //return mysql_close($link);
+    return mysqli_close($GLOBALS['___mysqli_ston']);
   }
   
   public function Stat()
   {
-  	return mysql_stat();
+  	return mysqli_stat($GLOBALS['___mysqli_ston']);
   }
   
   public function Select_db($db)
   {
     decho("Selecting database ('$db')");
-    return mysql_select_db($db);
+    return mysqli_select_db($GLOBALS['___mysqli_ston'], $db);
   }
   
   public function Query($str)
   {
     global $db_queries;
     ++$db_queries;
-    //FIGURE OUT HOW TO CHECK EXCEPTION, TRY CATCH ???
-   // if(!mysql_query($str))
-   // {
-   //   throw new Exception(mysql_error());    
-   // }
-   /*
-    try{
-    	    
-    }catch(Exception $e){
-    	    
-    } */
-   
-    return mysql_query($str);
+    return mysqli_query($GLOBALS['___mysqli_ston'], $str); 
   }
   
   public function Free($result)
   {
     global $db_frees;
     ++$db_frees;
-    decho("Freeing result");
-    return mysql_free_result($result);
+    @((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
   }
   
   public function Fetch($result)
@@ -85,42 +72,65 @@ class Bayonet_SQL
     return $this->FetchArray($result);
   }
   
-  public function FetchArray($result)
-  {
-    global $db_fetches;
-    ++$db_fetches;    
-    /* Alias Fetch() prefered, so no decho information */
-	decho("Fetching result");  
-    return mysql_fetch_array($result,MYSQL_ASSOC);
-  }
+  public function FetchArray($p_result)
+	{
+		global $db_fetches;
+ 		++$db_fetches;
+	
+		decho('Fetching result');
+
+    while ($row = mysqli_fetch_array($p_result, MYSQLI_ASSOC)) {
+      $result[] = $row;
+    }
+
+		$this->Free($p_result);
+		
+		return is_array($result) ? $result : array();
+	}
     
-  public function FetchObject($result,$class)
+  public function FetchObject($p_result, $class)
   {
     global $db_fetches;
     ++$db_fetches;
+    
     decho("Fetching object result");
-    return mysql_fetch_object($result,$class);
+    
+    while ($row = mysqli_fetch_object($p_result, $class)) {
+      (object)$result[] = $row;
+    }
+    
+    $this->Free($p_result);
+    
+    return is_object($result) ? $result : (object)array();
   }
   
   public function FetchAssoc($result)
-  {
-    global $db_fetches;
-    ++$db_fetches;    
-    decho("Fetching assoc result");
-    return mysql_fetch_assoc($result);
+  { 
+    return $this->FetchArray($result);
   }
   
-  public function FetchRow($result)
+  public function FetchRow($p_result)
   {
+    global $db_fetches;
+    ++$db_fetches;
+    
   	decho("Fetching single row");
-    return mysql_fetch_row($result);
+  	
+  	while ($row = mysqli_fetch_row($p_result)) {
+  	  $result[] = $row;
+  	}
+  	
+  	$this->Free($p_result);
+  	
+    return is_array($result) ? $result : array();
   }
   
   public function Rows($result)
   {
   	decho("Fetching number of rows");
-    return mysql_num_rows($result);
+  	
+    return mysqli_num_rows($result);
   }
 }
 
-?> 
+?>

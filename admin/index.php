@@ -22,7 +22,7 @@ session_start();
 include '../includes/debug.php';
 include '../includes/config.php'; 
 include '../includes/sql.class.php';
-include 'functions.php';
+include '../includes/functions.php';
 
 $db = new Bayonet_SQL();
 $db->Connect(

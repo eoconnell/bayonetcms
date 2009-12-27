@@ -301,10 +301,10 @@ if(!defined("CALLED_FROM_ADMIN"))
    * Begins a Bayonet site table.
    * @return
    */
-  function OpenTable()
+  function OpenTable($width = "100%")
   {
     //width="100%" is important.  Otherwise all of our tables will be text width.
-    echo "<table width=\"100%\" align=\"center\" class=\"cleartable\">\n";
+    echo "<table width=\"{$width}\" align=\"center\" class=\"cleartable\">\n";
   }
   
   /**
@@ -314,7 +314,7 @@ if(!defined("CALLED_FROM_ADMIN"))
    */
   function CloseTable()
   {
-    //echo "</table>";
+    echo "</table>";
   }
   
   /**
@@ -410,6 +410,19 @@ function ReportHack($message)
   OpenTable();
   echo "<tr><th>Hack Attempt</th></tr><tr><td style=\"text-align:center;\">{$message}</td></tr>";
   CloseTable();
+}
+
+/**
+ * PageRedirect()
+ * 
+ * performs an http redirect
+ * 
+ * @param $delay
+ * @param $link
+ */
+function PageRedirect($delay, $link)
+{
+	echo "<meta http-equiv=\"Refresh\" content=\"{$delay};url={$link}\">";
 }
 
 
@@ -588,11 +601,8 @@ function GetBlocks($position = BLOCK_LEFT)
   
   $result = $db->Query("SELECT * FROM `bayonet_blocks` ORDER BY weight, position");
   //$result = mysql_query("SELECT * FROM bayonet_blocks ORDER BY weight, position");
-  while(($row = $db->Fetch($result))!==false)
-  {
-    $blocks[] = $row;
-  }
-  $db->Free($result);
+  $blocks = $db->Fetch($result);
+  $blocks[] = $row;
   
   foreach($blocks as $block)
   {

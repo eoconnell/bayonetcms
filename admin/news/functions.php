@@ -25,19 +25,22 @@ function ListNews(){
                      "FROM `bayonet_news` AS n ".
                      "INNER JOIN `bayonet_news_categories` AS c ON c.category_id = n.category_id ".
                      "LEFT OUTER JOIN `mybb_users` AS u ON u.uid = n.author_id ORDER BY `date` DESC");
-	while($row = $db->Fetch($result)){
 	
-		$newsBody = $row['message'];
-	echo "<a href=\"?op=news&edit={$row['news_id']}\">";
-	echo "<span class=\"bold\">{$row['title']}</span>&nbsp;|&nbsp;<span class=\"blue\">{$row['catname']}</span>&nbsp;&nbsp;<img src=\"images/page.png\" /></a><br />";			
-			if(($len = strlen($newsBody))>150)
-				echo substr($newsBody, 0, 150)."...";			
-			else
-				echo $newsBody;
-	echo '<br />';
-	echo "Posted By: {$row['author']} on ".date('D M j, Y g:i a T', strtotime($row['date']));
-	echo '<br /><br />';
+	$row = $db->Fetch($result);
+	foreach($row as $news)
+	{
+		$newsBody = $news['message'];
+		echo "<a href=\"?op=news&edit={$row['news_id']}\">";
+		echo "<span class=\"bold\">{$row['title']}</span>&nbsp;|&nbsp;<span class=\"blue\">{$row['catname']}</span>&nbsp;&nbsp;<img src=\"images/page.png\" /></a><br />";			
+				if(($len = strlen($newsBody))>150)
+					echo substr($newsBody, 0, 150)."...";			
+				else
+					echo $newsBody;
+		echo '<br />';
+		echo "Posted By: {$row['author']} on ".date('D M j, Y g:i a T', strtotime($news['date']));
+		echo '<br /><br />';
 	}
+	
 }
 
 function EditNews($news_id){
@@ -51,7 +54,7 @@ function EditNews($news_id){
 	}
 	
 	$result = $db->Query("SELECT `author_id`, `title`, `message`, `date`, `category_id` FROM `bayonet_news` WHERE `news_id` = '$news_id' LIMIT 1");
-	$row = $db->Fetch($result);
+	$row = $db->FetchRow($result);
 	
 	?>
 	<h3>Edit News</h3>
@@ -118,12 +121,22 @@ function EditNews($news_id){
   	  
   	  echo "<select name=\"author\">";
   	  $result = $db->Query("SELECT `user_id`, `lastname` FROM `bayonet_users` ORDER BY `username` ASC");
-  	  while(($row = $db->Fetch($result))!= false){
+  	  $row = $db->Fetch($result);
+  	  foreach($row as $author)
+  	  {
+  	  	  if($author_id == $author['user_id'])
+  	  	  	echo "<option value=\"{$author['user_id']}\" selected>{$author['lastname']}</option>";
+  	  	  else
+  	  	  	echo "<option value=\"{$author['user_id']}\">{$author['lastname']}</option>";  	  	
+  	  }
+  	  /** FIXME
+		while(($row = $db->Fetch($result))!= false){
   	  	  if($author_id == $row['user_id'])
   	  	  	echo "<option value=\"{$row['user_id']}\" selected>{$row['lastname']}</option>";
   	  	  else
   	  	  	echo "<option value=\"{$row['user_id']}\">{$row['lastname']}</option>";
   	  }
+  	  */
   	  echo "</select>";
   }
   

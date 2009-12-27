@@ -21,10 +21,7 @@ function ListBlocks()
 {
   global $db;
   $result = $db->Query("SELECT * FROM bayonet_blocks");
-  while(($rows = $db->fetch($result))!=false)
-  {
-    $blocks[] = $rows;
-  }
+  $blocks = $db->Fetch();
   
   echo "<table align=\"center\"><tr><th colspan=\"3\">Existing Blocks</th></tr>";
   foreach($blocks as $block)
@@ -116,13 +113,16 @@ function EditBlock($block_id)
   }
   
   //Grab the page from the database according to the $page_id passed to the function.
+  // {{{ XXX: FIXME -- Re-write this
+  /*
   $result = $db->Query("SELECT weight,dir_name,position,active FROM bayonet_blocks WHERE block_id = '$block_id'");
   while(($row = $db->Fetch($result))!=false)
   {
     //We only want one row, so we don't have to $block[]...  No foreach necessary.
     $block = $row; 
   }    
-
+  */
+  // }}}
   ?>
   <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
   <table align="center">

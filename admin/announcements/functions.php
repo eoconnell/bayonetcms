@@ -52,11 +52,9 @@ function EditAnnouncements()
   
   //Grab the page from the database according to the $article_id passed to the function.
   $result = $db->Query("SELECT title,text FROM bayonet_announcements WHERE announcement_id = 0");
-  while(($row = $db->Fetch($result))!=false)
-  {
-    //We only want one row, so we don't have to $article[]...  No foreach necessary.
-    $announcement = $row; 
-  } 
+  /** FIXME - this probably broke. */
+  $announcement = $db->Fetch($result);
+
   ?>
   	<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
   	<table>

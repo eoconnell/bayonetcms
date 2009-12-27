@@ -90,25 +90,26 @@
 	echo "<table width=\"100%\">";
  	
 	$result = $db->Query("SELECT * FROM bayonet_events WHERE `date` = '$date' ORDER BY `time`");
-	while(($row = $db->Fetch($result))!=false)
+	$row = $db->Fetch($result);
+	foreach($row as $event)
 	{
 		$tmp = true;
 	 	
-	 	$datetime = date_create($date.' '.$row['time']);
-	 	$time = date_format($datetime, 'g:ia'); //gets time in hour:minutes am|pm
+	 	$datetime = date_create($date.' '.$event['time']);
+	 	$time = date_format($datetime, 'g:ia'); //gets time in hour:minutes am|pm	
 ?>
 
 <tr>
-	<td><strong><?php echo $time." - ".$row['title']; ?></strong></td>
-	<td><span style="border:1px solid black;background-color:<?php echo $row['color'];?>;">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+	<td><strong><?php echo $time." - ".$event['title']; ?></strong></td>
+	<td><span style="border:1px solid black;background-color:<?php echo $event['color'];?>;">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
 	<td>
-		<a href="?op=calendar&month=<?php echo $_GET['month']; ?>&year=<?php echo $_GET['year']; ?>&edit=<?php echo $row['event_id'];?>">Edit</a>
+		<a href="?op=calendar&month=<?php echo $_GET['month']; ?>&year=<?php echo $_GET['year']; ?>&edit=<?php echo $event['event_id'];?>">Edit</a>
 		&nbsp;|&nbsp;
-		<a href="?op=calendar&delete=<?php echo $row['event_id']; ?>">Delete</a>
+		<a href="?op=calendar&delete=<?php echo $event['event_id']; ?>">Delete</a>
 	</td>
 </tr>
 <tr>
-	<td><?php echo BBCode($row['text']); ?><br /><br /></td>
+	<td><?php echo BBCode($event['text']); ?><br /><br /></td>
 </tr>
 		
 <tr>
@@ -116,7 +117,6 @@
 </tr>
 <?php
 	}
-	
 	if(!isset($tmp))
 		echo "<tr><td>There are no events posted for this day.</td></tr>";
 	
@@ -391,10 +391,9 @@ $db->Query("UPDATE `bayonet_events` SET `title` = '$title', `text` = '$text', `c
 				} */
 			 	global $db;
 		  		$result = $db->Query("SELECT title,color FROM bayonet_events WHERE `date` = '$sqlDate' LIMIT 1");
-		  		while(($row = $db->Fetch($result))!=false)
-		  		{
-		    		$isEvent = true;
-		  		}
+				$events = $db->Fetch($result);
+				$isEvent = empty($events) ? false : true;
+				
 		  			if($useCurDate)
 		  				echo "<a href=\"?op=calendar&list={$year}-{$monthNum}-{$day_num}\">";
 	  				else

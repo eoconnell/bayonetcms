@@ -14,10 +14,11 @@
 <?php
   
    	$result = $db->Query("SELECT * FROM `bayonet_navigation` ORDER BY `weight`");
- 	while(($row = $db->Fetch($result))!==false)
-	{
-		echo '<td>&nbsp;&nbsp;<a href="'.$row['link'].'">'.strtoUpper($row['title']).'</a>&nbsp;&nbsp;</td>';
-	}
-?>
+   	$nav = $db->Fetch($result);
+
+   	foreach ($nav as $link) {
+   	  echo '<td>&nbsp;&nbsp;<a href="' . str_replace('&', '&amp;', $link['link']) . '">' . strtoupper($link['title']) . '</a>&nbsp;&nbsp;</td>'; 
+   	}
+   	?>
 	</tr>
 </table>

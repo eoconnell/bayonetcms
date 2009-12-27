@@ -1,80 +1,107 @@
 <link rel="stylesheet" type="text/css" href="blocks/rss_agw/style.css" media="screen"/>
-<?php
+<?php 
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
-function stripBBCode($text_to_search) {
- $pattern = '|[[\/\!]*?[^\[\]]*?]|si';
- $replace = '';
- return preg_replace($pattern, $replace, $text_to_search);
+// {{{ prerequesists
+
+/**
+ * Check to make sure the cURL extension is available to us
+ */
+if (!extension_loaded('curl')) {
+    $prefix = (PHP_SHLIB_SUFFIX === 'dll') ? 'php_' : '';
+    if (!@dl($prefix . 'curl.' . PHP_SHLIB_SUFFIX)) {
+        trigger_error('Unable to load the PHP cURL extension.', E_USER_ERROR);
+        exit;
+    }
 }
-	include 'rssreader.php';
-	
-    $rss = new rss_php;
-    $cacheReadLength = 2048;
-    $cacheFile = dirname(__FILE__) . "/rss.cache";
-	$url = 'http://www.armedglobalwarfare.com/index.php?type=rss;action=.xml;limit=150';
-	
-	if(!file_exists($cacheFile))
-	{
-		decho("Creating RSS cache");
-		$fp = fopen($cacheRead, "x+");
-		fclose($fp);
-	}
-	
-	decho("Reading internal RSS cache state");
-	$internal = fopen($cacheFile, "r");
-	$cacheRead = fread($internal, $cacheReadLength);
-	decho(strlen($cacheRead) . " bytes read");
-	fclose($internal);
-	
-	decho("Reading inbound RSS cache data");
-	$inbound = fopen($url, "r");
-	$cacheTempRead = fread($inbound, $cacheReadLength);
-	decho(strlen($cacheTempRead) . " bytes downloaded");
-	fclose($inbound);
-	
-	decho("Comparing RSS caches");
-	if((strncmp($cacheTempRead, $cacheRead, $cacheReadLength)) != 0)
-	{
-		decho("Downloading updated RSS feed");
-		$cacheTemp = implode('', file($url));
-		decho("Length of updated RSS is " . strlen($cacheTemp));
-		decho("Writing cached RSS data to file");
-		$cachefp = fopen($cacheFile, "w+");
-		$cacheWritten = fwrite($cachefp, $cacheTemp, strlen($cacheTemp));
-		fclose($cachefp);
-		decho("$cacheWritten bytes written to RSS cache");			
-	}
-	else
-	{
-		decho("RSS cache matches external source, using internal");			
-	}		
 
-	decho("Loading RSS cache into aggregator");
-	$rss->load($cacheFile);
+// {{{ constants
+
+/**
+ * Armed Global Warfare Feed
+ */
+define('AGW_FEED', 'http://www.armedglobalwarfare.com/index.php?type=rss;action=.xml;limit=150');
+
+/**
+ * Cache File
+ */
+define('AGW_CACHE', dirname(__FILE__) . '/rss_cache.xml');
+define('AGW_AGE_CACHE', time() - 3600);
+
+/**
+ * Feed Variables
+ */
+$agwFeed      = array();
+$agwXml       = null;
+$agwProcess   = true;
+
+// }}}
+
+// {{{ main
+
+/**
+ * Check existance of cache
+ */
+if (file_exists(AGW_CACHE) && (filectime(AGW_CACHE) > AGW_AGE_CACHE)) {
+	$agwFeed    = simplexml_load_file(AGW_CACHE);
+	$agwProcess = false;
+}
+
+/**
+ * If we don't have a cache then we'll need to build one
+ */
+if ($agwProcess === true) {
+    /**
+     * Set up global options for cURL to utilize for the transfer.
+     */
+    $options = array(CURLOPT_FORBID_REUSE   => true,
+                     CURLOPT_POST           => false,
+                     CURLOPT_RETURNTRANSFER => true,
+                     CURLOPT_TIMEOUT        => 15,
+                     CURLOPT_USERAGENT      => 'Mozilla/5.0 (Compatible; libCURL)',
+                     CURLOPT_VERBOSE        => false);
+    
+    /**
+     * Initialize cURL
+     */
+    $agwFeedSource = curl_init(AGW_FEED);
+    curl_setopt_array($agwFeedSource, $options);
+    
+    /**
+     * Execute cURL container and store the output
+     */
+    $agwFeedOutput = curl_exec($agwFeedSource);
+    
+    /**
+     * Parse the received data
+     */
+
+    if (!curl_errno($agwFeedSource)) {
+    	$agwFeed = simplexml_load_string($agwFeedOutput);
+    	$agwXml  = new SimpleXMLElement($agwFeedOutput);
+    	
+    	file_put_contents(AGW_CACHE, $agwXml->asXML(), LOCK_EX);
+    	curl_close($agwFeedSource);
+    }
+    else {
+    	curl_close($agwFeedSource);
+    }
+
+    /**
+     * Check to make sure the results are not empty before proceeding.
+     */
+    if (empty($agwFeed) || !is_object($agwFeed)) $agwFeed = array();
+}
+
+/**
+ * Process output
+ */
+foreach ($agwFeed->channel->item as $item) {
+	if ($item->category != 'Tournament Announcements') continue;
 	
-    $items = $rss->getItems(); #returns all rss items
- 	
- 	$numFeeds = 0;
- 	echo "<div class=\"rss\" >";
-    foreach($items as $story){
-    	if($story['category']=="Tournament Announcements"){
-    		$numFeeds++;
-    		//$text = $story['description'];
-    		//$text = strip_tags($text);
-			//$text = preg_replace("(\[font(.+?)...)","", $text);
-    		//$text = stripBBCode($text);
-    		
-    		echo "<a href=\"{$story['link']}\" target=\"_blank\"><span class=\"title\">{$story['title']}</span></a><br />
-    				<span class=\"date\">{$story['pubDate']}</span><br />";
-			//echo "{$text}<br /><br />";
-			echo "<br /><hr />";    	
-    	}                
-    }
-    if(!$numFeeds){
-    	echo "No new updates for this news feed.";    
-    }
-    echo "</div>";
-  // echo "<pre>";
-  //print_r($items);
-   // echo "</pre>";
-?> 
+	echo '<a href="' . $item->link . '" onclick="javascript:window.open(this.href, \'_blank\'); return false;">' .
+	     '<span class="title">' . $item->title . '</span></a><br />' .
+	     '<span class="date">' . $item->pubDate . '</span><br /><br /><hr />' . PHP_EOL;
+}
+// }}}
+?>

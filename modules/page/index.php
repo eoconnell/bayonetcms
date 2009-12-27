@@ -35,12 +35,8 @@ if(isset($_GET['list']))
 {
 	if($_GET['list'] == "true")
 	{
-		$result = $db->Query("SELECT title, page_id FROM bayonet_articles");
-		while(($row = $db->Fetch($result)) !== false)
-		{
-			$pages[] = $row;
-		}
-		mysql_free_result($result);
+		$results = $db->Query("SELECT title, page_id FROM bayonet_articles");
+		$pages = $db->Fetch($results);
 		
 		OpenContent();
 		echo "<div class=\"contentHeading\">Page Map</div>";
@@ -68,28 +64,29 @@ if(!isset($_GET['id']))
 	$id = $_GET['id'];
 }
 
+// {{{ XXX: FIXME -- Needs to be re-written
+
 $result = $db->Query("SELECT u.username AS author, p.page_created, p.title, p.text FROM `bayonet_pages` AS p LEFT OUTER JOIN `bayonet_users` AS u ON u.user_id = p.author_id WHERE p.page_id = '$id'");
-$proceed = mysql_num_rows($result);
+$proceed = $db->Rows($result);
 
 if($proceed > 0)
 {	
-  while(($row = $db->Fetch($result))!==false)
-  {
-    $page = $row;
+	$pages = $db->Fetch($result);
     OpenContent();
     echo "<div class=\"content\">";
-   	$aresult = $db->Query("SELECT * FROM `bayonet_articles` WHERE `page_id` = $id ORDER BY `weight` ASC");
-    while(($article = $db->Fetch($aresult))!==false)
-	{
-		$articleTitle = $article['title'];
-		echo '<h2>'.$articleTitle.'</h2>';
+   	//$aresult = $db->Query("SELECT * FROM `bayonet_page` WHERE `page_id` = $id ORDER BY `weight` ASC");
+    //$article = $db->Fetch($aresult);
+    foreach($pages as $page)
+    {
+		echo '<h2>'.$page['title'].'</h2>';
 		//echo "<h3>".$article['title']."</h3>";
-		echo bbcode_format($article['text']);	 
-	} 
-	echo "</div>";
+		echo bbcode_format($page['text']);	 
+		echo "</div>";    	
+    }
+
 	CloseContent();
 	  
-  }
+  
   ?>
   <?php // echo bbcode_format($page['text']) ?>
   <!-- <tr><th><?php echo $page['author'] ?></th></tr> -->
