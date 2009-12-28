@@ -71,21 +71,17 @@ $proceed = $db->Rows($result);
 
 if($proceed > 0)
 {	
-	$pages = $db->Fetch($result);
+	$page = $db->FetchRow($result);
     OpenContent();
-    echo "<div class=\"content\">";
-   	//$aresult = $db->Query("SELECT * FROM `bayonet_page` WHERE `page_id` = $id ORDER BY `weight` ASC");
-    //$article = $db->Fetch($aresult);
-    foreach($pages as $page)
-    {
-		echo '<h2>'.$page['title'].'</h2>';
-		//echo "<h3>".$article['title']."</h3>";
-		echo bbcode_format($page['text']);	 
-		echo "</div>";    	
-    }
+
+	echo "<div class=\"contentHeading\">{$page['title']}</div>";
+	echo "<div class=\"content\">";
+	//echo "<h3>".$article['title']."</h3>";
+	echo bbcode_format($page['text']);	 
+	echo "</div>";
+	echo "</div>";		
 
 	CloseContent();
-	  
   
   ?>
   <?php // echo bbcode_format($page['text']) ?>

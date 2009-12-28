@@ -30,14 +30,14 @@ function ListNews(){
 	foreach($row as $news)
 	{
 		$newsBody = $news['message'];
-		echo "<a href=\"?op=news&edit={$row['news_id']}\">";
-		echo "<span class=\"bold\">{$row['title']}</span>&nbsp;|&nbsp;<span class=\"blue\">{$row['catname']}</span>&nbsp;&nbsp;<img src=\"images/page.png\" /></a><br />";			
+		echo "<a href=\"?op=news&edit={$news['news_id']}\">";
+		echo "<span class=\"bold\">{$news['title']}</span>&nbsp;|&nbsp;<span class=\"blue\">{$news['catname']}</span>&nbsp;&nbsp;<img src=\"images/page.png\" /></a><br />";			
 				if(($len = strlen($newsBody))>150)
 					echo substr($newsBody, 0, 150)."...";			
 				else
 					echo $newsBody;
 		echo '<br />';
-		echo "Posted By: {$row['author']} on ".date('D M j, Y g:i a T', strtotime($news['date']));
+		echo "Posted By: {$news['author']} on ".date('D M j, Y g:i a T', strtotime($news['date']));
 		echo '<br /><br />';
 	}
 	
@@ -129,14 +129,6 @@ function EditNews($news_id){
   	  	  else
   	  	  	echo "<option value=\"{$author['user_id']}\">{$author['lastname']}</option>";  	  	
   	  }
-  	  /** FIXME
-		while(($row = $db->Fetch($result))!= false){
-  	  	  if($author_id == $row['user_id'])
-  	  	  	echo "<option value=\"{$row['user_id']}\" selected>{$row['lastname']}</option>";
-  	  	  else
-  	  	  	echo "<option value=\"{$row['user_id']}\">{$row['lastname']}</option>";
-  	  }
-  	  */
   	  echo "</select>";
   }
   

@@ -134,7 +134,11 @@ $num = 1;
     }
     $num++;
   }
-  echo "</tr></table>\n";
+
+  if($num == 1)
+  	echo "</table>\n";
+  else
+  	echo "</tr></table>\n";
 }
 
 /**

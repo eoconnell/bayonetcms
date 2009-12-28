@@ -19,7 +19,6 @@
  ?>
  
  <div style="text-align:left;"><h2>- Manage Pages</h2></div>
- -Order articles needs to be completed.
 <?php
 
 if(!defined("ADMIN_FILE"))
@@ -29,12 +28,7 @@ if(!defined("ADMIN_FILE"))
 
 include $basedir.'pages/functions.php';
 
-if(isset($_GET['edit']))
-{
-  $page_id = $_GET['edit'];
-  EditPage($page_id);
-  return;
-}
+
 
 ?>
 
@@ -43,36 +37,28 @@ if(isset($_GET['edit']))
 	       <td class="panel-none">
 	       		<?php ListPages(0); ?>
 		   </td>
+		   <td class="panel-box">
 <?php
-		if(isset($_GET['delete']))
+		if(isset($_GET['edit']))
+		{
+		  $page_id = $_GET['edit'];
+		  EditPage($page_id);
+		}
+		else if(isset($_GET['delete']))
 		{
 		  $page_id = $_GET['delete'];
-		  	echo "<td class=\"panel-box\">";
-  				DeletePage($page_id);
-		  	echo "</td>";
-		 //return;
+		  DeletePage($page_id);
 		}
 		else if(isset($_GET['create']))
 		{
 		  $create = $_GET['create'];
 		  if($create)
 		  {
-			echo "<td class=\"panel-box\">";
 		    	NewPage();
-	     	echo "</td>";
-		    //return;
 		  }
 		}
-		else
-		{
-			echo "<td class=\"panel-shadow\">
-			</td>
-			<td class=\"panel-box\">
-   			</td>";	
-		}
-
 ?>
-
+			</td>
   		</tr>
   </table>
 

@@ -57,7 +57,7 @@ include 'header.php';
       ?>
 
  <center>
- <div class="content">     
+ <div class="wrapper">     
  
 <table width="100%">
 	<tr>
@@ -107,24 +107,27 @@ include 'header.php';
 
 <br />
 <div style="text-align:center"><?php include 'operation.php' ?></div>
-            
 
   </div>
-  <?php 
+<?php 
 $phpversion = preg_replace('/[a-z-]/', '', phpversion());
 $mtime = explode(' ', microtime());
 $totaltime = $mtime[0] + $mtime[1] - $starttime;
 $debug_output = sprintf("Page generated in %.3f seconds | Memory: real(%.3fmb) peak(%.3fmb) | PHP: %s<br/>Queries: %d | Fetches: %d<br/>\n",
                 $totaltime, ((float)memory_get_usage()/1024/1024), ((float)memory_get_peak_usage()/1024/1024), $phpversion, $db_queries, $db_fetches);
-  ?>
+?>
   </center>
 
 <br />
 <?php echo $config['product']['name'] . ' ' . $config['product']['version'] . ' ' . $config['product']['release'] ?><br />
 <?php echo $config['product']['copyright']; ?><br />
 <?php if($config['debug']) echo $debug_output ?><br />
-
-      <?php 
+<?php
+ if($config['debug']['enabled']){ 
+	logQueueFlush();
+ } 
+?> 
+<?php 
     }
   }
     

@@ -22,177 +22,10 @@
  * You MUST declare $db as global inside your functions in order access MySQL from here.
  */
 
-function ListArticles($pageid)
-{	
-	global $db;
-	$result = $db->Query("SELECT article_id,title FROM bayonet_articles WHERE `page_id` = $pageid ORDER BY `weight`");
-	$articles = $row = $db->Fetch($result);
-	
-	echo "<table class=\"panelitems\" width=\"100%\" cellspacing=\"0\">";
-	
-	?>
-	<tr>
-	 <td colspan="3" style="text-align:center; text-overflow:ellipsis; overflow:hidden; background-color:#dfe4df; border-bottom: 1px solid #848484;">
-		<?php echo LinkInternal('<img src="images/add.png" />&nbsp;Add New Article','?op=pages&edit='.$pageid.'&newarticle=true'); ?>
-	 </td>
-	</tr>
-	
-	<?php
-
-	if(count($articles)==0)
-	{
-		echo "<tr><td>No Articles Found.<br /></td></tr></table>";
-		return;
-	}
-
-	foreach($articles as $article)
-	{
-		if($_GET['aid'] == $article['article_id'])
-			echo '<tr class="highlight">';
-		else 
-			echo '<tr>';
-		?>	
-	 
-		<td>^</td>
-		<td style="text-align:center; text-overflow:ellipsis; overflow:hidden;">
-		<a href="?op=pages&edit=<?php echo $pageid; ?>&aid=<?php echo $article['article_id']?>"><?php echo $article['title']; ?></a>
-		</td>
-		<td>v</td>	
-		</tr>
-	
-		<?php
-	}
-  
-  	echo "</table>";
-}
-
-function NewArticle($page_id)
-{
-  global $db;
-  if(isset($_POST['newarticleprocessed']))
-  {
-    //Secure our data to prevent injection attacks.
-    $title = addslashes($_POST['title']);
-    $text = addslashes($_POST['text']);
-    if(empty($title) || empty($text))
-    {
-      echo "You must fill everything out before proceeding.";
-      return;
-    }
-	
-	$weight = 0;
-    $result = $db->Query("SELECT * FROM `bayonet_articles` WHERE `page_id` = $page_id ORDER BY `weight` DESC LIMIT 1");
-  	$row = $db->Fetch($result);
-	
-	$weight = $row['weight'];		
-    $weight++;
-    
-    //Update the database with the new data.
-    $db->Query("INSERT INTO `bayonet_articles` (`article_id` ,`page_id` ,`title` ,`text`, `weight`)VALUES (NULL , $page_id, '$title', '$text', '$weight')");
-    echo "New article, '$title', has been added.\n";
-    PageRedirect(2, "?op=pages&edit={$_GET['edit']}");
-    //die, because we have completed what we wanted to do.
-    return;
-  }
-     
-  ?>
-  <h3>Add New Article</h3>
-  <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
-  <table>
-  <tr><td>Title: </td><td><input type="text" name="title" value="" /></td></tr>
-  <tr><td colspan="2"><textarea id="markItUp" rows="30" cols="80" name="text"></textarea></td>
-  <tr><th colspan="2"><input type="submit" name="newarticleprocessed" value="Submit" /></th></tr>
-  </table>
-  </form>
-  <?php
-}
-
- /**
-  * EditArticle($article_id)
-  * Edits an article for a page
-  * @param id - article_id cooresponding to `bayonet_articles`
-  */  
-function EditArticle($article_id){
-
-  global $db;
-  
-  if(isset($_POST['articleprocessed']))
-  {
-    //Secure our data to prevent injection attacks.
-    $title = addslashes($_POST['title']);
-    $text = addslashes($_POST['text']);
-    if(empty($title) || empty($text))
-    {
-      echo "You must fill everything out before proceeding.";
-      return;
-    }
-          
-    //Update the database with the new data.
-    $db->Query("UPDATE bayonet_articles SET title = '$title', text = '$text' WHERE article_id = '$article_id'");
-    echo "Article, '$title', has been edited.\n <br /><br /> Please wait while you are redirected. <br /><br /> 
-			<a href=\"?op=pages&edit=".$_GET['edit']."&aid=".$article_id."\">Click here if you don't feel like waiting.</a>";
-    
-    //echo "<meta http-equiv=\"Refresh\" content=\"3;url=?op=pages&edit=".$_GET['edit']."&aid=".$article_id."\">";
-   	PageRedirect(2,"?op=pages&edit={$_GET['edit']}&aid={$article_id}");
-    
-    //die, because we have completed what we wanted to do.
-    return;
-  }
-  
-  
-  //Grab the page from the database according to the $article_id passed to the function.
-  $result = $db->Query("SELECT title,text FROM bayonet_articles WHERE article_id = '$article_id'");
-  $article = $db->Fetch($result);
-  $article = $row;  
-  
-  ?>
-  	<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-  	<table>
-  		<tr><td>
-		  		<input type="text" name="title" value="<?php echo $article['title'] ?>" maxlength="50" size="30" />
-		  		<input type="submit" name="articleprocessed" value="Submit Changes" />
-		  		<a href="?op=pages&edit=<?php echo $_GET['edit']; ?>&delarticle=<?php echo $article_id; ?>"><img src="images/cancel.png" /> Delete This Article</a>
-	  	</td></tr>
-  		<tr><td><textarea id="markItUp" rows="30" cols="80" name="text"><?php echo $article['text'] ?></textarea></td></tr>
-	</table>
-  	</form>
-  <?php
-}
-
-function DeleteArticle($article_id)
-{
-  global $db;
-  
-  $result = $db->Query("SELECT `title` FROM `bayonet_articles` WHERE `article_id` = '$article_id'");
-  $article = $db->Fetch($result);
-  
-  if(isset($_POST['proceed']))
-  {
-    echo "Article '{$article['title']}', was deleted.";
-    $db->Query("DELETE FROM bayonet_articles WHERE article_id = '$article_id' LIMIT 1");
-    PageRedirect(2, "?op=pages&edit={$_GET['edit']}");
-    return;
-  }
-  if(isset($_POST['cancel']))
-  {
-    echo "User cancelled deletion of article: '{$article['title']}'";
-    PageRedirect(2, "?op=pages&edit={$_GET['edit']}&aid={$article_id}");
-    return;
-  }  
-  ?>
-  <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-  <table>
-  <th>Are you SURE you want to delete the article titled: '<?php echo $article['title']?>'?</th>
-  <tr><th><button name="proceed">Yes</button>&nbsp;&nbsp;&nbsp;<button name="cancel">No</button></th></tr>
-  </table>
-  </form>
-  <?php
-}
-
 function ListPages($pid = NULL)
 { 
   global $db;
-  $result = $db->Query("SELECT page_id,title FROM bayonet_pages");
+  $result = $db->Query("SELECT `page_id`,`title` FROM `bayonet_pages`");
   $pages = $db->Fetch($result);
   
   echo "<table class=\"panelitems\" width=\"100%\" cellspacing=\"0\">";
@@ -215,7 +48,7 @@ function ListPages($pid = NULL)
   foreach($pages as $page)
   {
   	$edit = false;
-  	 if($pid == $page['page_id']){
+  	 if($_GET['edit'] == $page['page_id']){
   	 	$edit = true;
     	echo '<tr class="highlight">';
    	 }else 
@@ -230,25 +63,6 @@ function ListPages($pid = NULL)
   	 </td>
 	</tr>
 <?php		
-	if($edit){
-?>
-	<tr>
- 	 <td style="text-align:center; text-overflow:ellipsis; overflow:hidden; background-color:#dfe4df;">
-		<?php echo LinkInternal('<img src="images/view.png" />&nbsp;View this Page','../index.php?load=page&id='.$pid.'" target=\"blank'); ?>
-  	 </td>
-	</tr>
-	<tr>
- 	 <td style="text-align:center; text-overflow:ellipsis; overflow:hidden; background-color:#dfe4df;">
-		<?php echo LinkInternal('<img src="images/pencil.png" />&nbsp;Edit this Page','?op=pages&edit=true&pid='.$pid); ?>
-  	 </td>
-	</tr>
-	<tr>
- 	 <td style="text-align:center; text-overflow:ellipsis; overflow:hidden; background-color:#dfe4df;">
-		<?php echo LinkInternal('<img src="images/cancel.png" />&nbsp;Delete this Page','?op=pages&delete='.$pid); ?>
-  	 </td>
-	</tr>
-  	<?php
- 	} 
   }	  
   	echo "</table>";
  	
@@ -257,10 +71,11 @@ function ListPages($pid = NULL)
 function NewPage()
 {
   global $db;
-  if(isset($_POST['newpageprocessed']))
+  if(isset($_POST['processed']))
   {
     //Secure our data to prevent injection attacks.
     $title = addslashes($_POST['title']);
+    $text = addslashes($_POST['text']);
     if(empty($title))
     {
       echo "You must fill everything out before proceeding.";
@@ -271,6 +86,7 @@ function NewPage()
     $db->Query("INSERT INTO `bayonet_pages` (`page_id` ,`author_id` ,`page_created` ,`title` ,`text`)VALUES (NULL , '0',CURRENT_TIMESTAMP , '$title', '$text')");
     
     echo "New page, '$title', has been added.\n";
+    PageRedirect(2, "?op=pages");
     //die, because we have completed what we wanted to do.
     return;
   }
@@ -279,8 +95,9 @@ function NewPage()
   <h3>Add New Page</h3>
   <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
   <table>
-  <tr><th>Title</th><td><input type="text" name="title" value="" /></td></tr>
-  <tr><th colspan="2"><input type="submit" name="newpageprocessed" value="Submit" /></th></tr>
+  <tr><th>Title:</th><td><input type="text" name="title" value="" /></td></tr>
+  <tr><th>Text:</th><td><textarea id="markItUp" rows="30" cols="80" name="text"></textarea></td></tr>
+  <tr><th colspan="2"><input type="submit" name="processed" value="Submit" /></th></tr>
   </table>
   </form>
   <?php
@@ -289,13 +106,13 @@ function NewPage()
 function EditPage($page_id)
 {
   global $db;
-  $page_id = addslashes($page_id);
-  
+  $page_id = addslashes($page_id);  
   // If the user has submitted, then process their request.
   if(isset($_POST['processed']))
   {
     //Secure our data to prevent injection attacks.
     $title = addslashes($_POST['title']);
+    $text = addslashes($_POST['text']);
     if(empty($title))
     {
       echo "You must fill everything out before proceeding.";
@@ -303,42 +120,36 @@ function EditPage($page_id)
     }
         
     //Update the database with the new data.
-    $db->Query("UPDATE bayonet_pages SET title = '$title' WHERE page_id = '$page_id'");
+    $db->Query("UPDATE `bayonet_pages` SET `title` = '$title', `text` = '$text' WHERE `page_id` = '$page_id'");
     echo "Page, '$title', has been edited.\n";
+    PageRedirect(2, "?op=pages&edit={$page_id}");
     //die, because we have completed what we wanted to do.
     return;
   }
-
-?>  
-   
-   <table class="panel" width="100%" cellspacing="0">
-   		<tr>
-	       <td class="panel-none">
-	       		<?php ListPages($page_id); ?>
-		   </td>
-  		   <td class="panel-shadow">
-   				<?php ListArticles($page_id); ?>
-		   </td>
-		   <td class="panel-box">
-<?php
-    		//if article is set then EditArticle();
- 		    $aid = $_GET['aid'];   
- 		    
-    		if($_GET['newarticle']){
-    			NewArticle($page_id);	    		
-    		}
-    		else if(isset($_GET['delarticle'])){
-    			$article_id = $_GET['delarticle'];
-   				DeleteArticle($article_id);
-   			}
-    		else if($aid > 0){
-  				EditArticle($aid);
-   			}
-	?>   			
-   			</td>
-
-  		</tr>
-  </table>
+  
+  //Grab the page from the database according to the $article_id passed to the function.
+  $result = $db->Query("SELECT `title`, `text` FROM `bayonet_pages` WHERE `page_id` = '$page_id' LIMIT 1");
+  $page = $db->FetchRow($result);  
+  ?>
+  	<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+  	<table>
+  		<tr>
+		  <td colspan="2">
+		  	<input type="submit" name="processed" value="Submit Changes" />
+			<?php echo LinkInternal('<img src="images/view.png" />&nbsp;View this Page','../index.php?load=page&id='.$page_id.'" target=\"blank'); ?>
+			<?php echo LinkInternal("<img src=\"images/cancel.png\" /> Delete This Page","?op=pages&delete={$page_id}"); ?>
+		  </td>
+	    </tr>
+  		<tr>
+		  <th>Title:</th>
+		  <td><input type="text" name="title" value="<?php echo $page['title'] ?>" maxlength="50" size="30" /></td>
+	    </tr>		  		
+  		<tr>
+	      <th>Text:</th>
+		  <td><textarea id="markItUp" rows="30" cols="80" name="text"><?php echo $page['text'] ?></textarea></td>
+	    </tr>
+	</table>
+  	</form>
   <?php
 }
 
@@ -346,28 +157,31 @@ function DeletePage($page_id)
 {
   global $db;
   
-  $result = $db->Query("SELECT title FROM bayonet_pages WHERE page_id = '$page_id'");
-  $page = $db->Fetch($result);
+  $result = $db->Query("SELECT title FROM bayonet_pages WHERE page_id = '$page_id' LIMIT 1");
+  $page = $db->FetchRow($result);
   
   if(isset($_POST['proceed']))
   {
     echo "Page '{$page['title']}', was deleted.";
     $db->Query("DELETE FROM bayonet_pages WHERE page_id = '$page_id' LIMIT 1");
+    PageRedirect(2, "?op=pages&edit={$page_id}");
     return;
   }
   if(isset($_POST['cancel']))
   {
     echo "User cancelled deletion of page: '{$page['title']}'";
+    PageRedirect(2, "?op=pages&edit={$page_id}");
     return;
   }
   if($page_id == 1){
-  	echo "You can not delete the home page."; 
+  	echo "You can not delete the home page.";
+  	PageRedirect(2, "?op=pages&edit={$page_id}"); 
 	return; 
   }
   
   ?>
 
-  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+  <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
   <table>
   <th>Are you <u>SURE</u> you want to delete the page titled: '<?php echo $page['title'];?>'?<br />All articles attached to this page will be deleted as well.</th>
   <tr><th><button name="proceed">Yes</button>&nbsp;&nbsp;&nbsp;<button name="cancel">No</button></th></tr>

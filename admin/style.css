@@ -34,7 +34,7 @@ h3 {
 	font-size:20px;
 }
 
-div.content {
+div.wrapper {
 	width:1024px;
 	background-color:white;
 	padding:15px;
@@ -109,6 +109,32 @@ fieldset {
 	padding:0px;
 	border: 1px solid #a1a1a1;
 }
+	/*********************************
+ 	 **  	  Content Styles		**
+ 	 *********************************/	
+	div.contentBorder1 {
+		background-color:white;
+		border:1px solid #3666ba;
+	}
+	div.contentBorder2 {
+		background-color:white;
+		border:1px solid #333333; 
+	}
+ 	div.contentHeading {
+		background-repeat:repeat-x;
+		background-color:#112f50;
+		text-align:left;
+		height:25px;
+		padding-left:10px;
+		padding-right:10px;
+		padding-top:5px;
+		color:white;
+	}
+	div.content {
+		text-align:left;
+		padding:10px;
+		color:#333333;
+	}
 /* START>> CALENDAR STYLES*/
 		.monthTitle{
   			color:black;
