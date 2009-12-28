@@ -26,7 +26,7 @@ function EditAnnouncements()
 {
    global $db;
   
-  if(isset($_POST['announcementprocessed']))
+  if(isset($_POST['processed']))
   {
     //Secure our data to prevent injection attacks.
     $title = addslashes($_POST['title']);
@@ -43,7 +43,7 @@ function EditAnnouncements()
 			<a href=\"?op=announcements\">Click here if you don't feel like waiting.</a>";
     
     // 3 second redirect to go back to the edit page
-    echo "<meta http-equiv=\"Refresh\" content=\"3;url=?op=announcements\">";
+    PageRedirect(2, "?op=announcements");
     
     //die, because we have completed what we wanted to do.
     return;
@@ -52,15 +52,14 @@ function EditAnnouncements()
   
   //Grab the page from the database according to the $article_id passed to the function.
   $result = $db->Query("SELECT title,text FROM bayonet_announcements WHERE announcement_id = 0");
-  /** FIXME - this probably broke. */
-  $announcement = $db->Fetch($result);
+  $announcement = $db->FetchRow($result);
 
   ?>
-  	<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+  	<form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
   	<table>
   		<tr><td>Announcement Title: <input type="text" name="title" value="<?php echo $announcement['title'] ?>" maxlength="50" size="30" /> </td></tr>
   		<tr><td> <textarea id="markItUp" rows="30" cols="80" name="text"><?php echo $announcement['text'] ?></textarea> </td></tr>
-  		<tr><td> <input type="submit" name="announcementprocessed" value="Submit Changes" /> </td></tr>
+  		<tr><td> <input type="submit" name="processed" value="Submit Changes" /> </td></tr>
 	</table>
   	</form>
   <?php

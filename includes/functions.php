@@ -469,7 +469,7 @@ define('BAYONET_LOG_ERROR','bayonet_log_error');
 define('BAYONET_LOG_WARN','bayonet_log_warn');
 define('BAYONET_LOG_INFO','bayonet_log_info');
 
-function WriteLog($message,$flag)
+function WriteLogBayonet($message,$flag)
 { 
   global $config;
   $enabled = $config['logs']['enabled'];

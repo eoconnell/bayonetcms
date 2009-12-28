@@ -119,8 +119,8 @@ function EditBlock($block_id)
   
   //Grab the page from the database according to the $page_id passed to the function.
   $result = $db->Query("SELECT weight,dir_name,position,active,title FROM bayonet_blocks WHERE block_id = '$block_id'");
-  $block = $db->FetchRow($result);    
-
+  $block = $db->FetchRow($result);
+ 
   ?>
   <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
   <table align="center">

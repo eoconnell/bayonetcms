@@ -55,6 +55,9 @@ $(document).ready(function(){
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
+ define(MAX_SLIDES, 6);
+ 
   function EditOrder(){
  	
 	 global $db;
@@ -87,7 +90,7 @@ $(document).ready(function(){
  	
 	 global $db;
 	 $lastspot = GetLastPosition();
-	 if($lastspot >= 6){
+	 if($lastspot >= MAX_SLIDES){
 	 	ReportError("There are already 6 active slides. You must disable one in order to enable another.");
 	 	PageRedirect(3,"?op=newsreel");
 		return;	 
@@ -100,12 +103,20 @@ $(document).ready(function(){
  function DisableSlide($slide_id){
  	
 	 global $db;
-	 echo "Disable: ".$slide_id;
 	 $result = $db->Query("SELECT `weight` FROM `bayonet_newsreel` WHERE `slide_id` = '$slide_id' LIMIT 1");
-	 $row = $db->Fetch($result);
-	 foreach($row as $slide){
-	 	$oldWeight = $slide['weight'];	 
-	 }
+	 $slide = $db->FetchRow($result);
+
+	 $oldWeight = $slide['weight'];
+	 
+	 if($oldWeight < MAX_SLIDES){
+		$total = getNumOfActive(); 
+		for($i=$oldWeight+1; $i<=$total; $i++){
+			//echo "Change Weight:".$i." to ".($i-1)."<br />";
+			$new = $i-1;
+			$db->Query("UPDATE `bayonet_newsreel` SET `weight` = '$new' WHERE `weight` = '$i' LIMIT 1");	
+		} 		  		  		  		 
+	 }	 	 	 	 
+
 	 $db->Query("UPDATE `bayonet_newsreel` SET `visible` = 0, `weight` = 0 WHERE `slide_id` = '$slide_id' LIMIT 1");
 	 PageRedirect(0,"?op=newsreel");
  }
@@ -134,11 +145,15 @@ $(document).ready(function(){
  	
 	global $db;
 	$result = $db->Query("SELECT `weight` FROM `bayonet_newsreel` WHERE `visible` = 1 ORDER BY `weight` DESC LIMIT 1");
-	$row = $db->Fetch($result);
-	foreach($row as $slide){
-		$weight = $slide['weight'];	
-	}
- 	return $weight;
+	$row = $db->FetchRow($result);
+	
+ 	return $row['weight'];
+ }
+ 
+ function getNumOfActive(){
+ 	global $db;
+	$result = $db->Query("SELECT `slide_id` FROM `bayonet_newsreel` WHERE `visible` = 1");
+	return $db->Rows($result); 
  }
 		
 

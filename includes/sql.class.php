@@ -116,8 +116,8 @@ class Bayonet_SQL
     
   	decho("Fetching single row");
   	
-  	while ($row = mysqli_fetch_row($p_result)) {
-  	  $result[] = $row;
+  	while ($row = mysqli_fetch_assoc($p_result)) {
+  	  $result = $row;
   	}
   	
   	$this->Free($p_result);

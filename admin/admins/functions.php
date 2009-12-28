@@ -252,8 +252,8 @@
 		}
 		
 		$result = $db->Query("SELECT * FROM `bayonet_users` WHERE `user_id` = '$user_id' LIMIT 1");
-		$admin = $db->fetch($result);
-	  		
+		$admin = $db->FetchRow($result);
+
   		if($maxLevel < $admin['level']){
   			ReportError("You do not have permission to access this user.");
 	    	return;	    	

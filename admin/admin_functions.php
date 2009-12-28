@@ -50,8 +50,8 @@ function login()
     $password = crypt(md5($password),'iamnotadirtywhorebitch');
     $result = $db->Query("SELECT * FROM bayonet_users WHERE username = '$username' AND password = '$password' LIMIT 1");
     $rows = $db->Rows($result);
-    $row = $db->Fetch($result);
-    
+    $row = $db->FetchRow($result);
+
     if($rows > 0)
     {
       $_SESSION['username'] = stripslashes($username);
@@ -64,7 +64,8 @@ function login()
       ReportError("Login incorrect.");
       
 	  //NOT CORRECT LOGIN, DEFAULT TO LOGIN PAGE
-      echo "<meta http-equiv=\"Refresh\" content=\"1;url=index.php\">";
+      //echo "<meta http-equiv=\"Refresh\" content=\"1;url=index.php\">";
+      PageRedirect(1, "index.php");
       
       return false;
     }
