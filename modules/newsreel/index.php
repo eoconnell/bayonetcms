@@ -1,4 +1,5 @@
 <!-- START News Reel -->
+<link rel="stylesheet" type="text/css" href="modules/newsreel/style.css" media="screen"/>
 <?php OpenContent(); ?>
 <script type="text/javascript">
 
@@ -96,13 +97,7 @@ window.onload = init_Slides;	//starts the reels movement
 	<table border="0" cellspacing="0" cellpadding="0" style="height:21px;" width="100%">
 	<tr>
 <?php
-$y=0; /*
-	$get_slidenav = mysql_query("SELECT * FROM `bayonet_newsreel` WHERE `visible`= 1 ORDER BY `weight` ASC LIMIT 0, 6");
-	while($echo_slidenav = mysql_fetch_array($get_slidenav)){
-
-		echo '<td id="'.$y.'" width="'.$width.'%" class="slidenav" onclick="nextSlide(this.id,true)" onmouseover="mouseOverBG(this.id)" onmouseout="mouseOutBG(this.id)">'.$echo_slidenav['title'].'</td>';
-		$y++;
-	}  */
+$y=0; 
 		$result = $db->Query("SELECT * FROM `bayonet_newsreel` WHERE `visible`= 1 ORDER BY `weight` ASC LIMIT 0, 6");
 		$row = $db->Fetch($result);
 		

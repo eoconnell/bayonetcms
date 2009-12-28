@@ -93,7 +93,7 @@ function displayComments($data){
 				
 				<div class="single_comment">
 					<img src="modules/news/images/comment_arrow.png" class="comment_arrow" />
-					<p> <?php echo BBCode($comment['message']); ?></p>
+					<p> <?php echo bbcode_format($comment['message']); ?></p>
 				
 				</div>
 				
@@ -145,17 +145,6 @@ function getNews($id = NULL){
  		
 	$result = $db->Query($query);
 	$data = $db->Fetch($result);
-	//decho($data);
-	// {{{ XXX: FIXME -- Re-write
-	/*
-	while(($row = $db->Fetch($result)) != false)
-	{
-	  $data[] = $row;
-	} 
-	
-	$db->Free($result);
-	*/
-	// }}}
 	
 	return $data;
 }
@@ -173,7 +162,7 @@ function displayNews($data){
 	foreach($data as $news)
 	{	
 		$numComments = getNumOfComments($news['news_id']);
-		//echo "<pre>".print_r($news,true)."</pre>";
+
 		OpenContent(); ?>
 	
 			<div class="contentHeading">
@@ -186,7 +175,7 @@ function displayNews($data){
 			</div>
 			<div class="content">
 				<img src="modules/news/categories/<?php echo $news['catimage']; ?>" alt="<?php echo $news['catname']; ?>" align="right" />
-				<?php echo BBCode($news['message']); ?>
+				<?php echo bbcode_format($news['message']); ?>
 			</div>	
 			<div class="contentFooter">
 				<table width="100%">
@@ -223,17 +212,6 @@ function commentForm(){
 	$cur_user_id = 0; //testing variable, until i get the login system working for this
 	
 	$logged_in = false;
-	// {{{ XXX: FIXME -- Re-write this
-	/*
-	$result = $db->Query("SELECT `username`, `avatar` FROM `mybb_users` WHERE `uid` = '$cur_user_id' LIMIT 1");
-	while(($row = $db->Fetch($result)) != false)
-	{
-		$username = $row['username'];
-		$avatar = $row['avatar'];
-		$logged_in = true;
-	}
-	*/
-	// }}}
 ?>
 <a name="add"></a>
 <h2>Add Your Comment</h2>

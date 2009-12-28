@@ -108,7 +108,7 @@
 	</td>
 </tr>
 <tr>
-	<td><?php echo BBCode($row['text']); ?><br /><br /></td>
+	<td><?php echo bbcode_format($row['text']); ?><br /><br /></td>
 </tr>
 		
 <tr>

@@ -35,45 +35,51 @@ function bbcode_format ($str)
     '/\[b\](.*?)\[\/b\]/is',                               
     '/\[i\](.*?)\[\/i\]/is',                               
     '/\[u\](.*?)\[\/u\]/is',
+    '/\[s\](.+?)\[\/s\]/is',
     '/\[hr\]/is',
     '/\[pi\](.*?)\[\/pi\]/is',
-    '/\[center\](.*?)\[\/center\]/is',
     '/\[title\](.*?)\[\/title\]/is',
     '/\[article\](.*?)\[\/article\]/is',
     '/\[section\](.*?)\[\/section\]/is',
     '/\[code\](.*?)\[\/code\]/is',
     '/\[quote\](.*?)\[\/quote\]/is',
     '/\[quote\=(.*?)\](.*?)\[\/quote\]/is',
+    '/\[url\](.*?)\[\/url\]/is',
     '/\[url\=(.*?)\](.*?)\[\/url\]/is',
     '/\[align\=(.*?)\](.*?)\[\/align\]/is',
     '/\[size\=(.*?)\](.*?)\[\/size\]/is',
-    '/\[img\=(.*?)\](.*?)\[\/img\]/is'
+    '/\[img\=(.*?)\](.*?)\[\/img\]/is',
+    '/\[img align\=(.+?)\](.+?)\[\/img\]/is',
+    '/\[mail\](.*?)\[\/mail\]/is',
+    '/\[mail\=(.*?)\](.*?)\[\/mail\]/is'
     );
 
   $simple_replace = array(
     '<strong>$1</strong>',
     '<em>$1</em>',
     '<u>$1</u>',
+    '<span class="strikethrough">$1</span>',
     '<hr>',
     '<p style="text-indent:3em;">$1</p>',
-    '<center>$1</center>',
     '<h2>$1</h2>',
     '<h3>$1</h3>',
     '<h4>$1</h4>',
     '<blockquote><pre>$1</pre></blockquote>',
     '<blockquote>$1</blockquote>',
     '<i>$1 wrote:</i><br/><blockquote>$2</blockquote>',
+    '<a href="$1">$1</a>',
     '<a href="$1">$2</a>',
-    '<align="$1">$2</align>',
+    '<div style="text-align: $1">$2</align>',
     '<font style="font-size:$1px;">$2</font>',
-    '<img src="$1" alt="$2"/>'
+    '<img src="$1" alt="$2"/>',
+    '<img src=\"$2\" align=\"$1\" />',
+    '<a href="mailto:$1">$1</a>',
+    '<a href="mailto:$1">$2</a>'
     );
     
-  $order   = array("\r\n", "\n", "\r");
-  $replace = "\n<br/>";
   
   $str = preg_replace ($simple_search, $simple_replace, $str);
-  $str = str_ireplace($order,$replace,$str);
+  $str = nl2br($str);
   return $str;
 }
 
