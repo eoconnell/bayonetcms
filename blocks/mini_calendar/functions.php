@@ -20,110 +20,7 @@
 /**
  * Note to anyone feeling the need to edit this file...
  * You MUST declare $db as global inside your functions in order access MySQL from here.
- */
- 
- /**
-  * SelectDate($date)
-  * Function for outputing an html form for selecting a month day and year
-  * @param date - formatted date string yyyy-mm-dd (optional)
-  */  
-  function SelectDate($date = NULL){
-  	
- 	//function for adding to the db in sql 'datetime' format
- 	//$date = date("Y-m-d h:i:s", mktime(8, 30, 0, 10, 26, 2009));
- 	//$date = "2009-11-2";
-	//echo $date."<br />";	
-	//function for parsing our date format into an array
-	//echo "<pre>";
-	$date_arr = date_parse($date); //returns an associative array $array['year']
-	//print_r($date_arr);
-	//echo "</pre>";	
-	//echo $date_arr['year']."   ".$date_arr['month']."   ".$date_arr['day']."<br />";; 
-				
-		//List Months
-		echo '<select name="month">';
-		for($m = 1;$m <= 12; $m++){
-		    $month =  date("F", mktime(0, 0, 0, $m));
-		    if($date_arr['month'] == $m)
-		    	echo "<option value='$m' selected=\"selected\">$month</option>";
-	    	else
-	    		echo "<option value='$m'>$month</option>";
-		}
-		echo "</select>";
-		
-		//List Days
-		echo '<select name="day">';
-		for($d = 1;$d <= 31; $d++){
-		    if($date_arr['day'] == $d)
-		    	echo "<option value='$d' selected=\"selected\">$d</option>";
-	    	else
-	    		echo "<option value='$d'>$d</option>";
-		}
-		echo "</select>";
-		
-		//List Years [CurYear, CurYear+5]
-		echo '<select name="year">';
-		$y = date('Y', time());
-		$max = $y+5;
-		for(;$y<$max; $y++){
-			if($date_arr['year'] == $y)
-		    	echo "<option value='$y' selected=\"selected\">$y</option>";
-	    	else
-	    		echo "<option value='$y'>$y</option>";		
-		}
-		echo "</select>";
-  
-  }
- 
- function ListEvents($date){
- 	
- 	global $db;
-
-?> 	
- 	<table width="100%"><tr><td>
- 	<h3>Events for: <?php echo date_format(date_create($date),'F jS, Y'); ?></h3>
- 	</td><td align="right">
- 	<a href="?op=calendar&create=true&date=<?php echo $date; ?>"><img src="images/add.gif" /> Add New Event</a>
- 	</td></tr></table>
-<?php
-
-	echo "<table width=\"100%\">";
- 	
-	$result = $db->Query("SELECT * FROM bayonet_events WHERE `date` = '$date' ORDER BY `time`");
-	while(($row = $db->Fetch($result))!=false)
-	{
-		$tmp = true;
-	 	
-	 	$datetime = date_create($date.' '.$row['time']);
-	 	$time = date_format($datetime, 'g:ia'); //gets time in hour:minutes am|pm
-?>
-
-<tr>
-	<td><strong><?php echo $time." - ".$row['title']; ?></strong></td>
-	<td><span style="border:1px solid black;background-color:#<?php echo $row['color'];?>;">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
-	<td>
-		<a href="?op=calendar&month=<?php echo $_GET['month']; ?>&year=<?php echo $_GET['year']; ?>&edit=<?php echo $row['event_id'];?>">Edit</a>
-		&nbsp;|&nbsp;
-		<a href="?op=calendar&delete=<?php echo $row['event_id']; ?>">Delete</a>
-	</td>
-</tr>
-<tr>
-	<td><?php echo bbcode_format($row['text']); ?><br /><br /></td>
-</tr>
-		
-<tr>
-	<td colspan="2" style="border-top:1px solid black;"><br /></td>
-</tr>
-<?php
-	}
-	
-	if(!isset($tmp))
-		echo "<tr><td>There are no events posted for this day.</td></tr>";
-	
-	echo "</table>";
-
- }
- 
+ */ 
  
  /**
  * PrintCalendar() - prints the calendar with events 
@@ -132,42 +29,13 @@
  	
 		$date = time();
 		date_default_timezone_set("America/New_York");  //EASTERN TIME ZONE
-				
-		//GET values for month and year
-		$month = "";
-		$year = "";
-		//$month = $_GET['month'];
-		//$year = $_GET['year'];
-		
-		$useCurDate = true;
-		
-		//check to makes sure month and year are in the desired ranges
-		if(!empty($month) && !empty($year) && $month > 0 && $month < 13 && $year > 1990){
-		    $useCurDate = false;
-		}		
-		//check to see if the get variables are for todays month
-		if($month == date('n', $date) && $year == date('Y', $date)){
-			$useCurDate = true;		
-		}
-									
-		//use current date unless GET values are set	
-		if($useCurDate)
-		{
-			$day = date('d', $date);
-		 	$today = date('j', $date);
-			$month = date('m', $date);
-			$monthNum = date('n', $date);
-			$year = date('Y', $date);
-		}
-		else
-		{
-			$monthNum = $month;
-			//if GET values are equal to curdate, set $today
-			if($year == date('Y', $date) && $monthNum == date('n', $date))
-				$today = date('j', $date);
-			else
-				$today = 0;
-		}   
+
+		$day = date('d', $date);
+	 	$today = date('j', $date);
+		$month = date('m', $date);
+		$monthNum = date('n', $date);
+		$year = date('Y', $date);
+ 
 		
 		/* Accounts for the last couple days from the previous months */
 			$first_day = mktime(0,0,0,$monthNum, 1, $year); 
@@ -236,6 +104,9 @@
 				echo '<td class="cal_notmonth">'.$days_before.'</td>'; //'.$days_before.'</td>';
 				$day_count++;
 			}
+			
+$sqlToday = $year.'-'.$monthNum.'-'.$today;
+$events = GetEventsOnInterval("{$year}-{$monthNum}-01","{$year}-{$monthNum}-{$days_in_month}");
 		
 			//loop printing each day of the CURRENT month ONLY
 			while($day_num <= $days_in_month){
@@ -247,11 +118,20 @@
 			   }
 			   			        
 		       $sqlDate = $year.'-'.$monthNum.'-'.$day_num;  //old way NOT unix
-		      
+		       		      
 		  	 	//checks to see if the current day has events
 		       $isEvent=false;
+		       foreach($events as $event){
+		       		if($event['date'] == $sqlDate){
+		       			$isEvent = true;
+		       			if($event['date'] == $sqlToday){
+		       				$todaysEvents[] = $event;
+		       			}
+		       		}
+		       		
+		       }
 
-			 	global $db;
+			 /*	global $db;
 		  		$result = $db->Query("SELECT title,color,date,time FROM `bayonet_events` WHERE `date` = '$sqlDate' ORDER BY `date` DESC");
 		  		while(($row = $db->Fetch($result))!=false)
 		  		{
@@ -259,7 +139,7 @@
 		    		if($day_num == $today){
 		    			$todaysEvents[] = $row; 		    		
 		    		}
-		  		}  		  				
+		  		}  */		  				
 				if($day_num == $today && $isEvent==true){
 					echo '<div class="eventtoday">'.$day_num.'</div>';				
 				}else if($day_num == $today && $isEvent==false){
@@ -306,5 +186,12 @@
 		}
 	}
  }
+ 
+function GetEventsOnInterval($start,$end){
+	global $db;
+	$result = $db->Query("SELECT `event_id`, `title`, `color`, `date`, `time` FROM `bayonet_events` WHERE `date` BETWEEN '$start' AND '$end' ORDER BY `time` ASC");
+	$events = $db->Fetch($result);
+	return $events;
+}
   
  ?>

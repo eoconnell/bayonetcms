@@ -109,7 +109,7 @@
 	</td>
 </tr>
 <tr>
-	<td><?php echo BBCode($event['text']); ?><br /><br /></td>
+	<td><?php echo bbcode_format($event['text']); ?><br /><br /></td>
 </tr>
 		
 <tr>
@@ -368,6 +368,8 @@ $db->Query("UPDATE `bayonet_events` SET `title` = '$title', `text` = '$text', `c
 				echo '<td class="cal_notmonth">'.$days_before.'</td>'; //'.$days_before.'</td>';
 				$day_count++;
 			}
+			
+$events = GetEventsOnInterval("{$year}-{$monthNum}-01","{$year}-{$monthNum}-{$days_in_month}");
 		
 			//loop printing each day of the CURRENT month ONLY
 			while($day_num <= $days_in_month){
@@ -382,14 +384,12 @@ $db->Query("UPDATE `bayonet_events` SET `title` = '$title', `text` = '$text', `c
 		      
 		  	 	//checks to see if the current day has events
 		       $isEvent=false;
-			/*	$get_events = mysql_query("SELECT * FROM `mybb_events` WHERE `starttime` = $checkUnixTime ");
-				while($echo_events = mysql_fetch_array($get_events)){
-		                     $isEvent=true;
-				} */
-			 	global $db;
-		  		$result = $db->Query("SELECT title,color FROM bayonet_events WHERE `date` = '$sqlDate' LIMIT 1");
-				$events = $db->Fetch($result);
-				$isEvent = empty($events) ? false : true;
+		       foreach($events as $event){
+		       		if($event['date'] == $sqlDate){
+		       			$isEvent = true;
+		       		}
+		       		
+		       }
 				
 		  			if($useCurDate)
 		  				echo "<a href=\"?op=calendar&list={$year}-{$monthNum}-{$day_num}\">";
@@ -436,5 +436,11 @@ $db->Query("UPDATE `bayonet_events` SET `title` = '$title', `text` = '$text', `c
 <?php
 
  }
-  
+ 
+function GetEventsOnInterval($start,$end){
+	global $db;
+	$result = $db->Query("SELECT `event_id`, `title`, `color`, `date`, `time` FROM `bayonet_events` WHERE `date` BETWEEN '$start' AND '$end' ORDER BY `time` ASC");
+	$events = $db->Fetch($result);
+	return $events;
+}
  ?>

@@ -596,7 +596,7 @@ function GetBlocks($position = BLOCK_LEFT)
   
   $result = $db->Query("SELECT * FROM `bayonet_blocks` WHERE `position` = '$position' AND `active` = 1 ORDER BY weight");
   $blocks = $db->Fetch($result);
-  decho($blocks);
+
   foreach($blocks as $block)
   {
       $load = 'blocks/'.$block['dir_name'].'/index.php';

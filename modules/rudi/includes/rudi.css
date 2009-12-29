@@ -1,0 +1,22 @@
+table{
+  border:1px solid #000;  
+}
+
+tr{
+  border:1px solid #000;
+}
+
+th{
+  padding:5px;
+  border:1px solid #000;
+}
+
+td{
+  text-align:center;
+  padding:2px;
+  border:1px solid #000;
+}
+
+td.data{
+  text-align:left;
+}
