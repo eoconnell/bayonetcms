@@ -33,7 +33,7 @@ include $basedir.'pages/functions.php';
 ?>
 
    <table class="panel" width="100%" cellspacing="0">
-   		<tr>
+   		<tr style="height:435px;">
 	       <td class="panel-none">
 	       		<?php ListPages(0); ?>
 		   </td>

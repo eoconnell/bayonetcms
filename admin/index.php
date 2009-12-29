@@ -79,7 +79,8 @@ include 'header.php';
           LinkInternal('<img src="images/modules.png" /><br />Modules','?op=modules'),
           LinkInternal('<img src="images/blocks.png" /><br />Blocks','?op=blocks'),
           LinkInternal('<img src="images/navigation.png" /><br />Navigation','?op=navigation'),
-		  LinkInternal('<img src="images/users_two.png" /><br />Edit Admins','?op=admins')      
+		  LinkInternal('<img src="images/users_two.png" /><br />Edit Admins','?op=admins'),
+		  LinkInternal('<img src="images/announcement.png" /><br />Announcements','?op=announcements')      
         );
         
         //render administration table
@@ -97,7 +98,7 @@ include 'header.php';
           LinkInternal('<img src="images/news.png" /><br />News','?op=news'),
           LinkInternal('<img src="images/calendar.png" /><br />Calendar','?op=calendar'),
           LinkInternal('<img src="images/box_download.png" /><br />Downloads', '?op=downloads'),
-		  LinkInternal('<img src="images/announcement.png" /><br />Announcements','?op=announcements')       
+		  LinkInternal('<img src="images/rudi.png" /><br />RUDI','?op=rudi')       
         );
         
         //render administration table

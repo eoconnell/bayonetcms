@@ -1,7 +1,7 @@
 <?php
 /**
  * Bayonet Content Management System
- * Copyright (C) 2008  Joseph Hunkeler
+ * Copyright (C) 2008  Joseph Hunkeler & Evan O'Connell
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ 
+ ?>
+ <div style="text-align:left;"><h2>- Manage Blocks</h2></div>
+ <table class="panel" width="100%">
+		<tr><td class="panel"><center>
+ <?php
  
 /**
  * This file administers the site blocks.
@@ -29,31 +34,27 @@ if(!defined("ADMIN_FILE"))
   die("Access denied.");
 }
 
-
 include $basedir.'blocks/functions.php';
 
 if(isset($_GET['edit']))
 {
   $block_id = $_GET['edit'];
   EditBlock($block_id);
-  return;
 }
-
-if(isset($_GET['delete']))
+else if(isset($_GET['delete']))
 {
   $block_id = $_GET['delete'];
   DeleteBlock($block_id);
-  return;
 }
-
-if(isset($_GET['create']))
+else if(isset($_GET['create']))
 {
   NewBlock();
-  return;
 }
-
-echo "<table align=\"center\" width=\"200px\"><tr><th>".LinkInternal('Create a Block','?load=admin&op=blocks&create=true')."</th></tr></table>";
-
-ListBlocks();
-
+else{
+	echo "<table align=\"center\" width=\"200px\"><tr><th>".LinkInternal('<img src="images/add.png" />Create a Block','?op=blocks&create=true')."</th></tr></table>";
+	
+	ListBlocks();
+}
 ?> 
+</center></td></tr>
+</table>

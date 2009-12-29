@@ -12,8 +12,9 @@
 		margin:0px;
 		padding:5px;
 		text-align:center;
-		background:#e5eecc;
-		border:solid 1px #c3c3c3;
+		background: #5b8dda;
+		border:solid 1px #848484;
+		color:white;
 	}
 	div.slidepanel
 	{

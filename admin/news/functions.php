@@ -63,7 +63,7 @@ function EditNews($news_id){
   	<tr><th>Author</th><td><?php SelectAuthor($row['author_id']); ?></td></tr>
   	<tr><th>Title</th><td><input type="text" name="title" value="<?php echo $row['title']; ?>" /></td></tr>
   	<tr><th>Date</th><td><?php SelectDate($row['date']); ?></td></tr>
-  	<tr><th>Time</th><td><input type="text" name="time" value="<?php echo substr($row['time'],0,-3); ?>" maxlength="5" size="5" /></td></tr>
+  	<tr><th>Time</th><td><input type="text" name="time" value="<?php echo date('G:i', strtotime($row['date'])); ?>" maxlength="5" size="5" /></td></tr>
   	<tr><th>Text</th><td><textarea id="markItUp" rows="30" cols="80" name="text"><?php echo $row['message']; ?></textarea></td>
   	<tr><th colspan="2"><input type="submit" name="processed" value="Submit" /></th></tr>
   	</table>

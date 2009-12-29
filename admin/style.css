@@ -47,7 +47,7 @@ td {
 }
 
 table.panel {
-	height:435px;
+	height:350px;
 	border:1px solid #848484;
 }
 
@@ -113,16 +113,13 @@ fieldset {
  	 **  	  Content Styles		**
  	 *********************************/	
 	div.contentBorder1 {
-		background-color:white;
-		border:1px solid #3666ba;
 	}
 	div.contentBorder2 {
-		background-color:white;
-		border:1px solid #333333; 
+		border:1px solid #848484; 
 	}
  	div.contentHeading {
 		background-repeat:repeat-x;
-		background-color:#112f50;
+		background-color: #5b8dda;
 		text-align:left;
 		height:25px;
 		padding-left:10px;
@@ -132,6 +129,7 @@ fieldset {
 	}
 	div.content {
 		text-align:left;
+		background-color:white;
 		padding:10px;
 		color:#333333;
 	}

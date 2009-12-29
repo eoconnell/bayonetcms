@@ -1,7 +1,7 @@
 <?php
 /**
  * Bayonet Content Management System
- * Copyright (C) 2008  Joseph Hunkeler
+ * Copyright (C) 2008  Joseph Hunkeler & Evan O'Connell
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,14 +20,21 @@
 function ListBlocks()
 {
   global $db;
-  $result = $db->Query("SELECT * FROM `bayonet_blocks` ORDER BY `active` DESC, `weight` ASC, `position`");
+  $result = $db->Query("SELECT * FROM `bayonet_blocks` ORDER BY `position`, `active` DESC, `weight` ASC");
   $blocks = $db->Fetch($result);
   
   
-  echo "<table align=\"center\"><tr><th colspan=\"3\">Existing Blocks</th></tr>";
+  echo "<table style=\"text-align:left;\" width=\"75%\">
+  			<tr><th colspan=\"6\" style=\"text-align:center;\">Existing Blocks</th></tr>";
+  echo "<tr><th>Weight</th><th>Position</th><th>Name</th><th>Active</th><th></th><th></th></tr>";
   foreach($blocks as $block)
   {
-    echo "<tr><td>{$block['weight']} : {$block['dir_name']}</td><td><a href=\"?load=admin&op=blocks&edit={$block['block_id']}\">Edit</a></td><td><a href=\"?load=admin&op=blocks&delete={$block['block_id']}\">Delete</a></td></tr>";
+    echo "<tr><td>{$block['weight']}</td><td>";
+    	if($block['position'])
+    		echo "Right";
+   		else
+   			echo "Left";
+	echo "</td><td>{$block['title']}</td><td>{$block['active']}</td><td><a href=\"?load=admin&op=blocks&edit={$block['block_id']}\">Edit</a></td><td><a href=\"?load=admin&op=blocks&delete={$block['block_id']}\">Delete</a></td></tr>";
   }
   echo "</table>";
 }
@@ -57,18 +64,19 @@ function NewBlock()
   }
     
   ?>
+  You are currently adding a new block<br /><br />
   <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
   <table align="center">
-  <tr><th>Title</th><td><input type="text" name="title" value="<?php echo $block['title'] ?>"></td></tr>
-  <tr><th>Weight</th><td><input type="text" name="weight" value="<?php echo $block['weight'] ?>"></td></tr>
-  <tr><th>Position</th><td><input type="text" name="position" value="<?php echo $block['position'] ?>"></td></tr>
-  <tr><th>Directory Name</th><td><input type="text" name="dir_name" value="<?php echo $block['dir_name'] ?>"></td>
+  <tr><th>Title</th><td><input type="text" name="title" value="<?php echo $block['title'] ?>" /></td></tr>
+  <tr><th>Weight</th><td><input type="text" name="weight" value="<?php echo $block['weight'] ?>" /></td></tr>
+  <tr><th>Position</th><td><?php GetPosition(); ?></td></tr>
+  <tr><th>Directory Name</th><td><input type="text" name="dir_name" value="<?php echo $block['dir_name'] ?>" /></td>
   <tr><th>Active</th><td>
   <select name="active">
     <option value="1">Yes</option>
     <option value="0">No</option>
   </select></td>
-  <tr><th colspan="2"><input type="submit" name="processed" value="Submit"></th></tr>
+  <tr><th colspan="2"><input type="submit" name="processed" value="Submit" /><?php echo LinkInternal('<input type="button" value="Cancel" />', "?op=blocks"); ?></th></tr>
   </table>
   </form>
   <?php
@@ -111,7 +119,7 @@ function EditBlock($block_id)
     //Update the database with the new data.
     $db->Query("UPDATE bayonet_blocks SET weight = '$weight', dir_name = '$dir_name', position = '$position', active = '$active' WHERE block_id = '$block_id'");
     //$isActive = $active ? "IS" : "IS NOT";
-    echo "Block, '$dir_name', at position '$weight' has been edited.\n";
+    echo "Block, '$dir_name', at position '$weight'(order) has been edited.\n";
     PageRedirect(3, "?op=blocks");
     //die, because we have completed what we wanted to do.
     return;
@@ -122,11 +130,12 @@ function EditBlock($block_id)
   $block = $db->FetchRow($result);
  
   ?>
+  You are currently editing the '<?php echo $block['title']; ?>' block<br /><br />
   <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
   <table align="center">
   <tr><th>Title</th><td><input type="text" name="title" value="<?php echo $block['title'] ?>" /></td></tr>
   <tr><th>Weight</th><td><input type="text" name="weight" value="<?php echo $block['weight'] ?>" /></td></tr>
-  <tr><th>Position</th><td><input type="text" name="position" value="<?php echo $block['position'] ?>" /></td></tr>
+  <tr><th>Position</th><td><?php GetPosition($block['position']); ?></td></tr>
   <tr><th>Directory Name</th><td><input type="text" name="dir_name" value="<?php echo $block['dir_name'] ?>" /></td>
   <tr><th>Active</th><td>
     <select name="active">
@@ -134,7 +143,7 @@ function EditBlock($block_id)
     </select>
   </td>
   
-  <tr><th colspan="2"><input type="submit" name="processed" value="Submit"></th></tr>
+  <tr><th colspan="2"><input type="submit" name="processed" value="Submit" /><?php echo LinkInternal('<input type="button" value="Cancel" />', "?op=blocks"); ?></th></tr>
   </table>
   </form>
   <?php
@@ -167,6 +176,23 @@ function DeleteBlock($block_id)
   </table>
   </form>
   <?php  
+}
+
+/**
+ * GetPosition($value)
+ * -prints a drop down menu for positions defaulting the right pos.
+ */
+function GetPosition($value = 0){
+
+	echo "<select name=\"position\">";
+	if(!$value){
+		echo "<option value=\"0\" selected>Left</option>";
+		echo "<option value=\"1\">Right</option>";		
+	}else{
+		echo "<option value=\"0\">Left</option>";
+		echo "<option value=\"1\" selected>Right</option>";
+	}
+	echo "</select>";
 }
 
 ?> 

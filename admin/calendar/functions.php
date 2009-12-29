@@ -157,13 +157,10 @@ $db->Query("UPDATE `bayonet_events` SET `title` = '$title', `text` = '$text', `c
 	}
 	
 	$result = $db->Query("SELECT * FROM `bayonet_events` WHERE `event_id` = $event_id LIMIT 1");
-	while(($row = $db->Fetch($result))!=false)
-	{
-		$event = $row;
-	}
+	$event = $db->FetchRow($result);
   ?>
   <h3>Edit Event</h3>
-  <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
+  <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
   <table>
   <tr><th>Title</th><td><input type="text" name="title" value="<?php echo $event['title']; ?>" /></td></tr>
   <tr><th>Color</th><td><input type="text" name="color" value="<?php echo $event['color']; ?>" /></td></tr>

@@ -587,33 +587,18 @@ function UnderConstruction($message = NULL, $flag = BAYONET_SITE)
  */
 
 define('BLOCK_LEFT',false);
-define('BLOCK_RIGHT',false);
+define('BLOCK_RIGHT',true);
 
 function GetBlocks($position = BLOCK_LEFT)
 {
   global $config;  
-  /** 
-   * I had to reconnect to the database for some fucking reason at this point.
-   * I have no idea why, but I was recieving errors telling me that $db was no longer
-   * an object.  This is/was bullshit.
-   */
-  $db = new Bayonet_SQL();
-  $db->Connect(
-    $config['sql']['hostname'],
-    $config['sql']['username'],
-    $config['sql']['password']
-    );
-  $db->Select_db($config['sql']['database']);
+  global $db;
   
-  $result = $db->Query("SELECT * FROM `bayonet_blocks` ORDER BY weight, position");
-  //$result = mysql_query("SELECT * FROM bayonet_blocks ORDER BY weight, position");
+  $result = $db->Query("SELECT * FROM `bayonet_blocks` WHERE `position` = '$position' AND `active` = 1 ORDER BY weight");
   $blocks = $db->Fetch($result);
-  $blocks[] = $row;
-  
+  decho($blocks);
   foreach($blocks as $block)
   {
-    if($block['position'] == $position && $block['active'] == true)
-    {
       $load = 'blocks/'.$block['dir_name'].'/index.php';
       if(file_exists($load))
       {
@@ -627,7 +612,6 @@ function GetBlocks($position = BLOCK_LEFT)
         ReportError("Failed to load block, '{$block['dir_name']}'.  Check block config.");
       }
       if($config['blocks']['spacer']) echo "<br />";
-    }
   }
 }
 ?>
