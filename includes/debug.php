@@ -50,7 +50,11 @@ function decho($message, $force = false)
 		$message = $message;
 	}
 	
+	if(count($log_message_queue) >= 100) 
+		array_pop($log_message_queue);
+		
 	array_push($log_message_queue, $message);
+	
 	$log_message_pos++;
 }
 
@@ -90,6 +94,7 @@ function queuePrint($obj, $force = false)
 
 function logQueueFlush($force = false)
 {
+	error_reporting(0);
 	global $log_message_queue, $config;
 	
 	if($force == false)
@@ -104,6 +109,14 @@ function logQueueFlush($force = false)
 	OpenContent();
 	echo "<div class=\"contentHeading\">Bayonet Debug Messages</div>";
 	echo "<div class=\"content\">";
+	
+	if(count($log_message_queue) < 1)
+	{
+		echo "<p>No messages</p>";
+		echo "</div></div>";
+		return false;
+	}
+	
 	foreach($log_message_queue as $message)
 	{
 		if($message != $log_message_queue[$messageCount - 1])
@@ -145,6 +158,7 @@ function logQueueFlush($force = false)
 	}
 	echo "</div>";
 	CloseContent();
+	error_reporting(1);
 }
 
 /*
