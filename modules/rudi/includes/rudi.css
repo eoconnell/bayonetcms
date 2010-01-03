@@ -1,3 +1,7 @@
+table.rudi {
+	/* background: green; */
+}
+/*
 table{
   border:1px solid #000;  
 }
@@ -15,8 +19,53 @@ td{
   text-align:center;
   padding:2px;
   border:1px solid #000;
+} */
+
+table.rudi td.data{
+  text-align:left;
 }
 
-td.data{
-  text-align:left;
+table.rudi th {
+  width:175px;
+  color:white;
+  text-align:center;
+  background:#333;
+  font-family: arial;
+}
+
+table.rudi td {
+	text-align:center;
+	vertical-align: middle;
+	/* border: 1px solid #a1a1a1; */
+}
+
+table.rudi td.roster {
+	text-align:center;
+	vertical-align: middle;
+	border: 1px solid #a1a1a1;
+}
+
+table.rudi th.header {
+  /* table has a 5px padding so everything is 10px bigger than these values */
+  width:100px;
+  height:19px;
+  color: #FFF;
+  background:#333;
+  border: 1px solid #666;
+  font-family: arial, helvetica, sans-serif;
+  font-size:12px;
+}
+
+table.rudi td.info {
+	color: #333;
+	vertical-align: middle;
+	text-align:left;
+	padding-left: 5px;
+	border: 1px solid #666;
+	font-family: arial, helvetica, sans-serif;
+	font-size:12px;
+}
+
+#thin {
+  border:1px outset #333;
 }

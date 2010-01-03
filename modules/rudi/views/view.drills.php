@@ -1,24 +1,3 @@
-<html>
-<head>
-  <title>Drills</title>
-
-<style type="text/css">
-p {color: white; }
-body {background-color: black; }
-th.header {
-  width:175px;
-  background:#333;
-}
-
-td.rudi {
-  text-align: center;
-  vertical-align: middle;
-}
-</style>
-
-</head>
-<body>
-
 <?php
 
 function Rating($val)
@@ -45,7 +24,7 @@ OpenTable("Drills");
 
 if(isset($_GET['id']))
 {
-
+  decho($this->drills);
   foreach($this->drills as $drill)
   {
     $name = $drill->last_name . ', ' . $drill->first_name;
@@ -94,6 +73,3 @@ foreach($this->drills as $drill)
 
 CloseTable();
 ?>
-
-</body>
-</html>

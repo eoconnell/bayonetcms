@@ -1,9 +1,14 @@
+<link rel="stylesheet" type="text/css" href="modules/rudi/includes/rudi.css" media="screen"/>
 <?php
 //include 'header.php';
 //include 'includes/debug.php';
-//include 'includes/sql.class.php';
-include 'includes/common.class.php';
+//require 'includes/sql.class.php';
+include_once 'includes/common.class.php';
+include_once 'includes/information.class.php';
 
+OpenContent();
+	echo "<div class=\"contentHeading\">RUDI: Realism Unit Data Interface</div>";
+	echo "<div class=\"content\">";
 class RUDI_Gateway extends RUDI_Common
 {
   protected $awards, $ranks, $drills;
@@ -19,12 +24,23 @@ class RUDI_Gateway extends RUDI_Common
       return;
     }
     
+    if(isset($_GET['info']))
+    {
+    	$info = new RUDI_Information();
+    	OpenTable();
+    	echo "<tr><td>\n";
+    	include 'views/view.information.php';
+    	echo "</tr></td>";
+    	CloseTable();
+    	return;
+    }
+    
     if(isset($_GET['profile']))
     {
       $this->Update();
       
       OpenTable();
-      echo "<tr><th>RUDI</th></tr><tr><td>\n";      
+      echo "<tr><td>\n";
       include 'views/view.profile.php';
       echo "</td></tr>";
       CloseTable();
@@ -33,7 +49,7 @@ class RUDI_Gateway extends RUDI_Common
     elseif(isset($_GET['show']))
     {
       OpenTable();
-      echo "<tr><th>RUDI</th></tr><tr><td>\n";
+      echo "<tr><td>\n";
       switch($_GET['show'])
       {
         case 'awards':
@@ -47,7 +63,7 @@ class RUDI_Gateway extends RUDI_Common
         case 'drills':
           $this->drills = $this->getDrills($_GET['id']);
           include 'views/view.drills.php';
-          break;          
+          break;       
       }
       echo "</td></tr>";
       CloseTable();
@@ -57,11 +73,10 @@ class RUDI_Gateway extends RUDI_Common
     {
       $this->Update(RUDI_PROFILE_SMALL);
       $stats = $this->getCumulativeStats();
-      decho($stats);
       
       OpenTable();
-      echo "<tr><th>RUDI</th></tr><tr><td>\n";      
-      include 'views/view.current.php';
+      echo "<tr><td>\n"; 
+      include 'views/view.roster.php';
       echo "</td></tr>";
       CloseTable();
       return;
@@ -72,6 +87,9 @@ class RUDI_Gateway extends RUDI_Common
 ob_start();
 $rudi = new RUDI_Gateway();
 ob_flush();
+	echo "</div>";
+	echo "</div>";
+CloseContent();
 
 //include 'footer.php';
 //decho($test->foo[0]->member_id);

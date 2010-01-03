@@ -1,4 +1,4 @@
-<?php define('BLOCK_RIGHT_DISABLE','block_right_disable'); ?>
+<?php //define('BLOCK_RIGHT_DISABLE','block_right_disable'); ?>
 <?php $medals_path = $this->images_path . "/medals/"; ?>
 
 <html>
@@ -6,9 +6,7 @@
   <title>Awards and Medals</title>
 
 <style type="text/css">
-p {color: white; }
-body {background-color: black; }
-th.header {
+/*th.header {
   width:175px;
   background:#333;
 }
@@ -16,14 +14,14 @@ th.header {
 td.rudi {
   text-align: center;
   vertical-align: middle;
-}
+} */
 </style>
   
 </head>
 <body>
 
 <?php $classes = $this->getAwardClasses(); ?>
-<table align="center" style="width: 100%;">
+<table class="rudi" align="center" style="width: 100%;">
 
   <?php     
     $i = 0;
@@ -33,9 +31,9 @@ td.rudi {
       echo "<tr>";
       echo "<th colspan=\"3\">{$classes[$cl]->name}s</th>";
       echo "</tr>";
-      echo '<th scope="col" class="header" style="width:1px;">Image</th>';
-      echo '<th scope="col" class="header" style="width:1px;">Award</th>';
-      echo '<th scope="col" class="header" style="width:85%;">Description</th>';
+      echo '<th scope="col">Image</th>';
+      echo '<th scope="col" width=\"100px\">Award</th>';
+      echo '<th scope="col">Description</th>';
       
       foreach($this->awards as $award)
       {
@@ -43,9 +41,9 @@ td.rudi {
         {
           echo "
           <tr>
-          <td align=\"center\" class=\"rudi\"><img src=\"{$medals_path}{$award->image}\" alt=\"{$award->image}\"/></td>
-          <td align=\"center\" class=\"rudi\">{$award->name}&nbsp;</td>
-          <td align=\"left\" class=\"rudi\" style=\"text-align:left;\">{$award->description}&nbsp;</td>
+          <td><img src=\"modules/rudi/images/medals/{$award->image}\" alt=\"{$award->image}\"/></td>
+          <td>{$award->name}&nbsp;</td>
+          <td style=\"text-align:left;\">{$award->description}&nbsp;</td>
           </tr>";             
         }                        
 
