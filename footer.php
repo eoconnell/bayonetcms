@@ -20,8 +20,8 @@
 $phpversion = preg_replace('/[a-z-]/', '', phpversion());
 $mtime = explode(' ', microtime());
 $totaltime = $mtime[0] + $mtime[1] - $starttime;
-$debug_output = sprintf("Page generated in %.3f seconds | Memory: real(%.3fmb) peak(%.3fmb) | PHP: %s<br/>Queries: %d | Fetches: %d<br/>\n",
-                $totaltime, ((float)memory_get_usage()/1024/1024), ((float)memory_get_peak_usage()/1024/1024), $phpversion, $db_queries, $db_fetches);
+$debug_output = sprintf("Page generated in %.3f seconds | Memory: real(%.3fmb) peak(%.3fmb) | PHP: %s<br/>Connections: %d | Queries: %d | Fetches: %d | Frees: %d<br/>\n",
+                $totaltime, ((float)memory_get_usage()/1024/1024), ((float)memory_get_peak_usage()/1024/1024), $phpversion, $db_connections, $db_queries, $db_fetches, $db_frees);
 ?>
 
 <?php
