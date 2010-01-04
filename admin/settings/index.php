@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ 
  ?>
- 
+ <link rel="stylesheet" type="text/css" href="settings/style.css" media="screen"/>
  <div style="text-align:left;"><h2>- Account Settings</h2>
  -<a href="?op=settings&change=password" >Change password</a>, email, name<br />
  </div>

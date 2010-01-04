@@ -117,7 +117,7 @@ function EditBlock($block_id)
     }
     
     //Update the database with the new data.
-    $db->Query("UPDATE bayonet_blocks SET weight = '$weight', dir_name = '$dir_name', position = '$position', active = '$active' WHERE block_id = '$block_id'");
+    $db->Query("UPDATE bayonet_blocks SET title = '$title', weight = '$weight', dir_name = '$dir_name', position = '$position', active = '$active' WHERE block_id = '$block_id'");
     //$isActive = $active ? "IS" : "IS NOT";
     echo "Block, '$dir_name', at position '$weight'(order) has been edited.\n";
     PageRedirect(3, "?op=blocks");

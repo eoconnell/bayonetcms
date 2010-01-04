@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ 
  ?>
- 
+ <link rel="stylesheet" type="text/css" href="calendar/style.css" media="screen"/>
  <div style="text-align:left;"><h2>- Manage Calendar & Events</h2></div>
 <?php
 

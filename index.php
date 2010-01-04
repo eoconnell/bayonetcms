@@ -35,7 +35,8 @@ include 'header.php';
 <div class="container">
 
 <!-- banner -->
-<div class="banner"><a href="index.php"><img src="images/logo.jpg" alt="3rd Infantry Division - ArmAII Unit" /></a></div>
+<!-- <div class="banner"><a href="index.php"><img src="images/logo.jpg" alt="3rd Infantry Division - ArmAII Unit" /></a></div> -->
+<div class="banner"><a href="index.php"><img src="images/3rdidtext.png" alt="3rd Infantry Division - ArmAII Unit" /></a></div>
 
 <!-- navigation -->
  <div class="nav"><?php require_once 'navigation.php'; ?></div>
@@ -43,7 +44,15 @@ include 'header.php';
 <!-- content -->
 <table border="0" cellspacing="10px" cellpadding="0"  class="main" width="100%">
 	<tr>
-		<td class="leftcol">
+		
+	  <!-- block area LEFT -->
+	  <?php  //if(!defined('BLOCK_LEFT_DISABLE')): ?>
+	    <td class="leftcol">
+	      	<?php GetBlocks(BLOCK_LEFT); ?>
+	    </td>    
+	  <?php //endif; ?>
+	  
+		<td class="midcol">
 	    	<?php  require_once 'modules.php'; ?>
  		</td>
  		
@@ -53,7 +62,7 @@ include 'header.php';
 	      	<?php GetBlocks(BLOCK_RIGHT); ?>
 	    </td>    
 	  <?php endif; ?>
-  
+  		
 	</tr>
 </table>
 

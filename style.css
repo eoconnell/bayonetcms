@@ -2,43 +2,53 @@
  	 **  	  Layout Styles			**
  	 *********************************/
  	 div.container {
-		width: 990px; 
+		/* width: 990px; */
+		/* width: 1000px; */
 		color: #000000;
-		margin: auto auto; 
+		 /* margin: auto auto; */
 		text-align: left; /* IE 5 fix */
 	}
  	div.banner {
-	  	width: 990px;
-		background: #fff;
-		color: #000000;
-		margin: auto auto;
+	  	/* width: 990px; */
+	  	text-align:center;
+		background-image:url('images/3rdbanner.png')
+		/* margin: auto auto; */
 	}
 	div.nav {
-		width: 990px;
+		/*width: 990px; */
 		height: 28px;
 		background: #284c75;
 		background-image:url('images/navbackground.jpg');
 		color: #000000;
-		margin: auto auto;
+		text-align:center;
+		/* margin: auto auto; */
 		font-size:14px;
 	}
 	table.main {
-		background-image:url('images/sandbackground.jpg');
+		/* background-image:url('images/sandbackground.jpg'); */
 	 	padding: 0px;
 		color:#ffffff;
-		width:990px;
-		background-color:#a3a2a0;
+	 	/* width:990px; */
+	 	/*width: 1134px; */
+	 	 /* width: 1234px; */
+	 	/* margin: auto auto; */
+		/* background-color:#a3a2a0; */
 	}
 
 	table.main td {
-	/*	color:white;  */
+	/*	color:white; */
 	}
-	td.leftcol {
-		width:644px;
+	td.midcol {
+ 	   	/* width: 644px; */
 		background-color:transparent;
 		vertical-align:top;
 	}
 	td.rightcol {
+		width: 275px;
+		vertical-align:top;
+	}
+	td.leftcol {
+ 		width: 275px;
 		vertical-align:top;
 	}
 	div.footer {
@@ -76,7 +86,7 @@
 		color:#333333;
 	}	
 	div.content img {
-		padding:5px;	
+		padding:10px;	
 	}
 	div.contentFooter {
 	    border-top:1px solid #333333; 

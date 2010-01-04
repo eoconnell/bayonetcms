@@ -98,7 +98,8 @@ include 'header.php';
           LinkInternal('<img src="images/news.png" /><br />News','?op=news'),
           LinkInternal('<img src="images/calendar.png" /><br />Calendar','?op=calendar'),
           LinkInternal('<img src="images/box_download.png" /><br />Downloads', '?op=downloads'),
-		  LinkInternal('<img src="images/rudi.png" /><br />RUDI','?op=rudi')       
+		  LinkInternal('<img src="images/rudi.png" /><br />RUDI','?op=rudi'),
+		  LinkInternal('<img src="images/adjutant.png" /><br />Adjutant','?op=adjutant')       
         );
         
         //render administration table

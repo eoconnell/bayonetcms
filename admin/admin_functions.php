@@ -127,8 +127,8 @@ $num = 1;
   	if($num==1){
   		echo "<tr style=\"text-align:center; height:90px;\">";	
   	}
-    echo "<td class=\"center\" style=\"width:16%;\">$td</td>\n";
-    if($num%6 == 0){
+    echo "<td class=\"center\" style=\"width:12%;\">$td</td>\n";
+    if($num%8 == 0){
     	echo "</tr>";
 		$num=0;  
     }

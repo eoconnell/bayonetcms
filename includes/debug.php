@@ -50,8 +50,8 @@ function decho($message, $force = false)
 		$message = $message;
 	}
 	
-	if(count($log_message_queue) >= 100) 
-		array_pop($log_message_queue);
+	//if(count($log_message_queue) >= 100) 
+	//	array_pop($log_message_queue);
 		
 	array_push($log_message_queue, $message);
 	
@@ -67,10 +67,15 @@ function queuePrint($obj, $force = false)
 		if($config['debug']['enabled'] == false ||
 		$config['debug']['show_messages'] == false) return;
 	}
-		
+	
 	if(is_array($obj))
 	{
 		$array_dump = print_r($obj,true);
+		if(empty($obj))
+		{
+			echo "Array was empty<br />\n";
+			return;
+		}
 		echo "<pre>" . $array_dump . "</pre><br/>\n";
 		//WriteLog($array_dump,BAYONET_LOG_INFO);
 	}  
@@ -89,6 +94,10 @@ function queuePrint($obj, $force = false)
 		$message = wordwrap($obj,80,'<br />');
 		echo $obj . "<br/>\n";
 		//WriteLog($message,BAYONET_LOG_INFO);
+	}
+	else
+	{
+		echo "queuePrint: Invalid type of " . gettype($obj) . "<br/>\n";
 	}
 }
 
@@ -117,6 +126,7 @@ function logQueueFlush($force = false)
 		return false;
 	}
 	
+	echo "<b>" . count($log_message_queue) . " messages received.</b><br/><br/>\n";
 	foreach($log_message_queue as $message)
 	{
 		if($message != $log_message_queue[$messageCount - 1])
@@ -156,6 +166,7 @@ function logQueueFlush($force = false)
 		
 		++$messageCount;
 	}
+	
 	echo "</div>";
 	CloseContent();
 	error_reporting(1);

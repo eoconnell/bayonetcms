@@ -88,20 +88,26 @@ class Bayonet_SQL
 		return is_array($result) ? $result : array();
 	}
     
-  public function FetchObject($p_result, $class)
+  public function FetchObject($p_result, $class, $no_array = false)
   {
     global $db_fetches;
     ++$db_fetches;
     
     decho("Fetching object result");
     
-    while ($row = mysqli_fetch_object($p_result, $class)) {
-      (object)$result[] = $row;
+    while ($row = mysqli_fetch_object($p_result, $class))
+	{
+		if($no_array == true) 
+			(object)$result = $row;
+		else
+			(object)$result[] = $row;
     }
     
     $this->Free($p_result);
     
-    return is_object($result) ? $result : (object)array();
+    // TODO: Test for objects inside of $result array
+    if($no_array == true) { return is_object($result) ? $result : (object)$nothing; }
+    return is_array($result) ? $result : (object)array();
   }
   
   public function FetchAssoc($result)

@@ -25,6 +25,15 @@
  /**
  * PrintCalendar() - prints the calendar with events 
  */
+ ?>
+<script type="text/javascript">
+function openEvent(date)
+{
+     myWindow = window.open('http://testbed.3rd-infantry-division.org/cms/blocks/mini_calendar/event.php?date='+date+'','','width=300,height=300')
+     myWindow.focus();
+}
+</script>
+ <?php
  function PrintCalendar(){
  	
 		$date = time();
@@ -35,7 +44,6 @@
 		$month = date('m', $date);
 		$monthNum = date('n', $date);
 		$year = date('Y', $date);
- 
 		
 		/* Accounts for the last couple days from the previous months */
 			$first_day = mktime(0,0,0,$monthNum, 1, $year); 
@@ -76,7 +84,7 @@
 		?>		             
 		<center>
 			<table class="calendar" style="background-color:white;" cellspacing="1" cellpadding="0">	
-				<tr style="background-color:#999999; height:27px;">
+				<tr style="background-color:#999999; height:20px;">
 					<td colspan="50" style="vertical-align:middle; text-align:center;">
 		    			<!-- <a href="?op=calendar&month=<?php echo $previous_month.'&year='.$previous_year; ?>"><<</a> -->
 		    			<!-- Month Name and Year -->
@@ -105,7 +113,7 @@
 				$day_count++;
 			}
 			
-$sqlToday = $year.'-'.$monthNum.'-'.$today;
+$sqlToday = date("Y-m-d", mktime(0, 0, 0, $monthNum, $today, $year));
 $events = GetEventsOnInterval("{$year}-{$monthNum}-01","{$year}-{$monthNum}-{$days_in_month}");
 		
 			//loop printing each day of the CURRENT month ONLY
@@ -117,7 +125,7 @@ $events = GetEventsOnInterval("{$year}-{$monthNum}-01","{$year}-{$monthNum}-{$da
 				echo '<td class="cal_weekday">';  //weekdays
 			   }
 			   			        
-		       $sqlDate = $year.'-'.$monthNum.'-'.$day_num;  //old way NOT unix
+		       $sqlDate = date("Y-m-d", mktime(0, 0, 0, $monthNum, $day_num, $year));
 		       		      
 		  	 	//checks to see if the current day has events
 		       $isEvent=false;
@@ -129,23 +137,13 @@ $events = GetEventsOnInterval("{$year}-{$monthNum}-01","{$year}-{$monthNum}-{$da
 		       			}
 		       		}
 		       		
-		       }
-
-			 /*	global $db;
-		  		$result = $db->Query("SELECT title,color,date,time FROM `bayonet_events` WHERE `date` = '$sqlDate' ORDER BY `date` DESC");
-		  		while(($row = $db->Fetch($result))!=false)
-		  		{
-		    		$isEvent = true;
-		    		if($day_num == $today){
-		    			$todaysEvents[] = $row; 		    		
-		    		}
-		  		}  */		  				
+		       }	  				
 				if($day_num == $today && $isEvent==true){
 					echo '<div class="eventtoday">'.$day_num.'</div>';				
 				}else if($day_num == $today && $isEvent==false){
 					echo '<div class="monthtoday">'.$day_num.'</div>'; 
 				}else if($day_num != $today && $isEvent==true){
-					echo '<div class="event" id="event'.$day_num.'" onmouseover="highlightEvent(this.id)" onmouseout="normEvent(this.id)">';
+					echo "<div class=\"event\" onclick=\"openEvent('{$sqlDate}')\">";
 						echo $day_num;
 					echo '</div>';                		               	
 				}else{

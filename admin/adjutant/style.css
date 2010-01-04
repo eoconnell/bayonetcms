@@ -1,0 +1,13 @@
+	input.lrg {
+		font-size:14px;
+		font-weight:bold;
+		text-align:center;
+		font-family: Arial, Sans-Serif;
+	}
+	
+	tr.inactive {
+		background-color:#dfdfdf;
+	}
+	tr.inactive td {
+		color:#a2a2a2;	
+	}

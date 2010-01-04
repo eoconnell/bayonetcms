@@ -20,7 +20,7 @@ if (!extension_loaded('curl')) {
 /**
  * Armed Global Warfare Feed
  */
-define('AGW_FEED', 'http://www.armedglobalwarfare.com/index.php?type=rss;action=.xml;limit=150');
+define('AGW_FEED', 'http://www.armedglobalwarfare.com/index.php?type=rss;action=.xml;limit=300');
 
 /**
  * Cache File

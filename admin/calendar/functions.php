@@ -380,8 +380,8 @@ $events = GetEventsOnInterval("{$year}-{$monthNum}-01","{$year}-{$monthNum}-{$da
 				echo '<td class="cal_weekday">';  //weekdays
 			   }
 			   			        
-		       $sqlDate = $year.'-'.$monthNum.'-'.$day_num;  //old way NOT unix
-		      
+		       $sqlDate = date("Y-m-d", mktime(0, 0, 0, $monthNum, $day_num, $year));
+		       
 		  	 	//checks to see if the current day has events
 		       $isEvent=false;
 		       foreach($events as $event){

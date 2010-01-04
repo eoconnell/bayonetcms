@@ -7,90 +7,108 @@
 			font-family:arial;			
 		}
 		td.weekday {
-			width:40px;
-			height:20px;
+			width:34px;
+			height:34px;
             background-color:#cb2121;
             color:green;
             text-align:center;
             font-size:10px;
-            font-weight:bold;
+            /* font-weight:bold; */
 		}
 		th.weekday {
-			width:40px;
-			height:29px;
+			width:34px;
+			height:20px;
             background-color:white;
             color:black;
             text-align:center;
             font-size:11px;
-            font-weight:bold;
+            font-weight:normal; 
 		}
 		.monthday {
-			width:40px;
-			height:20px;
+		/*	width:29px; */
+			height:36px; 
             background-color:#aea2a2;
             color:white;
             text-align:left;
             font-size:10pt;
-            font-weight:bold;
+            /* font-weight:bold; */
                         
 		}
 		.monthtoday {
-			width:38px;
-			height:38px;
+		/*	width:25px; */
+			height:32px; 
            /* background-color:#3666ba; */
             color:#225eac;
    			text-align:center;
    			font-size:14px;
-            font-weight:bold;
+      		font-weight:bold;
+			font-family: arial; 
             border:1px solid #333333;
 		}
 		.event {
-			width:38px;
-			height:38px;
+			/* width:25px; */
+			 height:32px; 
             background-color:#225eac;
    			text-align:center;
-            border:1px solid #333333;					
+            border:1px solid #333333;
+			cursor: pointer;					
 		}
 		table.calendar a, table.calendar a:visited, table.calendar a:active, table.calendar a:hover {
 			color:white;		
 		}
-		.eventtoday{
-		 	width:38px;
-			height:38px;
+		.eventtoday {
+		 /*	width:25px; */
+			height:32px;  
             background-color:#225eac;
-            color:#ef8e25;
+            color: white;
    			text-align:center;
    			font-size:14px;
             font-weight:bold;
+            font-family: arial;
             border:1px solid #333333;			
 		}
 		td.cal_weekday {
-			width:40px;
-			height:40px;
+			width:34px;
+			height:34px;
             background-color:#a1a1a1;
             vertical-align:top;
             color:#eeeeee;
             font-family:arial;
             text-align:center;
-            font-size:14px;
+            font-size:12px;
 		}
 		td.cal_weekend {
-			width:40px;
-			height:40px;
+			width:34px;
+			height:34px;
             background-color:#8f8f8f;
             vertical-align:top;
             color:#eeeeee;
             font-family:arial;
             text-align:center;
-            font-size:14px;
+            font-size:12px;
 		}
 		td.cal_notmonth {
-			width:40px;
-			height:40px;
+			width:34px;
+			height:34px;
             background-color:#6e6e6e;
             vertical-align:top;
             color:#d4d4d4;
             text-align:left;
             font-size:11px;
+		}
+		div.event_title {
+			font-family: Geneva, Verdana, Arial;
+			font-size: 14px;
+		}
+		div.event_text {
+			font-family: Geneva, Verdana, Arial;
+			font-size: 12px;
+			padding-top: 3px;
+			padding-left: 10px;
+			padding-right: 5px;		
+		}
+		div.event_time {
+			font-family: Geneva, Verdana, Arial;
+			font-size: 12px;			
 		}
 /* END>> CALENDAR STYLES */

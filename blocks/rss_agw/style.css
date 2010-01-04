@@ -2,11 +2,11 @@
 		display: none;
 	}
 	.rss span.title{
-		font-size: 16px;
+		font-size: 10px;
 		font-weight: bold;
 		/* text-decoration:underline; */	
 	}
-	
+
 	.rss span.date{
 		font-family: 'Trebuchet MS', Trebuchet, Verdana, sans-serif; 
 		font-size: 11px; 

@@ -25,6 +25,9 @@
  * @param mixed $str
  * @return
  */
+ 
+include_once 'classes.php';
+
 function bbcode_format ($str) 
 {
   $str = htmlentities($str);
@@ -363,6 +366,10 @@ static $error_stack_messages = array(); //global stack of errors accumulated thr
 function push_error_stack($message)
 {
 	global $error_stack_messages;
+	
+	if(count($error_stack_messages) >= 100)
+		array_pop($error_stack_messages);
+		
 	array_push($error_stack_messages, $message);
 }
 
@@ -586,15 +593,15 @@ function UnderConstruction($message = NULL, $flag = BAYONET_SITE)
  * @return
  */
 
-define('BLOCK_LEFT',false);
-define('BLOCK_RIGHT',true);
+define('BLOCK_LEFT', 0);
+define('BLOCK_RIGHT', 1);
 
 function GetBlocks($position = BLOCK_LEFT)
 {
   global $config;  
   global $db;
   
-  $result = $db->Query("SELECT * FROM `bayonet_blocks` WHERE `position` = '$position' AND `active` = 1 ORDER BY weight");
+  $result = $db->Query("SELECT block_id, active, weight, position, dir_name, title FROM `bayonet_blocks` WHERE `position` = $position AND `active` = 1 ORDER BY weight");
   $blocks = $db->Fetch($result);
 
   foreach($blocks as $block)
