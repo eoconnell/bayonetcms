@@ -28,7 +28,7 @@ class Bayonet_SQL
   public function Connect($hostname, $username, $passwd)
   {
     global $db_connections;
-    ++$db_connections;
+    $db_connections++;
     
     $this->hostname = $hostname;
     
@@ -56,14 +56,14 @@ class Bayonet_SQL
   public function Query($str)
   {
     global $db_queries;
-    ++$db_queries;
+    $db_queries++;
     return mysqli_query($GLOBALS['___mysqli_ston'], $str); 
   }
   
   public function Free($result)
   {
     global $db_frees;
-    ++$db_frees;
+    $db_frees++;
     @((mysqli_free_result($result) || (is_object($result) && (get_class($result) == "mysqli_result"))) ? true : false);
   }
   
@@ -75,7 +75,7 @@ class Bayonet_SQL
   public function FetchArray($p_result)
 	{
 		global $db_fetches;
- 		++$db_fetches;
+ 		$db_fetches++;
 	
 		decho('Fetching result');
 
@@ -91,7 +91,7 @@ class Bayonet_SQL
   public function FetchObject($p_result, $class, $no_array = false)
   {
     global $db_fetches;
-    ++$db_fetches;
+    $db_fetches++;
     
     decho("Fetching object result");
     
@@ -118,7 +118,7 @@ class Bayonet_SQL
   public function FetchRow($p_result)
   {
     global $db_fetches;
-    ++$db_fetches;
+    $db_fetches++;
     
   	decho("Fetching single row");
   	
