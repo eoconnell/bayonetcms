@@ -322,7 +322,7 @@ class RUDI_Common
   {
     $query = sprintf("SELECT squad_id AS id FROM rudi_unit_members WHERE squad_id = %d", (int)$id);
     $result = $this->db->Query($query);
-    $members = mysql_num_rows($result);
+    $members = $this->db->Rows($result);
     
     return (int)$members;
   }
