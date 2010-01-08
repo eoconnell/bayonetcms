@@ -16,7 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ 
- 
+
+global $config;
 ob_start();
 $starttime = explode(' ', microtime());
 $starttime = $starttime[1] + $starttime[0];
@@ -29,6 +30,10 @@ $starttime = $starttime[1] + $starttime[0];
 <head>
 <title>3rd Infantry Division - 8 years strong - ArmaII Unit</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<?php if(isset($config['site']['favicon'])): ?>
+<!--<link rel="shortcut icon" href="<?php echo $config['site']['favicon']; ?>" type="image/x-icon" />-->
+<link rel="shortcut icon" href="<?php echo $config['site']['favicon']; ?>" type="image/png" />
+<?php endif; ?>
 <link rel="stylesheet" type="text/css" href="style.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="style_bbcode.css" media="screen"/>
 
