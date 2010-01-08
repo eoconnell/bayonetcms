@@ -53,6 +53,14 @@ class Bayonet_SQL
     return mysqli_select_db($GLOBALS['___mysqli_ston'], $db);
   }
   
+  private function validResult($p_result)
+  {
+  	if($this->Rows($p_result) > 0)
+  		return true;
+	else
+		return false;
+  }
+  
   public function Query($str)
   {
     global $db_queries;
@@ -78,6 +86,12 @@ class Bayonet_SQL
 	$db_fetches++;
 	decho('Fetching result');
 	
+	if(!$this->validResult($p_result))
+	{
+		decho('Result was not valid.');
+		return array();
+	}
+	
 	while ($row = mysqli_fetch_array($p_result, MYSQLI_ASSOC)) 
 	{
 		$result[] = $row;
@@ -93,6 +107,12 @@ class Bayonet_SQL
     $db_fetches++;
     
     decho("Fetching object result");
+    
+    if(!$this->validResult($p_result))
+	{
+		decho('Result was not valid.');
+		return (object)array();
+	}
     
     while ($row = mysqli_fetch_object($p_result, $class))
 	{
@@ -121,6 +141,12 @@ class Bayonet_SQL
     
   	decho("Fetching single row");
   	
+	if(!$this->validResult($p_result))
+	{
+		decho('Result was not valid.');
+		return array();
+	}
+	  	
   	while ($row = mysqli_fetch_assoc($p_result)) {
   	  $result = $row;
   	}

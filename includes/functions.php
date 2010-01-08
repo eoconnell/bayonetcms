@@ -621,9 +621,7 @@ function GetBlocks($position = BLOCK_LEFT)
   $query = sprintf("SELECT block_id, active, weight, position, dir_name, title FROM bayonet_blocks WHERE active = 1 AND position = %d ORDER BY weight", (int)$position);
   $result = $db->Query($query);
   
-  /* Is the result valid? */
-  if($db->Rows($result) < 1) 
-  	return false;
+
 
   $blocks = $db->Fetch($result);
   if(empty($blocks)) return;

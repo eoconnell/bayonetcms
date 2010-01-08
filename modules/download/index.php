@@ -92,40 +92,43 @@ $categoryList = getCategoryList();
 echo "</div>\n</div>\n";
 CloseContent();
 
+echo "<br/>"; //spacer between div tags
 
-OpenContent();
-echo "<div class=\"contentHeading\">" . getCategoryName($category) . "</div>\n";
-echo "<div class=\"content\">\n";
-
+if(isset($category))
+{
 	OpenContent();
-		echo "<div class=\"contentHeading\">Files</div>\n";
-			echo "<div class=\"content\">\n";
-			
-			if(empty($downloads)) 
-			{
-				echo "No downloads available.\n";
-				return;	
-			}
-			
-			foreach($downloads as $file)
-			{
-				$download_full_path = $download_absolute_path . $file['filename'];	
+	echo "<div class=\"contentHeading\">" . getCategoryName($category) . "</div>\n";
+	echo "<div class=\"content\">\n";
+	
+		OpenContent();
+			echo "<div class=\"contentHeading\">Files</div>\n";
+				echo "<div class=\"content\">\n";
 				
-				if(!file_exists($download_full_path)) $broken = "(Broken link detected)"; 
-				echo "<p>";
-				echo LinkInternal($file['name'], $file['filename'], $download_relative_path) . " $broken<br/>\n";
-				echo "<b>Filename:</b> {$file['filename']}<br/>\n";
-				printf("<b>Size:</b> %.2fKB<br/>\n", filesize($download_full_path) / 1024);
-				echo "<b>MD5 Hash:</b> " . md5_file($download_full_path) . "<br/>\n";
-				echo "<b>Description:</b> {$file['description']}<br/>\n";
-				echo "</p>";
+				if(empty($downloads)) 
+				{
+					echo "No downloads available.\n";
+					return;	
+				}
 				
-			}
-			//logQueueFlush(FORCE);
-			
+				foreach($downloads as $file)
+				{
+					$download_full_path = $download_absolute_path . $file['filename'];	
+					
+					if(!file_exists($download_full_path)) $broken = "(Broken link detected)"; 
+					echo "<p>";
+					echo LinkInternal($file['name'], $file['filename'], $download_relative_path) . " $broken<br/>\n";
+					echo "<b>Filename:</b> {$file['filename']}<br/>\n";
+					printf("<b>Size:</b> %.2fKB<br/>\n", filesize($download_full_path) / 1024);
+					echo "<b>MD5 Hash:</b> " . md5_file($download_full_path) . "<br/>\n";
+					echo "<b>Description:</b> {$file['description']}<br/>\n";
+					echo "</p>";
+					
+				}
+				//logQueueFlush(FORCE);
+				
+				echo "</div>\n</div>";
 			echo "</div>\n</div>";
-		echo "</div>\n</div>";
-		
+}		
 	CloseContent();
 CloseContent();
 ?>
