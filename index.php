@@ -5,7 +5,7 @@
  * 
  * Purpose of this software is to allow users to manage their website
  * with ease and without needing to have any coding knowledge in order 
- * to maintain it. Visit www.eodesign.com/cms for any updates or feedback. 
+ * to maintain it. Visit [link] for any updates or feedback. 
  */
 
 /* Begin try/catch block */

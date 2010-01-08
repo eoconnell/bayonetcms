@@ -73,20 +73,19 @@ class Bayonet_SQL
   }
   
   public function FetchArray($p_result)
-	{
-		global $db_fetches;
- 		$db_fetches++;
+  {
+  	global $db_fetches;
+	$db_fetches++;
+	decho('Fetching result');
 	
-		decho('Fetching result');
-
-    while ($row = mysqli_fetch_array($p_result, MYSQLI_ASSOC)) {
-      $result[] = $row;
-    }
-
-		$this->Free($p_result);
-		
-		return is_array($result) ? $result : array();
+	while ($row = mysqli_fetch_array($p_result, MYSQLI_ASSOC)) 
+	{
+		$result[] = $row;
 	}
+	$this->Free($p_result);
+	
+	return is_array($result) ? $result : array();
+  }
     
   public function FetchObject($p_result, $class, $no_array = false)
   {

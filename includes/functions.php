@@ -420,9 +420,9 @@ function ReportError($message)
 function ReportHack($message)
 {
   //WriteLog($message,BAYONET_LOG_HACK);
-  OpenTable();
-  echo "<tr><th>Hack Attempt</th></tr><tr><td style=\"text-align:center;\">{$message}</td></tr>";
-  CloseTable();
+  OpenContent();
+  echo "<div class=\"contentHeading\">Hacking Attempt</div><div class=\"content\">{$message}</div>";
+  CloseContent();
 }
 
 /**
@@ -585,6 +585,23 @@ function UnderConstruction($message = NULL, $flag = BAYONET_SITE)
 }
 
 /**
+ * valid_result()
+ * 
+ * Determine if a mysqli result is valid.  
+ * Can be used on normal objects to check if they are empty.
+ * 
+ * @param mixed $p_result
+ * @return 
+ */
+function valid_result($p_result)
+{
+	if(is_object($p_result) && count($p_result) <= 1)
+  		return false;
+	else
+		return true;
+}
+
+/**
  * GetBlocks()
  * 
  * Includes all directories listed in blocks/ and uses the bayonet_blocks
@@ -600,10 +617,17 @@ function GetBlocks($position = BLOCK_LEFT)
 {
   global $config;  
   global $db;
+  	
+  $query = sprintf("SELECT block_id, active, weight, position, dir_name, title FROM bayonet_blocks WHERE active = 1 AND position = %d ORDER BY weight", (int)$position);
+  $result = $db->Query($query);
   
-  $result = $db->Query("SELECT block_id, active, weight, position, dir_name, title FROM `bayonet_blocks` WHERE `position` = $position AND `active` = 1 ORDER BY weight");
-  $blocks = $db->Fetch($result);
+  /* Is the result valid? */
+  if($db->Rows($result) < 1) 
+  	return false;
 
+  $blocks = $db->Fetch($result);
+  if(empty($blocks)) return;
+  
   foreach($blocks as $block)
   {
       $load = 'blocks/'.$block['dir_name'].'/index.php';
