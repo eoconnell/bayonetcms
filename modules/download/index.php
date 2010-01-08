@@ -21,41 +21,111 @@ if(!defined("MODULE_FILE"))
 {
 	die("Access denied...");
 }
+
+function getCategoryList()
+{
+	global $db;
+	$query = sprintf("SELECT category_id, title FROM bayonet_downloads_categories");
+	$result = $db->Query($query);
+	$categories = $db->Fetch($result);
+	
+	return $categories;
+}
+
+function getCategoryName($category)
+{
+	global $db;
+	if(!filter_var($category, FILTER_VALIDATE_INT)) 
+		return array();
+	
+	$query = sprintf("SELECT category_id, title FROM bayonet_downloads_categories WHERE category_id = %d", (int)$category);
+	$result = $db->Query($query);
+	$data = $db->FetchRow($result);
+	
+	return $data['title'];
+	//return is_array($data) ? $data : array(); 
+}
+
+function getCategoryFiles($category)
+{
+	global $db;
+	$query = sprintf("SELECT ca.category_id, ca.title AS category, dl.name, dl.filename, dl.description FROM bayonet_downloads_categories AS ca LEFT OUTER JOIN bayonet_downloads AS dl ON dl.category_id = ca.category_id WHERE ca.category_id = %d", (int)$category);
+
+	$result = $db->Query($query);
+	$downloads = $db->FetchArray($result);
+	decho('downloads data');
+	decho($downloads);
+	decho('downloads data done');
+	
+	return $downloads;
+}
+
 global $db;
-$download = NULL;
+$downloads = NULL;
 $download_relative_path = "modules/" . basename(dirname(__FILE__)) . "/files/";
 $download_absolute_path = dirname(__FILE__) . "/files/"; 
 
-$download = $db->Query("SELECT `file_id`, `name`, `description`, `filename` FROM `bayonet_downloads`");
+$category = $_GET['category'];
+if(isset($category) && !filter_var($category, FILTER_VALIDATE_INT))
+{
+	ReportHack("Purposely invalid category entry.");
+	return;
+}
+
+$downloads = getCategoryFiles($category);
+decho($downloads);
 
 OpenContent();
-echo "<div class=\"contentHeading\">Downloads</div>";
-echo "<div class=\"content\">";
-foreach($download as $file)
-{
-	$download_full_path = $download_absolute_path . $file['filename'];
-	
-	if(file_exists($download_full_path))
+echo "<div class=\"contentHeading\">Categories</div>\n";
+echo "<div class=\"content\">\n";
+
+$categoryList = getCategoryList();
+
+	foreach($categoryList as $categoryListItem)
 	{
 		echo "<p>";
-		echo LinkInternal($file['name'], $file['filename'], $download_relative_path) . "<br/>\n";
-		echo "<b>Filename:</b> {$file['filename']}<br/>\n";
-		printf("<b>Size:</b> %.2fKB<br/>\n", filesize($download_full_path) / 1024);
-		echo "<b>MD5 Hash:</b> " . md5_file($download_full_path) . "<br/>\n";
-		echo "<b>Description:</b> {$file['description']}<br/>\n";
-		echo "</p>";
+		echo LinkModule("download", "&amp;category={$categoryListItem['category_id']}",$categoryListItem['title']);
+		echo "</p>\n";
 	}
-	else
-	{
-		decho("File $download_absolute_path{$file['filename']} does not exist!  Not listing for download.");
-	}
-}
-decho($download);
-//logQueueFlush(FORCE);
 
-echo "</div>";
 
+echo "</div>\n</div>\n";
 CloseContent();
 
 
+OpenContent();
+echo "<div class=\"contentHeading\">" . getCategoryName($category) . "</div>\n";
+echo "<div class=\"content\">\n";
+
+	OpenContent();
+		echo "<div class=\"contentHeading\">Files</div>\n";
+			echo "<div class=\"content\">\n";
+			
+			if(empty($downloads)) 
+			{
+				echo "No downloads available.\n";
+				return;	
+			}
+			
+			foreach($downloads as $file)
+			{
+				$download_full_path = $download_absolute_path . $file['filename'];	
+				
+				if(!file_exists($download_full_path)) $broken = "(Broken link detected)"; 
+				echo "<p>";
+				echo LinkInternal($file['name'], $file['filename'], $download_relative_path) . " $broken<br/>\n";
+				echo "<b>Filename:</b> {$file['filename']}<br/>\n";
+				printf("<b>Size:</b> %.2fKB<br/>\n", filesize($download_full_path) / 1024);
+				echo "<b>MD5 Hash:</b> " . md5_file($download_full_path) . "<br/>\n";
+				echo "<b>Description:</b> {$file['description']}<br/>\n";
+				echo "</p>";
+				
+			}
+			//logQueueFlush(FORCE);
+			
+			echo "</div>\n</div>";
+		echo "</div>\n</div>";
+		
+	CloseContent();
+CloseContent();
 ?>
