@@ -892,7 +892,7 @@ class RUDI_Common
   
   protected function getRanks()
   {
-    $query = "SELECT rank_id, shortname, longname, image FROM rudi_ranks ORDER BY weight DESC";
+    $query = "SELECT rank_id, shortname, longname, image FROM rudi_ranks WHERE active = 1 ORDER BY weight DESC";
     $result = $this->db->Query($query);
     $row = $this->db->FetchObject($result,'Rank');
     
