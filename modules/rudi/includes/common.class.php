@@ -694,7 +694,7 @@ class RUDI_Common
             ?> 
             </td>
           <!-- Weapon -->        
-          <td class="roster"><?php echo $member->weapon_manufacturer . ' ' . $member->weapon_model; ?></td>
+          <td class="roster"><?php echo $member->weapon_model; ?></td>
           <!-- Status -->
           <td class="roster"><?php echo $member->status; ?></td>
         </tr>
