@@ -199,6 +199,7 @@ class RUDI_Common
   
   public function __construct()
   {
+  	decho("Constructing " . get_parent_class($this));
     global $config, $db;
     
     $this->images_path = $config['rudi']['images_path'];
@@ -210,7 +211,7 @@ class RUDI_Common
   
   public function __destruct()
   {
-
+  	decho("Destructing " . get_parent_class($this));
   }
 
   /**
@@ -264,9 +265,9 @@ class RUDI_Common
     $m_mod = NULL;
     $d_mod = NULL;
     
-    if($test['years'] > 1)
+    if($test['years'] > 1 || $test['years'] < 1)
       $y_mod = 's';
-    if($test['months'] > 1)
+    if($test['months'] > 1 || $test['months'] < 1)
       $m_mod = 's';
     if($test['days'] > 1 && $test['days'] < 1)
       $d_mod = 's';
@@ -674,7 +675,7 @@ class RUDI_Common
           <!-- Rank -->
           <td class="roster"><img src="<?php echo "modules/rudi/images/ranks/small/{$member->rank_short}.png"; ?>" alt="<?php echo $member->rank_short; ?>" /></td>
           <!-- Name -->
-          <td class="roster"><a href="?load=rudi&amp;profile=<?php echo $member->member_id ?>"><?php echo $member->last_name . ', ' . $member->first_name; ?></a></td>
+          <td class="roster"><a class="rudi_roster" href="?load=rudi&amp;profile=<?php echo $member->member_id ?>"><?php echo $member->last_name . ', ' . $member->first_name; ?></a></td>
             <!-- Roles -->
             <td class="roster">
             <?php
@@ -724,7 +725,7 @@ class RUDI_Common
     if(isset($_GET['profile']))
     {
       $id = addslashes($_GET['profile']);
-      decho("Update() ID: $id");
+      decho("Update() Profile ID: $id");
     }
     
     if($query_t != RUDI_PROFILE_SMALL)
@@ -898,16 +899,16 @@ class RUDI_Common
     
     return $row;  
   }  
-  
+/*
   protected function getDrills($id = NULL)
   {
     if(!is_null($id))
     {
-      $query = sprintf("SELECT * FROM rudi_drills  
-      LEFT OUTER JOIN rudi_drills_record AS dr ON dr.drill_id = rudi_drills.drill_id 
-      RIGHT OUTER JOIN rudi_unit_members AS m ON m.member_id = dr.member_id 
-      LEFT OUTER JOIN rudi_statuses AS st ON st.status_id = m.status_i 
-      WHERE rudi_drills.drill_id = %d ORDER BY date DESC",
+      $query = sprintf("SELECT rd.drill_id, rd.date, rd.news, rd.notes, dr.performance, dr.excusal, dr.excusal_reason, dr.initiative, m.first_name, m.last_name FROM rudi_drills AS rd  
+      LEFT OUTER JOIN rudi_drills_record AS dr ON dr.drill_id = rd.drill_id 
+      LEFT OUTER JOIN rudi_unit_members AS m ON m.member_id = dr.member_id 
+      LEFT OUTER JOIN rudi_statuses AS st ON st.status_id = m.status_id 
+      WHERE rd.drill_id = %d ORDER BY date DESC",
 	  (int)$id);
     }
     else
@@ -920,6 +921,8 @@ class RUDI_Common
     
     return $row;  
   }
+*/
+
 }
 
 ?>

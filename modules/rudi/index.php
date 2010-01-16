@@ -4,6 +4,7 @@
 //include 'includes/debug.php';
 //require 'includes/sql.class.php';
 include_once 'includes/common.class.php';
+include_once 'includes/drills.class.php';
 include_once 'includes/information.class.php';
 
 OpenContent();
@@ -15,6 +16,7 @@ class RUDI_Gateway extends RUDI_Common
   
   public function __construct()
   {
+  	decho("Constructing " . get_class($this));
     parent::__construct();
     
     if(isset($_GET['admin']))
@@ -61,7 +63,8 @@ class RUDI_Gateway extends RUDI_Common
           include 'views/view.ranks.php';
           break;
         case 'drills':
-          $this->drills = $this->getDrills($_GET['id']);
+          //$this->drills = $this->getDrills($_GET['id']);
+          $drills = new RUDI_Drills($_GET['id']);
           include 'views/view.drills.php';
           break;       
       }
@@ -81,6 +84,11 @@ class RUDI_Gateway extends RUDI_Common
       CloseTable();
       return;
     }
+  }
+  
+  public function __destruct()
+  {
+  	decho("Destructing " . get_class($this));
   }
 }
 

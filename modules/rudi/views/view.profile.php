@@ -3,6 +3,7 @@
 $member =& $this->data[$_GET['profile']];
 $uniform_image = $member->first_name[0].str_replace(array("'", "\""), "", $member->last_name).".png";
 decho($member);
+define('BLOCK_RIGHT_DISABLE', true);
 ?>
 <style type="text/css">
 
@@ -25,10 +26,10 @@ decho($member);
            	  	<td><center><?php echo $member->primary_mos; ?></center></td>
    	  		  </tr>
               <tr>
-                <td><center><img src="modules/rudi/images/ranks/large/<?php echo $member->rank_image ?>" />&nbsp;</center></td>
+                <td><center><img src="modules/rudi/images/ranks/large/<?php echo $member->rank_image; ?>" />&nbsp;</center></td>
               </tr>
               <tr>
-                <td><center><img src="modules/rudi/images/flags/<?php echo $member->country_image?>" />&nbsp;</center></td>
+                <td><center><img src="modules/rudi/images/flags/<?php echo $member->country_image; ?>" />&nbsp;</center></td>
               </tr>
             </table>
             </td>
@@ -36,7 +37,7 @@ decho($member);
           <table width="100%" border="0" cellpadding="5">
               <tr>
                 <th class="header" scope="row">Location</th>
-                <td class="info"><?php echo $this->evalData($member->location) ?>&nbsp;</td>
+                <td class="info"><?php echo $this->evalData($member->location); ?>&nbsp;</td>
                 <th class="header">Superior</th>
                 <td class="info"><?php
                 if(!is_null($member->superior_next->leader_id))
@@ -49,44 +50,48 @@ decho($member);
               </tr>
               <tr>
                 <th class="header" scope="row">Status</th>
-                <td class="info"><?php echo $this->evalData($member->status) ?>&nbsp;</td>
+                <td class="info"><?php echo $this->evalData($member->status); ?>&nbsp;</td>
                 <th class="header">Position</th>
-                <td class="info"><?php echo $this->evalData($member->position) ?>&nbsp;</td>
+                <td class="info"><?php echo $this->evalData($member->position); ?>&nbsp;</td>
               </tr>
-              <tr>
+              <tr> 
                 <th class="header" scope="row">Unit</th>
-                <td class="info"><?php echo $this->evalData($member->unit_name) ?>&nbsp;</td>
+                <td class="info"><?php echo $this->evalData($member->unit_name); ?>&nbsp;</td>
                 <th class="header">Weapon</th>
-                <td class="info"><?php echo $this->evalData($member->weapon_name) ?>&nbsp;</td>
+                <td class="info"><?php echo $this->evalData($member->weapon_name); ?>&nbsp;</td>
               </tr>
               <tr>
                 <th class="header" scope="row">Platoon</th>
-                <td class="info"><?php echo $this->evalData($member->platoon_name) ?>&nbsp;</td>
+                <td class="info"><?php echo $this->evalData($member->platoon_name); ?>&nbsp;</td>
                 <th class="header" scope="row">Enlisted</th>
-                <td class="info"><?php echo $this->evalData($member->enlist_date) ?>&nbsp;</td>                
+                <td class="info"><?php echo $this->evalData($member->enlist_date); ?>&nbsp;</td>                
               </tr>
               <tr>
                 <th class="header" scope="row">Squad</th>
-                <td class="info"><?php echo $this->evalData($member->squad_name) ?>&nbsp;</td>
+                <td class="info"><?php echo $this->evalData($member->squad_name); ?>&nbsp;</td>
                 <th class="header">Time In Service</th>
                   <?php if($member->discharge_date): ?>
-                    <td class="info"><?php echo $this->getDiffTime($member->enlist_date_st, $member->discharge_date)?>&nbsp;</td>
+                    <td class="info"><?php echo $this->getDiffTime($member->enlist_date_st, $member->discharge_date); ?>&nbsp;</td>
                   <?php else: ?>
-                 	  <td class="info"><?php echo $this->getDiffTime($member->enlist_date_st)?></td>
+                 	  <td class="info"><?php echo $this->getDiffTime($member->enlist_date_st); ?></td>
                   <?php endif; ?>
                 
               </tr>
               <tr>
                 <th class="header">Team</th>
-                <td class="info"><?php echo $this->evalData($member->team_name) ?>&nbsp;</td>
+                <td class="info"><?php echo $this->evalData($member->team_name); ?>&nbsp;</td>
                 <th class="header">Time In Grade</th>
-                <td class="info"><?php echo $this->getDiffTime($member->promo_date_st) ?>&nbsp;</td>
+                <?php if($member->discharge_date): ?>
+                	<td class="info"><?php echo $this->getDiffTime($member->promo_date_st, $member->discharge_date); ?>&nbsp;</td>
+               	<?php else: ?>
+               		<td class="info"><?php echo $this->getDiffTime($member->promo_date_st); ?></td>
+        		<?php endif; ?>
               </tr>
               <tr>
                 <?php if($member->discharge_date): ?>
                 <td class="info" colspan="2"></td>
 				        <th class="header" scope="row">Separated</th>
-                <td class="info"><?php echo $this->evalData($member->discharge_date) ?>&nbsp;</td>
+                <td class="info"><?php echo $this->evalData($member->discharge_date); ?>&nbsp;</td>
                 <?php endif; ?>
               </tr>
               
@@ -100,7 +105,7 @@ decho($member);
           <th class="header" scope="col">Biography</th>
         </tr>
         <tr >
-          <td style="text-align:left;"><?php echo $member->bio ?>&nbsp;</td>
+          <td style="text-align:left;"><?php echo $member->bio; ?>&nbsp;</td>
         </tr>
       </table>
       
@@ -116,8 +121,8 @@ decho($member);
         <?php else:?>
         <?php foreach($member->service_record as $record): ?>
         <tr>
-          <th class="header" width="25%"><?php echo $record->date_added ?>&nbsp;</th>
-          <td><?php echo $record->record_note ?>&nbsp;</td>
+          <th class="header" width="25%"><?php echo date('M j, Y', strtotime($record->date_added)); ?>&nbsp;</th>
+          <td style="text-align:left;"><?php echo $record->record_note; ?>&nbsp;</td>
         </tr>
         <?php endforeach; ?>
         <?php endif; ?>
@@ -136,10 +141,10 @@ decho($member);
         <?php else:?>
         <?php foreach($member->award_record as $record): ?>
         <tr>
-          <th class="header" width="25%"><?php echo $record->date_added?>&nbsp;</th>
+          <th class="header" width="25%"><?php echo $record->date_added; ?>&nbsp;</th>
           <td ><?php echo $this->evalData($record->award_name); ?>&nbsp;</td>
           <td style="vertical-align:middle;"><center><img src="modules/rudi/images/medals/<?php echo $record->image; ?>"/></center></td>
-          <td width="40%"><?php echo $record->record_note ?>&nbsp;</td>
+          <td width="40%"><?php echo $record->record_note; ?>&nbsp;</td>
         </tr>
         <?php endforeach; ?>
         <?php endif; ?>
@@ -158,9 +163,9 @@ decho($member);
         <?php else:?>
         <?php foreach($member->combat_record as $record): ?>
         <tr>
-          <th class="header" width="25%"><?php echo $record->date ?>&nbsp;</th>
-          <td><a href="<?php echo $record->website ?>"><?php echo $record->name ?></a>&nbsp;</td>
-          <td><?php echo $record->status ?>&nbsp;</td>
+          <th class="header" width="25%"><?php echo $record->date; ?>&nbsp;</th>
+          <td><a href="<?php echo $record->website; ?>"><?php echo $record->name; ?></a>&nbsp;</td>
+          <td><?php echo $record->status; ?>&nbsp;</td>
         </tr>
         <?php endforeach; ?>
         <?php endif; ?>
