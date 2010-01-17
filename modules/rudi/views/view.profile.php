@@ -116,13 +116,13 @@ define('BLOCK_RIGHT_DISABLE', true);
           <th class="header" scope="col" colspan="3">Service Record</th>
         </tr>
         <tr>
-       	<?php decho($member->service_record); if($this->evalData($member->service_record)):?>
+       	<?php if($this->evalData($member->service_record)):?>
           <td>No service record available&nbsp;</td>
         <?php else:?>
         <?php foreach($member->service_record as $record): ?>
         <tr>
           <th class="header" width="25%"><?php echo date('M j, Y', strtotime($record->date_added)); ?>&nbsp;</th>
-          <td style="text-align:left;"><?php echo $record->record_note; ?>&nbsp;</td>
+          <td><?php echo $record->record_note; ?>&nbsp;</td>
         </tr>
         <?php endforeach; ?>
         <?php endif; ?>
@@ -141,7 +141,7 @@ define('BLOCK_RIGHT_DISABLE', true);
         <?php else:?>
         <?php foreach($member->award_record as $record): ?>
         <tr>
-          <th class="header" width="25%"><?php echo $record->date_added; ?>&nbsp;</th>
+          <th class="header" width="25%"><?php echo date('M j, Y', strtotime($record->date_added)); ?>&nbsp;</th>
           <td ><?php echo $this->evalData($record->award_name); ?>&nbsp;</td>
           <td style="vertical-align:middle;"><center><img src="modules/rudi/images/medals/<?php echo $record->image; ?>"/></center></td>
           <td width="40%"><?php echo $record->record_note; ?>&nbsp;</td>
@@ -163,7 +163,7 @@ define('BLOCK_RIGHT_DISABLE', true);
         <?php else:?>
         <?php foreach($member->combat_record as $record): ?>
         <tr>
-          <th class="header" width="25%"><?php echo $record->date; ?>&nbsp;</th>
+          <th class="header" width="25%"><?php echo date('M j, Y', strtotime($record->date_added)); ?>&nbsp;</th>
           <td><a href="<?php echo $record->website; ?>"><?php echo $record->name; ?></a>&nbsp;</td>
           <td><?php echo $record->status; ?>&nbsp;</td>
         </tr>

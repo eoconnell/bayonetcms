@@ -113,20 +113,22 @@ class Rank
 
 class Drill
 {
-  public function __construct()
-  {
-    decho("Constructing " . get_class($this) . " -> " . $this);
-  }
-  
-  public function __destruct()
-  {
-    decho("Destructing " . get_class($this));
-  }
-  
-  public function __toString()
-  {
-    return $this->date;
-  }  
+	public $members;
+	public function __construct()
+	{
+		decho("Constructing " . get_class($this) . " -> " . $this);
+		//$this->members = array('Newly constructed');
+	}
+	
+	public function __destruct()
+	{
+		decho("Destructing " . get_class($this));
+	}
+	
+	public function __toString()
+	{
+		return $this->date;
+	}  
 }
 
 class ServiceRecord
@@ -203,10 +205,7 @@ class RUDI_Common
     global $config, $db;
     
     $this->images_path = $config['rudi']['images_path'];
-    //$this->db = new RUDI_SQL();
-    //$this->link = $this->db->Connect($config['sql']['hostname'], $config['sql']['username'], $config['sql']['password']);
-    $this->db = $db;
-    $this->db->Select_db('thirdid_oc');	
+    $this->db = $db;	
   }
   
   public function __destruct()
