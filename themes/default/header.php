@@ -35,21 +35,6 @@ $starttime = $starttime[1] + $starttime[0];
 <link rel="shortcut icon" href="<?php echo $config['site']['favicon']; ?>" type="image/png" />
 <?php endif; ?>
 <link rel="stylesheet" type="text/css" href="<?php echo self::$primary_css; ?>" media="screen"/>
-
-
-<script type="text/javascript" src="functions.js"></script>
-
-<!-- jQuery -->
-<script type="text/javascript" src="markitup/jquery.pack.js"></script>
-<!-- markItUp! -->
-<script type="text/javascript" src="markitup/markitup/jquery.markitup.pack.js"></script>
-<!-- markItUp! toolbar settings -->
-<script type="text/javascript" src="markitup/markitup/sets/bbcode/set.js"></script>
-<!-- markItUp! skin -->
-<link rel="stylesheet" type="text/css" href="markitup/markitup/skins/markitup/style.css" />
-<!--  markItUp! toolbar skin -->
-<link rel="stylesheet" type="text/css" href="markitup/markitup/sets/bbcode/style.css" />       
-
 </head>
 
 <body>
