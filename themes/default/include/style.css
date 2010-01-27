@@ -1,0 +1,252 @@
+	/*********************************
+ 	 **  	  Layout Styles			**
+ 	 *********************************/
+ 	 div.container {
+		width: 990px;
+		/* width: 1000px; */
+		color: #000000;
+		 margin: auto auto;
+		text-align: left; /* IE 5 fix */
+	}
+ 	div.banner {
+	  	/* width: 990px; */
+	  	text-align:center;
+		/* margin: auto auto; */
+	}
+	div.nav {
+		/*width: 990px; */
+		height: 28px;
+		background: #284c75;
+		background-image:url('images/navbackground.jpg');
+		color: #000000;
+		text-align:center;
+		/* margin: auto auto; */
+		font-size:14px;
+	}
+	table.main {
+		background-image:url('images/sandbackground.jpg');
+	 	padding: 0px;
+		color:#ffffff;
+	 	width:990px;
+	 	/*width: 1134px; */
+	 	 /* width: 1234px; */
+	 	margin: auto auto;
+		background-color:#a3a2a0;
+	}
+
+	table.main td {
+	/*	color:white; */
+	}
+	td.midcol {
+ 	   	width: 644px;
+		background-color:transparent;
+		vertical-align:top;
+	}
+	td.rightcol {
+		vertical-align:top;
+	}
+	td.leftcol {
+ 		width: 275px;
+		vertical-align:top;
+	}
+	div.footer {
+		text-align:center; 
+		font-family:verdana; 
+		font-size:10pt; 
+		color:#5e5e5e;
+		background-color:#333333;
+		border-top: 1px solid #5e5e5e;
+	}	
+	
+	/*********************************
+ 	 **  	  Content Styles		**
+ 	 *********************************/	
+	div.contentBorder1 {
+		background-color:white;
+		border:1px solid #3666ba;
+	}
+	div.contentBorder2 {
+		background-color:white;
+		border:1px solid #333333; 
+	}
+ 	div.contentHeading {
+		background-image:url(images/blockbackground.jpg);
+		background-repeat:repeat-x;
+		background-color:#112f50;
+		height:25px;
+		padding-left:10px;
+		padding-right:10px;
+		padding-top:5px;
+		color:white;
+	}
+	div.content {
+		padding:10px;
+		color:#333333;
+		/*background-color:#383838;
+		color:white; */
+		background-color:#f1f1f1;
+	}	
+	div.content img {
+		padding:10px;	
+	}
+	div.contentFooter {
+	    border-top:1px solid #333333; 
+		background-color:#a4a4a4;
+		color:white;
+		padding-left:5px;
+		padding-right:5px;	
+	}
+	span.footer-text {
+		font-size: 10px;	
+	}
+	
+	/*********************************
+ 	 **  	  Nav Links Styles		**
+ 	 *********************************/	
+	table.navLinks a, table.navLinks a:visited, table.navLinks a:active {
+		background-color:transparent;
+		color:white;
+		font-family:verdana;
+		font-size:11px;
+		font-weight:bold;
+		text-decoration:none;
+	}
+	
+	table.navLinks a:hover, table.navLinks a:visited:hover {
+		background-color:transparent;
+		color:#d2d2d2;
+		font-size:11px;
+		font-weight:bold;
+		text-decoration:none;
+	}
+	
+	table.navLinks {
+		height:25px;
+	}
+	
+	table.navLinks td {
+		border-right: 1px solid #213f61;
+		vertical-align:middle;
+	} 
+	
+	/*********************************
+ 	 **  	  Misc.		 Styles		**
+ 	 *********************************/	
+ 	 
+ 	 h1, h2, h3, h4, h5, h6 {
+ 	 	font-family: Helvetica, Arial, sans-serif; 
+		font-weight: normal;	 
+ 	 }
+	table, tr, td {
+		padding:0px;
+		border:0px;
+		margin:0px
+	}
+	body, td, div {
+		font-size:10pt;
+		/* color:black; */
+		font-family:verdana;
+		font-weight:normal;		
+	}
+	a, a:visited, a:active {
+		background-color:transparent;
+		color:#3666ba;
+		font-family:verdana;
+		font-size:12px;
+		text-decoration:none;
+	}
+	
+	a:hover, a:visited:hover {
+		background-color:transparent;
+		color:#3666ba;
+		font-family:verdana;
+		font-size:12px;
+		text-decoration:underline;
+	}
+	a.rudi_roster, a.rudi_roster:visited, a.rudi_roster:active, a.rudi_roster:hover {
+		color:#2b5bae;
+	}
+	body {
+		background-color:#091a34;
+		margin:0;
+		padding:0;
+		text-align:left;
+	}
+	a img {
+		border:0px;
+	}
+	form {
+		margin:0;
+	}
+	tr.rownorm{
+		background-color:white;
+
+	} 
+	tr.rowhigh{
+		background-color:#e0e0e0;
+	}
+	/* photo gallery styles */
+    .photoleft{
+    	background-image:url("images/photoleft.png");
+    	background-repeat:repeat-y;
+     	text-align:center;
+    	width:49px;
+   	}
+	.photoright{
+		background-image:url("images/photoright.png");
+		background-repeat:repeat-y;
+		text-align:center;
+		width:49px;
+    }
+    /* end photo gallery styles */
+    
+    /* stuff we might need in order to add drop shadows */
+    
+    	div.topbar {
+		height:25px; 
+		text-align:center; 
+		background-color:black;
+		font-family:verdana; 
+		font-size:10pt; 
+		color:#797e4f;
+	}
+	div.botbar { 
+		height:50px;
+		padding:5px;
+		text-align:center; 
+		background-color:black;
+		font-family:verdana; 
+		font-size:10pt; 
+	}
+		/* may need these two when we add the background images back */  	 
+	.leftbar {
+	 /*	background-image:url("images/leftshadow.png");   */
+		background-repeat: 
+		repeat-y; 
+		width:50px;
+	}		
+	.rightbar {
+		/* background-image:url("images/rightshadow.png");  */
+		background-repeat: 
+		repeat-y; 
+		width:15px;
+	}
+	
+	
+    .left{
+            text-align:left;
+    }
+    .right{
+            text-align:right;
+    }
+    .center{
+            text-align:center;
+    }
+    .title{
+            font-size:14px;
+            font-weight:bold;
+            font-family:arial;
+    }
+
+
+

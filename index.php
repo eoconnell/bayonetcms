@@ -1,24 +1,14 @@
 <?php
-/**
- * Bayonet Conent Management System
- * Copyright (C) Joseph Hunkeler & Evan O'Connell
- * 
- * Purpose of this software is to allow users to manage their website
- * with ease and without needing to have any coding knowledge in order 
- * to maintain it. Visit [link] for any updates or feedback. 
- */
 
-/* Begin try/catch block */
-try {
+define('BAYONET_ROOT', basename(dirname('.')));
+define('BAYONET_INCLUDE', BAYONET_ROOT . '/include');
+define('BAYONET_CONFIG', 'include/config.ini');
 
-include './includes/config.php'; 
-include './includes/debug.php';
-include './includes/sql.class.php';
-include './includes/functions.php';
-
-/* Setup error handing callbacks */
-ob_start("fatal_error_handler");
-set_error_handler("handle_error");
+require_once BAYONET_CONFIG;
+require BAYONET_INCLUDE . '/config.php'; 
+require BAYONET_INCLUDE . '/debug.php';
+require BAYONET_INCLUDE . '/sql.class.php';
+require BAYONET_INCLUDE . '/functions.php';
 
 $db = new Bayonet_SQL();
 $db->Connect(
@@ -28,45 +18,73 @@ $db->Connect(
   );
 $db->Select_db($config['sql']['database']);
 
-include 'header.php';
-//session_start(); 
-?>
-
-<div class="container">
-
-<!-- banner -->
- <div class="banner"><a href="index.php"><img src="images/logo.jpg" alt="3rd Infantry Division - ArmAII Unit" /></a></div>
-<!-- navigation -->
- <div class="nav"><?php require_once 'navigation.php'; ?></div>
-
-<!-- content -->
-<table border="0" cellspacing="15px" cellpadding="0"  class="main" width="100%">
-	<tr>
-		<td class="midcol">
-	    	<?php  require_once 'modules.php'; ?>
- 		</td>
- 		
-	  <!-- block area RIGHT -->
-	  <?php  if(!defined('BLOCK_RIGHT_DISABLE')): ?>
-	    <td class="rightcol">
-	      	<?php GetBlocks(BLOCK_RIGHT); ?>
-	    </td>    
-	  <?php endif; ?>
-  		
-	</tr>
-</table>
-
-</div>
-<?php include 'footer.php'; ?>
-<?php
-/* Flushing is needed by the error handler */
-ob_end_flush();
-
-} //try ^^    
-catch(Exception $e)
+class Bayonet_Theme
 {
-  ReportError( 
-    "<style>td.short{width:100%;}</style><table style=\"width:0;\"><tr><th>Code</th>" . "<td class=\"short\">" . $e->getCode() . "</td>" . "</tr><tr><th>In File</th>" . "<td class=\"short\">" . $e->getFile() . "</td>" . "</tr></table>" . $e->getLine() . " - " . $e->getMessage() . "<br/>" 
-  );        
+	static public $index;
+	static public $header;
+	static public $footer;
+	
+	static public $name;
+	static public $root_path;
+	static public $include_path;
+	static public $image_path;
+	static public $config;
+	static public $primary_css;
+	
+	static function init()
+	{
+		self::$name = Bayonet_Config::$ini['Theme']['name'];
+		decho('Initializing theme variables for \'' . self::$name . '\'');
+		self::$root_path = dirname(BAYONET_ROOT) . '/themes/' . self::$name;
+		self::$include_path = self::$root_path . '/include';
+		self::$image_path = self::$root_path . '/images';
+		self::$primary_css = self::$include_path . '/' . self::$name . '.css';
+		self::$config = parse_ini_file(self::$include_path . '/' . self::$name . '.ini', true);
+
+		self::$index = self::$root_path . '/index.php';
+		self::$header = self::$root_path . '/header.php';
+		self::$footer = self::$root_path . '/footer.php';
+		
+		decho(get_class_vars(Bayonet_Theme));
+		self::load(); 
+	}
+	
+	static function load()
+	{
+		global $db;
+		decho("Loading theme: '" . self::$name . "'");	
+		require self::$index;
+	}
 }
-?> 
+
+class Bayonet_Config
+{
+	static $ini;
+	static function init()
+	{
+		decho('Parsing configuration data');
+		if(file_exists(BAYONET_CONFIG))
+		{
+			self::$ini = parse_ini_file(BAYONET_CONFIG, true);
+			decho(self::$ini);
+		}
+		else
+			die(BAYONET_CONFIG . ' not found');
+	}
+}
+
+class Bayonet
+{	
+	static function init()
+	{
+		decho('Initializing Bayonet');
+		Bayonet_Config::init();
+		Bayonet_Theme::init();
+	}
+}
+
+
+Bayonet::init();
+
+
+?>
