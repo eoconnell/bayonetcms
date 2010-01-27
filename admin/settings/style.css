@@ -1,0 +1,64 @@
+/* START>> PASSWORD STYLES */
+
+input{
+	font-family: "Lucida Grande", "Verdana", sans-serif;
+}
+
+#pwordCont{
+	font-family: "Lucida Grande", "Verdana", sans-serif;
+	width: 820px;
+	font-size:12px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 50px 0 0 0;
+}
+
+#complexity{
+	color: #000;
+	font-size: 10px;
+	text-align: center;
+}
+
+.outer {
+	width:180px;
+	height:5px;
+	background-color: #CCC;
+}
+
+.default {
+	height:5px;
+	background-color: #CCC; 
+	width:0px;
+}
+.short {
+	height:5px;
+	background-color: #aa0033; 
+	width:15px; 	
+}
+.weak {
+	height:5px;
+	background-color: #aa0033; 
+	width:45px; 
+}
+.good {
+	height:5px;
+	background-color: #6699cc; 
+	width:90px; 
+}
+.strong {
+	height:5px;
+	background-color: #008000; 
+	width:135px; 
+}
+.secure {
+	height:5px;
+	background-color: #008000; 
+	width:180px;
+}
+
+span.value{
+	font-weight:bold;
+	float: right;
+}
+
+/* END>> PASSWORD STYLES */
