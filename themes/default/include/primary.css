@@ -17,14 +17,14 @@
 		/*width: 990px; */
 		height: 28px;
 		background: #284c75;
-		background-image:url('images/navbackground.jpg');
+		background-image:url('../images/navbackground.jpg');
 		color: #000000;
 		text-align:center;
 		/* margin: auto auto; */
 		font-size:14px;
 	}
 	table.main {
-		background-image:url('images/sandbackground.jpg');
+		background-image:url('../images/sandbackground.jpg');
 	 	padding: 0px;
 		color:#ffffff;
 	 	width:990px;
@@ -70,7 +70,7 @@
 		border:1px solid #333333; 
 	}
  	div.contentHeading {
-		background-image:url(images/blockbackground.jpg);
+		background-image:url(../images/blockbackground.jpg);
 		background-repeat:repeat-x;
 		background-color:#112f50;
 		height:25px;
@@ -187,13 +187,13 @@
 	}
 	/* photo gallery styles */
     .photoleft{
-    	background-image:url("images/photoleft.png");
+    	background-image:url("../images/photoleft.png");
     	background-repeat:repeat-y;
      	text-align:center;
     	width:49px;
    	}
 	.photoright{
-		background-image:url("images/photoright.png");
+		background-image:url("../images/photoright.png");
 		background-repeat:repeat-y;
 		text-align:center;
 		width:49px;
@@ -220,13 +220,13 @@
 	}
 		/* may need these two when we add the background images back */  	 
 	.leftbar {
-	 /*	background-image:url("images/leftshadow.png");   */
+	 /*	background-image:url("../images/leftshadow.png");   */
 		background-repeat: 
 		repeat-y; 
 		width:50px;
 	}		
 	.rightbar {
-		/* background-image:url("images/rightshadow.png");  */
+		/* background-image:url("../images/rightshadow.png");  */
 		background-repeat: 
 		repeat-y; 
 		width:15px;
@@ -248,5 +248,5 @@
             font-family:arial;
     }
 
-
+@import "style_bbcode.css"
 

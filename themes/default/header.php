@@ -34,8 +34,8 @@ $starttime = $starttime[1] + $starttime[0];
 <!--<link rel="shortcut icon" href="<?php echo $config['site']['favicon']; ?>" type="image/x-icon" />-->
 <link rel="shortcut icon" href="<?php echo $config['site']['favicon']; ?>" type="image/png" />
 <?php endif; ?>
-<link rel="stylesheet" type="text/css" href="<?php echo self::$include_path . '/style.css'; ?>" media="screen"/>
-<link rel="stylesheet" type="text/css" href="<?php echo self::$include_path . '/style_bbcode.css'; ?>" media="screen"/>
+<link rel="stylesheet" type="text/css" href="<?php echo self::$primary_css; ?>" media="screen"/>
+
 
 <script type="text/javascript" src="functions.js"></script>
 
