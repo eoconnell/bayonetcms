@@ -57,7 +57,7 @@ if ($agwProcess === true) {
     $options = array(CURLOPT_FORBID_REUSE   => true,
                      CURLOPT_POST           => false,
                      CURLOPT_RETURNTRANSFER => true,
-                     CURLOPT_TIMEOUT        => 15,
+                     CURLOPT_TIMEOUT        => 3,
                      CURLOPT_USERAGENT      => 'Mozilla/5.0 (Compatible; libCURL)',
                      CURLOPT_VERBOSE        => false);
     

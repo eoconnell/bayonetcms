@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ 
- 
+ /*
   if(!defined("MODULE_FILE"))
   {
     die("Access denied.");
@@ -30,12 +30,12 @@
     logout();
   }
   
-/*  if(login())
+ if(login())
   {
     //this is so dirty...  sigh.
     if(is_loggedin())
     {
-     */ ?>          
+      ?>          
       <!-- Add id="wrapper" for full height -->
       <table align="center" width="90%" >
       <tr><td><div style="text-align:right"><a href="?load=admin&op=logout">Logout, <?php echo $_SESSION['username']?></a></div></td></tr>
@@ -66,7 +66,7 @@
             
       </table>
   </div>
-      <?php /*)
+      <?php )
     }
   } */
     

@@ -54,7 +54,8 @@ function bbcode_format ($str)
     '/\[img\=(.*?)\](.*?)\[\/img\]/is',
     '/\[img align\=(.+?)\](.+?)\[\/img\]/is',
     '/\[mail\](.*?)\[\/mail\]/is',
-    '/\[mail\=(.*?)\](.*?)\[\/mail\]/is'
+    '/\[mail\=(.*?)\](.*?)\[\/mail\]/is',
+  	'/\[list\](.*?)\[\/list\]/is'
     );
 
   $simple_replace = array(
@@ -77,10 +78,10 @@ function bbcode_format ($str)
     '<img src="$1" alt="$2"/>',
     '<img src=\"$2\" align=\"$1\" />',
     '<a href="mailto:$1">$1</a>',
-    '<a href="mailto:$1">$2</a>'
+    '<a href="mailto:$1">$2</a>',
+    '<li style="list-style-position: inside; padding:10px">$1</li>'
     );
     
-  
   $str = preg_replace ($simple_search, $simple_replace, $str);
   $str = nl2br($str);
   return $str;
@@ -313,7 +314,7 @@ if(!defined("CALLED_FROM_ADMIN"))
   function OpenTable($width = "100%")
   {
     //width="100%" is important.  Otherwise all of our tables will be text width.
-    echo "<table width=\"{$width}\" align=\"center\" class=\"cleartable\">\n";
+    echo "<table width=\"{$width}\" align=\"center\">\n";
   }
   
   /**

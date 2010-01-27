@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ 
- 
+ /*
 if(!defined("ADMIN_FILE"))
 {
   die("Access denied.");
@@ -86,7 +86,7 @@ function logout()
   session_unset();
   session_destroy();
 }
-
+*/
 /**
  * CompileAdmin()
  *
@@ -99,9 +99,10 @@ function logout()
  * @param mixed $body
  * @return
  */
+ /*
 function CompileAdmin($head,$body)
 {
-  /*if we were not passed arrays, then say goodbye*/
+  /*if we were not passed arrays, then say goodbye
   if(!is_array($head) || !is_array($body))
   {
     echo "must be array\n";
@@ -123,7 +124,7 @@ function CompileAdmin($head,$body)
   echo "</tr></table>\n";
 }
 
-/**
+
  * OpenTable()
  *
  *  The administration OpenTable() function requires an argument to define
@@ -132,20 +133,20 @@ function CompileAdmin($head,$body)
  * 
  * @param mixed $title
  * @return
- */
+ 
 function OpenTable_Ex($title)
 {
   echo "<table align=\"center\"><tr><th>{$title}</th></tr><tr><td>";
 }
 
-/**
+
  * CloseTable()
  * 
  * @return
- */
+
 function CloseTable_Ex()
 {
   echo "</td></tr></table>";
 }
-
+ */
 ?> 

@@ -108,6 +108,7 @@ fieldset {
 	padding:0px;
 	border: 1px solid #a1a1a1;
 }
+
 	/*********************************
  	 **  	  Content Styles		**
  	 *********************************/	
@@ -132,4 +133,11 @@ fieldset {
 		padding:10px;
 		color:#333333;
 	}
+	
+.left{
+	text-align:left;
+}
+.right{
+	text-align:right;
+}
 	

@@ -66,7 +66,7 @@
 
 	}
 	
-	function editLOAs($status_id = 1){
+	function EditLOAs($status_id = 1){
 	
 		global $db;
 
@@ -116,28 +116,35 @@ $num = 1;
 	function EditStatus($member_id){
 		global $db;
 		
-		$form = new BayonetForm($_SERVER['PHP_SELF'], "POST");
+		$form = new BayonetForm("", "POST");
 		if($form->VerifySubmit('processed')){
-			
+			echo "Please wait while your information is being processed...";
+			$status_id = $form->request['status'];
+			$db->query("UPDATE `rudi_unit_members` SET `status_id` = '$status_id' WHERE `member_id` = '$member_id' LIMIT 1");
+			PageRedirect(1, "?op=adjutant&edit=loas&member={$member_id}");
 			return;
 		}
 		
 		$result = $db->Query("SELECT * FROM `rudi_unit_members` JOIN `rudi_ranks` ON rudi_unit_members.rank_id=rudi_ranks.rank_id WHERE `member_id` = '$member_id' LIMIT 1");
 		$row = $db->FetchRow($result);
 ?>
-		<table width="100%" style="text-align:center;">
+		<center>
+		<table width="50%" style="text-align:center;">
 		<tr><th>Rank</th><th>Soldier</th><th>Status</th></tr>
 		<tr>
 			<td><?php echo $row['shortname']; ?></td>
 			<td><?php echo $row['first_name']." ".$row['last_name']; ?></td>
 			<td style="text-align:left;">
-				<?php $form->radioButton('status', 1, true); ?>Active<br />
-				<?php $form->radioButton('status', 2); ?>On Leave<br />
-				<?php $form->radioButton('status', 3); ?>On Extended Leave
+				<?php $form->radioButton('status', 1, $row['status_id'] == 1 ? true : false); ?>Active<br />
+				<?php $form->radioButton('status', 2, $row['status_id'] == 2 ? true : false); ?>On Leave<br />
+				<?php $form->radioButton('status', 3, $row['status_id'] == 3 ? true : false); ?>On Extended Leave
 			</td>
 		</tr>
+		<tr><td colspan="3"><?php $form->submitButton('processed'); ?></td></tr>
 		</table>
+		</center>
 <?php
+
 		$form->__destruct();
 		
 	}

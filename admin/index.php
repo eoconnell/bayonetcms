@@ -31,6 +31,7 @@ $db->Connect(
   $config['sql']['password']
   );
 $db->Select_db($config['sql']['database']);
+
 //$config['logs']['dir'] = "../logs/";
 
 include 'header.php';

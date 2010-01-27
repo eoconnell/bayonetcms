@@ -24,12 +24,6 @@ $debug_output = sprintf("Page generated in %.3f seconds | Memory: real(%.3fmb) p
                 $totaltime, ((float)memory_get_usage()/1024/1024), ((float)memory_get_peak_usage()/1024/1024), $phpversion, $db_connections, $db_queries, $db_fetches, $db_frees);
 ?>
 
-<?php
- if($config['debug']['enabled']){ 
-	logQueueFlush();
- } 
-?>
-
 <div class="footer">
 
 		<br />
@@ -47,6 +41,13 @@ $debug_output = sprintf("Page generated in %.3f seconds | Memory: real(%.3fmb) p
 
 </div>
 
+<?php
+ if($config['debug']['enabled']){ 
+	logQueueFlush();
+ } 
+?>
+
 </body>
 </html>
-<?php ob_flush();?> 
+<?php ob_flush();?>
+ 

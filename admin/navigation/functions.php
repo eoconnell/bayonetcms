@@ -1,3 +1,41 @@
+<style> 
+
+ul {
+	margin: 0;
+}
+ 
+#contentLeft {
+	width: 400px;
+}
+ 
+#contentLeft li {
+	list-style: none;
+	margin: 0 0 4px 0;
+	padding: 10px;
+	background-color:#a1a1a1;
+	border: #CCCCCC solid 1px;
+	color:#fff;
+	text-align:center;
+	cursor:move;
+}
+
+</style>
+<script type="text/javascript" src="scripts/jquery-ui-1.7.1.custom.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+						   
+	$(function() {
+		$("#contentLeft ul").sortable({ opacity: 0.6, cursor: 'move', update: function() {
+			var order = $(this).sortable("serialize") + '&action=updateOrder'; 
+			$.post("navigation/updateDB.php", order, function(theResponse){
+				 $("#updateStatus").html(theResponse);
+			}); 															 
+		}								  
+		});
+	});
+ 
+});	
+</script> 
 <?php
 /**
  * Bayonet Content Management System
@@ -28,12 +66,26 @@ function ListNavigation(){
   $result = $db->Query("SELECT `nav_id`, `title`, `weight` FROM `bayonet_navigation` ORDER BY `weight`");
   $data = $db->Fetch($result);
   
-  echo "|0|Home|0|<br />";
+  ?>
+  	 	 <div id="contentLeft">
+	 		<table> 
+	 			<tr>
+				 	<th>News Reel Order</th>
+			 		<td id="updateStatus"></td>
+			 	</tr>
+		 	</table>
+		 	<ul>
+  <?php
   
   foreach($data as $nav){
   	
-	  	echo "|{$nav['nav_id']}|{$nav['title']}|{$nav['weight']}|<br />";  
+	  	echo "<li id=\"recordsArray_{$nav['nav_id']}\">{$nav['title']}</li>";  
   }
+  ?>
+  		  </ul>
+		  Click and drag on a slide to change the order. Wait for confirmation indicating the changes have been saved.
+	 	</div> 
+  <?php
   
 }
 ?>

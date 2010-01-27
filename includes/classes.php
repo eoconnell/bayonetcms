@@ -68,13 +68,13 @@ class BayonetForm
 		echo "<input type=\"reset\" value=\"{$value}\" />\n";
 	}
 	
-	function textField($extern_name, $value = NULL, $isPassword = false)
+	function textField($extern_name, $value = NULL, $isPassword = false, $size = NULL, $max = NULL)
 	{
 		$type = 'text';
 		if($isPassword) $type = 'password';
 		
 		$value = filter_var($value, FILTER_SANITIZE_STRING);
-		echo "<input type=\"{$type}\" name=\"{$extern_name}\" value=\"$value\" />\n";	
+		echo "<input type=\"{$type}\" name=\"{$extern_name}\" value=\"$value\" size=\"{$size}\" maxLength=\"{$max}\" />\n";	
 	}
 	
 	function radioButton($extern_name, $value, $isChecked = false)

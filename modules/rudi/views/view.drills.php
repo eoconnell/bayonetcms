@@ -25,9 +25,14 @@ function Rating($val)
     return "Bad Value";   
 }
 
-?>
-<?php if(isset($_GET['id'])): ?>
+//$this->getMemberAttendance();
 
+OpenContent();
+?>
+<div class="contentHeading">Drills</div>
+<div class="content">
+
+<?php if(isset($_GET['id'])): ?>
 <table cellspacing="20" class="rudi" align="left" style="width: 100%;">
 <tr>
   <th class="header">News</th>
@@ -53,7 +58,7 @@ function Rating($val)
 	<th class="header">Soldier</th>
 	<th class="header">Performance Rating</th>
 	<th class="header">Initiative Rating</th>
-	<th class="header">Early Excusal</th>
+	<th class="header">Excusal</th>
 	<th class="header">Excusal Reason</th>
 </tr>
 <?php foreach($drills->manifest->members as $member): ?>
@@ -67,7 +72,7 @@ function Rating($val)
 	<td class="rudi"><?php echo $pRating; ?>&nbsp;</td>
 	<td class="rudi"><?php echo $iRating; ?>&nbsp;</td>
 	<td class="rudi"><?php echo ($member->excusal ? "Yes" : "No"); ?>&nbsp;</td>
-  	<td class="rudi"><?php echo $member->excusal_reason; ?>&nbsp;</td>
+  	<td class="rudi"><?php echo $this->evalData($member->excusal_reason); ?>&nbsp;</td>
 </tr>
 <?php endforeach; ?>  
 </table>
@@ -93,9 +98,25 @@ function Rating($val)
 <?php endforeach; ?>
 </table>
 
-
+</div>
 <?php 
+CloseContent();
+OpenContent();
+?>
+<?php if(isset($_GET['stats']) && $_GET['stats'] == 'true'): ?>
+<div class="contentHeading">Statistics</div>
+<div class="content">
+<?php
+//decho($drills->getMemberAttendanceFull());
+require_once 'view.drills.statistics.php';
+?>
+</div>
+</div>
 
+<?php endif; ?>
+
+<?php
+CloseContent();
 decho('DATA FOR NO ID QUERY');
 decho($drills->manifest);
 ?>
