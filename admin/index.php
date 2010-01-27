@@ -19,10 +19,10 @@
  
 session_start();
  
-include '../includes/debug.php';
-include '../includes/config.php'; 
-include '../includes/sql.class.php';
-include '../includes/functions.php';
+include '../include/debug.php';
+include '../include/config.php'; 
+include '../include/sql.class.php';
+include '../include/functions.php';
 
 $db = new Bayonet_SQL();
 $db->Connect(

@@ -32,17 +32,17 @@ $starttime = $starttime[1] + $starttime[0];
 
 <!-- jQuery 1.3.2  -->
 <script type="text/javascript" src="scripts/jquery-1.3.2.min.js"></script>
-<!-- PASSWORD CHECK -->
-<script type="text/javascript" src="../functions.js"></script>
+<!-- PASSWORD CHECK 
+<script type="text/javascript" src="../functions.js"></script> -->
 
 <!-- markItUp! -->
-<script type="text/javascript" src="../markitup/markitup/jquery.markitup.pack.js"></script>
+<script type="text/javascript" src="scripts/markitup/markitup/jquery.markitup.pack.js"></script>
 <!-- markItUp! toolbar settings -->
-<script type="text/javascript" src="../markitup/markitup/sets/bbcode/set.js"></script>
+<script type="text/javascript" src="scripts/markitup/markitup/sets/bbcode/set.js"></script>
 <!-- markItUp! skin -->
-<link rel="stylesheet" type="text/css" href="../markitup/markitup/skins/markitup/style.css" />
+<link rel="stylesheet" type="text/css" href="scripts/markitup/markitup/skins/markitup/style.css" />
 <!--  markItUp! toolbar skin -->
-<link rel="stylesheet" type="text/css" href="../markitup/markitup/sets/bbcode/style.css" /> 
+<link rel="stylesheet" type="text/css" href="scripts/markitup/markitup/sets/bbcode/style.css" /> 
 <script type="text/javascript">
 <!--
 $(document).ready(function()    {
