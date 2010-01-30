@@ -7,18 +7,10 @@ define('BAYONET_ROOT', basename(dirname('.')));
 define('BAYONET_INCLUDE', BAYONET_ROOT . '/include');
 define('BAYONET_CONFIG', BAYONET_ROOT . '/include/config.ini');
 
-require BAYONET_INCLUDE . '/config.php'; 
 require BAYONET_INCLUDE . '/debug.php';
 require BAYONET_INCLUDE . '/sql.class.php';
 require BAYONET_INCLUDE . '/functions.php';
 
-$db = new Bayonet_SQL();
-$db->Connect(
-  $config['sql']['hostname'],
-  $config['sql']['username'],
-  $config['sql']['password']
-  );
-$db->Select_db($config['sql']['database']);
 
 class Bayonet_Theme
 {
@@ -38,7 +30,7 @@ class Bayonet_Theme
 	{
 		if(!isset($_GET['theme']))
 		{
-			self::$name = Bayonet_Config::$ini['Theme']['name'];	
+			self::$name = Bayonet_Config::$ini['site']['theme'];	
 		}
 		else
 		{
@@ -62,7 +54,7 @@ class Bayonet_Theme
 		self::$header = self::$root_path . '/header.php';
 		self::$footer = self::$root_path . '/footer.php';
 		
-		decho(get_class_vars(Bayonet_Theme));
+		//decho(get_class_vars(Bayonet_Theme)); //do not re-enable this
 		self::load(); 
 	}
 	
@@ -80,8 +72,19 @@ class Bayonet_Theme
 	
 	static function load()
 	{
-		global $db;
-
+		global $db, $config;
+		
+		// Globally referenced configuration and database variables
+		$config = Bayonet_Config::$ini;
+		$db = new Bayonet_SQL();
+		
+		$db->Connect(
+		  $config['sql']['hostname'],
+		  $config['sql']['username'],
+		  $config['sql']['password']
+		  );
+		$db->Select_db($config['sql']['database']);
+		
 		decho("Loading theme: '" . self::$name . "'");	
 		require self::$index;
 	}
@@ -104,7 +107,7 @@ class Bayonet_Config
 }
 
 class Bayonet
-{	
+{
 	static function init()
 	{
 		decho('Initializing Bayonet');
@@ -113,8 +116,8 @@ class Bayonet
 	}
 }
 
-
 Bayonet::init();
+
 
 
 ?>
