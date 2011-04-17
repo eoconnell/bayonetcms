@@ -127,7 +127,7 @@ function getNumOfComments($id){
   * Function that gets the desired news from the database and returns it as an array
   * @param id - (optional) news_id cooresponding to `bayonet_news`
   */  
-function getNews($id = NULL){
+function getNews($id = NULL, $limit = NULL, $index = 0){
 
 	global $db;
 	$query = "SELECT n.news_id, n.title, n.message, n.date, n.category_id, u.username AS author, c.name AS catname, c.image AS catimage ".
@@ -138,11 +138,12 @@ function getNews($id = NULL){
  		$query = $query."WHERE n.news_id = '$id' ";
 	}else{
 		$query = $query."ORDER BY date DESC";
-		if($limit !=NULL){
-			$query = $query." LIMIT '$limit'";		
-		}
+		if($index > 0)
+			$query = $query." LIMIT $index, $limit";
+		else if($limit !=NULL)
+			$query = $query." LIMIT $limit";
  	}
- 		
+	decho($query);
 	$result = $db->Query($query);
 	$data = $db->Fetch($result);
 	
@@ -157,6 +158,12 @@ function getNews($id = NULL){
 function displayNews($data){
 	
 	date_default_timezone_set("America/New_York");
+	
+
+	if(empty($data)){
+		ReportError("Sorry, we found no news using these parameters.");
+		echo "<br />";	
+	}
 	
 
 	foreach($data as $news)
@@ -235,7 +242,7 @@ function commentForm(){
 						echo "Guest";
 					}
 				?>
-				<br><span><?php echo date('F jS', time()); ?></span></p>
+				<br /><span><?php echo date('F jS', time()); ?></span></p>
 			</div>
 			<form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST" id="comment_form">
 				<!-- <fieldset> -->

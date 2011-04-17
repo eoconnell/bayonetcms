@@ -3,7 +3,7 @@
 	$result = $this->db->query("SELECT * FROM `rudi_combat_units` WHERE `detachment` = 0");
 	$row = $this->db->fetch($result);
 	foreach($row as $unit){
-		echo "<tr><th colspan=\"5\">{$unit['name']}</th></tr>";
+		echo "<tr><th colspan=\"5\">{$unit['name']} : {$unit['callsign']}</th></tr>";
 ?>
 	<tr>
       <!-- Table header -->

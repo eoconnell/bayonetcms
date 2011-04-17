@@ -3,6 +3,11 @@
 		if(isset($_GET['award'])){
 			$award_id = $_GET['award'];
 			include 'view.awards.edit.php';
+		}else if(isset($_GET['add'])){
+			include 'view.awards.add.php';
+		}else if(isset($_GET['delete'])){
+			$award_id = $_GET['delete'];
+			include 'view.awards.delete.php';
 		}else{
 			echo "<h3>Award Classes</h3>";
 			$classes = getAwardClasses();
@@ -18,6 +23,7 @@
 				$class_id = $_GET['cid'];
 				$awards = getAwardsByClass($class_id);
 				echo "<h3>Awards</h3>";
+				echo LinkInternal('<img src="images/add.png" />&nbsp;Add New Award','?op=rudi&show=awards&cid={$class_id}&add=true');
 				OpenTable();
 				foreach($awards as $award){
 					echo "<tr><td>".$award['name']."</td>

@@ -115,7 +115,7 @@ function logQueueFlush($force = false)
 	static $log_message_last_count = 0;
 	static $next = false;
 	
-	OpenContent();
+	//OpenContent();
 	echo "<div class=\"contentHeading\">Bayonet Debug Messages</div>";
 	echo "<div class=\"content\">";
 	
@@ -168,7 +168,7 @@ function logQueueFlush($force = false)
 	}
 	
 	echo "</div>";
-	CloseContent();
+	//CloseContent();
 	error_reporting(1);
 }
 

@@ -330,26 +330,27 @@ if(!defined("CALLED_FROM_ADMIN"))
   /**
    * OpenContent()
    * Begins a Bayonet site table.
+   * MOVE FOR CUSTOMIZED USE FOR THEMES
    * @return
    */
-  function OpenContent()
+/*  function OpenContent()
   {
   	echo "<div class=\"contentBorder1\">";
 	echo "<div class=\"contentBorder2\">";
-  }
+  } */
   
   /**
    * CloseContent()
    * Closes a Bayonet site table.
    * @return
    */
-  function CloseContent()
+ /* function CloseContent()
   {
     echo "</div>";
    	echo "</div>";
-  }
+  } */
 }
-
+/* MOVED TO THEMES
 function OpenBlock($title = 'New Block')
 {
   OpenContent();
@@ -361,7 +362,7 @@ function CloseBlock()
 {
   echo "</div>";
   CloseContent();
-}
+} */
 
 static $error_stack_messages = array(); //global stack of errors accumulated throughout execution
 function push_error_stack($message)
@@ -404,9 +405,9 @@ function handle_error ($errno, $errstr, $errfile, $errline)
 function ReportError($message)
 {
   //WriteLog($message,BAYONET_LOG_ERROR);
-  OpenContent();
+  //OpenContent();
   echo "<div class=\"contentHeading\">Error Message</div><div class=\"content\">{$message}</div>";
-  CloseContent();
+  //CloseContent();
 }
 
 /**
@@ -421,9 +422,9 @@ function ReportError($message)
 function ReportHack($message)
 {
   //WriteLog($message,BAYONET_LOG_HACK);
-  OpenContent();
+  //OpenContent();
   echo "<div class=\"contentHeading\">Hacking Attempt</div><div class=\"content\">{$message}</div>";
-  CloseContent();
+  //CloseContent();
 }
 
 /**
@@ -550,39 +551,6 @@ function WriteLogBayonet($message,$flag)
   }else{
   	//echo "could not write to file because file does not exist.<br />";  
   }
-}
-
-/**
- * UnderConstruction()
- *
- * Displays a site-wide message across the page header.
- *  
- * @param mixed $message
- * @param mixed $flag Acceptable flags are BAYONET_SITE, and BAYONET_SECTION
- * @return
- */
-define('BAYONET_SITE','bayonet_site');
-define('BAYONET_SECTION','bayonet_section');
-function UnderConstruction($message = NULL, $flag = BAYONET_SITE)
-{
-  $timestamp = date("Y-M-d h:m:s");
-  OpenTable();
-    switch($flag)
-    {
-      case BAYONET_SITE:
-        echo "<tr><th>Site is currently under construction : $timestamp</th></tr>";
-        break;
-      case BAYONET_SECTION:
-        echo "<tr><th>Section currently under construction : $timestamp</th></tr>";
-    }
-
-  if(!is_null($message))
-  {
-    echo "<tr><td><i>$message</i></td></tr>";
-  }
-    
-  CloseTable();
-  echo "<br>";
 }
 
 /**

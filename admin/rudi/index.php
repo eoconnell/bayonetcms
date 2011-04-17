@@ -49,6 +49,7 @@
 		$th = array('Rudi Options','');
         $td = array(
 			LinkInternal('Roster','?op=rudi&show=members'),
+			LinkInternal('Units','?op=rudi&show=units'),
 			LinkInternal('Awards', '?op=rudi&show=awards')   
         );
         

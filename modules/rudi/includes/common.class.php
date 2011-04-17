@@ -708,10 +708,10 @@ class RUDI_Common
    * @param int $unit_id
    */
   public function displayUnitsRec($unit_id){
-	    $result = $this->db->Query("SELECT * FROM `rudi_combat_units` WHERE `detachment` = '$unit_id'");
+	    $result = $this->db->Query("SELECT * FROM `rudi_combat_units` WHERE `detachment` = '$unit_id' ORDER BY `weight`");
 	    $row = $this->db->FetchObject($result,'UnitInfo');
 	 	foreach($row as $unit){	
-			echo "<tr><th colspan=\"5\">{$unit->name}</th></tr>";
+			echo "<tr><th colspan=\"5\">{$unit->name} : {$unit->callsign}</th></tr>";
 			$this->printRoster($unit->unit_id, $unit->leader_id);   
 			$this->displayUnitsRec($unit->unit_id);		 
 		}

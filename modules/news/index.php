@@ -27,6 +27,20 @@ include 'modules/news/functions.php';
 
 $logged_id = 2;
 
+if(!defined('INDEX_MODULE')){
+	$page_num = 1;
+	$page_num = $_GET['page']; //get variable for page number
+	
+	$page_num --; //so the $index can be calculated easier while keeping [1,n] page numbers
+	
+	$limit = 3; //number of items per page
+	$index = $page_num * $limit;
+
+}else{
+	//only do the limit
+	$limit = 3;
+}
+
 if(isset($_GET['id']))
 {
   $news_id = $_GET['id'];
@@ -36,9 +50,35 @@ if(isset($_GET['id']))
 }
 else
 {
-  displayNews(getNews());
+	$news = getNews(null, $limit, $index);
+	displayNews($news);
+	OpenContent();
+	if(defined('INDEX_MODULE')){
+?>
+		<div style="float:right;">
+			<a href="?load=news">Read All</a>&nbsp;
+		</div>
+
+<?php
+	}else{
+		if($page_num > 0)
+			echo "&nbsp;<a href=\"?load=news&page={$page_num}\">More Recent News</a>";
+		
+		decho("count: ".count($news));
+		if(count($news) == $limit){
+?>
+		<div style="float:right;">
+			<a href="?load=news&page=<?php echo ($page_num+2); ?>">Older News</a>&nbsp;
+		</div>
+<?php
+		}
+	}
+	echo "<div class=\"clear\"></div>";
+	CloseContent();
   return;
 }
+
+
 
 
 ?>

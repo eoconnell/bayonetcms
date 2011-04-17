@@ -15,7 +15,7 @@ try {
 ob_start("fatal_error_handler");
 set_error_handler("handle_error");
 
-
+require_once self::$root_path . '/include/functions.php';
 
 include self::$header;
 //session_start(); 

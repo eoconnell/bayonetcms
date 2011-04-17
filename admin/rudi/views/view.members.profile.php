@@ -51,6 +51,8 @@
 			decho($query);
 		 	$db->Query($query);
 		 	
+		 	$db->Query("UPDATE `rudi_roles_container` SET `role_id` = '$role_id' WHERE `member_id` = '$member_id' LIMIT 1");
+		 	
 		 	/* do the role query as well */
 		 	PageRedirect(1, "?op=rudi&show=members&profile={$member_id}");
 		 	return;		 
