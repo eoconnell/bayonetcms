@@ -39,6 +39,8 @@ if(isset($_GET['edit'])){
 }
 else{
 	ListNews();
+	echo "</td><td class=\"panel-shadow\">";
+	CreateNews();
 }
 
 

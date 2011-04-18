@@ -23,6 +23,10 @@
  * -weight
  * -directory name
  */
+ 
+ ?>
+ <div style="text-align:left;"><h2>- Manage Modules</h2></div>
+ <?php
 
 if(!defined("ADMIN_FILE"))
 {
@@ -32,24 +36,22 @@ if(!defined("ADMIN_FILE"))
 echo "Do a database for the index modules, thats all this really is anyway.<br />";
 include $basedir.'modules/functions.php';
 
-if(isset($_GET['edit']))
-{
+if(isset($_GET['edit'])){
   $module_id = $_GET['edit'];
   EditModule($module_id);
   return;
-}
-
-if(isset($_GET['delete']))
-{
+  
+}else if(isset($_GET['delete'])){  
   $module_id = $_GET['delete'];
   DeleteModule($module_id);
   return;
-}
-
-if(isset($_GET['create']))
-{
+  
+}else if(isset($_GET['create'])){
   NewModule();
   return;
+  
+}else{
+	ListModules();
 }
 
 //echo "<table align=\"center\" width=\"200px\"><tr><th>".LinkInternal('Create a Module','?load=admin&op=modules&create=true')."</th></tr></table>";

@@ -1,4 +1,4 @@
-<?php //define('BLOCK_RIGHT_DISABLE','block_right_disable'); ?>
+<?php define('BLOCK_RIGHT_DISABLE','block_right_disable'); ?>
 <?php $medals_path = $this->images_path . "/medals/"; ?>
 
 <html>

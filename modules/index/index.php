@@ -10,7 +10,7 @@
 
 define('INDEX_MODULE', true);
 
-$result = $db->Query("SELECT `dir_name` FROM `bayonet_modules` ORDER BY `weight` ASC");
+$result = $db->Query("SELECT `dir_name` FROM `bayonet_modules` WHERE `status` = 'Active' ORDER BY `weight` ASC");
 $modules = $db->Fetch($result);
 foreach($modules as $module)
 {

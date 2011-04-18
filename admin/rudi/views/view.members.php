@@ -9,13 +9,18 @@
 		}else if(isset($_GET['award'])){
 			$member_id = $_GET['award'];
 			include 'view.members.award.php';
+		}else if(isset($_GET['create']) && $_GET['create'] == "soldier"){
+			include 'view.members.new.php';
 		}else{
 					
 			 global $db;
 			 
-			 echo "<h3>Current Members</h3>";
-			 echo "<table width=\"100%\" style=\"text-align:center;\">";
-			 echo "<tr><th>Rank</th><th>Soldier</th><th>Main Info</th><th>Service Record</th><th>Medal Record</th></tr>";
+			 echo LinkInternal('New Soldier','?op=rudi&show=members&create=soldier');
+?>			 
+			 <h3>Current Members</h3>
+			 <table width="100%" style="text-align:center;">
+			 <tr><th>Rank</th><th>Soldier</th><th>Main Info</th><th>Service Record</th><th>Medal Record</th></tr>
+<?php
 			 $result = $db->Query("SELECT * FROM `rudi_unit_members` JOIN `rudi_ranks` ON rudi_unit_members.rank_id=rudi_ranks.rank_id WHERE rudi_unit_members.status_id <= 3 ORDER BY rudi_ranks.weight DESC , rudi_unit_members.date_promotion ASC , rudi_unit_members.date_enlisted ASC");
 			 $row = $db->Fetch($result);
 			 
@@ -28,10 +33,11 @@
 				echo "<tr>";	 
 			 }
 			 CloseTable();
-			 
-			 echo "<h3>Previous Members</h3>";
-			 echo "<table width=\"100%\" style=\"text-align:center;\">";
-			 echo "<tr><th>Rank</th><th>Soldier</th><th>Main Info</th><th>Service Record</th><th>Medal Record</th></tr>";
+?>
+			 <h3>Previous Members</h3>
+			 <table width="100%" style="text-align:center;">
+			 <tr><th>Rank</th><th>Soldier</th><th>Main Info</th><th>Service Record</th><th>Medal Record</th></tr>
+<?php
 			 $result = $db->Query("SELECT * FROM `rudi_unit_members` JOIN `rudi_ranks` ON rudi_unit_members.rank_id=rudi_ranks.rank_id WHERE rudi_unit_members.status_id > 3 ORDER BY rudi_ranks.weight DESC, rudi_unit_members.date_promotion ASC, rudi_unit_members.date_enlisted ASC");
 			 $row = $db->Fetch($result);
 			 

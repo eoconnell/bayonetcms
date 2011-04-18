@@ -18,6 +18,7 @@
  */ 
  
 define("MODULE_FAIL", "You cannot access this module directly.<br/>\n",true);
+define('BLOCK_RIGHT_DISABLE', true);
 
 if(!defined("MODULE_FILE"))
 {

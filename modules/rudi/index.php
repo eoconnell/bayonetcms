@@ -1,11 +1,14 @@
 <link rel="stylesheet" type="text/css" href="modules/rudi/includes/rudi.css" media="screen"/>
 <?php
-//include 'header.php';
+
+	include 'header.php';
+
 //include 'includes/debug.php';
 //require 'includes/sql.class.php';
 include_once 'includes/common.class.php';
 include_once 'includes/drills.class.php';
 include_once 'includes/information.class.php';
+define('BLOCK_RIGHT_DISABLE', true);
 
 OpenContent();
 	echo "<div class=\"contentHeading\">RUDI: Realism Unit Data Interface</div>";
@@ -66,7 +69,14 @@ class RUDI_Gateway extends RUDI_Common
           //$this->drills = $this->getDrills($_GET['id']);
           $drills = new RUDI_Drills($_GET['id']);
           include 'views/view.drills.php';
-          break;       
+          break; 
+		case 'points':
+			$this->Update();
+			include 'views/view.points.php';
+			break;
+		case 'weapons':
+          	include 'views/view.weapons.php';
+			break;    
       }
       echo "</td></tr>";
       CloseTable();

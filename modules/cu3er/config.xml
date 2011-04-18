@@ -1,0 +1,86 @@
+<cu3er>
+	<settings>	
+		<auto_play> 
+			<defaults symbol="linear" /> 
+			<tweenIn x="5" y="5" width="630" height="10" tint="0xFFFFFF" alpha="0.5"/> 
+			<tweenOver alpha="1"/> 
+		</auto_play> 
+	
+		<prev_button>				
+			<tweenIn x="20" y="150" width="80" height="80" alpha="0" /> 
+			<tweenOver alpha="0" /> 
+		</prev_button> 
+		
+		<next_button>			
+			<tweenIn x="610" y="150" width="80" height="80" alpha="0" /> 
+			<tweenOver alpha="0" /> 
+		</next_button> 
+		
+		<prev_symbol> 
+			<defaults type="2" /> 
+			<tweenIn x="25" y="150" alpha=".5" scaleX="2.0" scaleY="2.0"  /> 
+			<tweenOver time="0.15" x="30" scaleX="2.5" scaleY="2.5" /> 
+		</prev_symbol> 
+			
+		<next_symbol> 
+			<defaults type="2" /> 
+			<tweenIn x="615" y="150" alpha=".5" scaleX="2.0" scaleY="2.0" /> 
+			<tweenOver time="0.15" x="620" scaleX="2.5" scaleY="2.5" /> 
+		</next_symbol>		
+ 
+		<description> 
+				<defaults
+					round_corners="0, 0, 0, 0"
+					 
+					heading_font="Verdana"
+					heading_text_size="42"
+					heading_text_color="0xFFFFFF"          
+					heading_text_margin="0, 0, 0,24"  
+					 
+					paragraph_font="Verdana"
+					paragraph_text_size="11"
+					paragraph_text_color="0xFFFFFF"
+					paragraph_text_margin="0, 0, 0, 24"       
+				/>
+			<tweenIn x="0" y="220" width="640" height="100" alpha="0.15" /> 
+			<tweenOver alpha="0.3"/> 
+		</description>	
+	
+		<transitions slicing="vertical" direction="down" duration="1.0" delay="0.2" cube_color="0x000000" /> 
+	
+	</settings> 
+ 
+ 
+	<slides> 
+	
+		<slide> 
+			<url>http://www.3rd-infantry-division.org/modules/cu3er/images/team2.png</url>
+		</slide> 
+		
+		<transition direction="left"/>		
+		
+		<slide> 
+			<url>http://www.3rd-infantry-division.org/modules/cu3er/images/arma2.png</url>
+			<link target="_self">http://www.3rd-infantry-division.org/forums/index.php?board=13.0</link> 
+		</slide> 
+		
+		<transition duration="0.6" delay=".2" direction="down"/>		
+		
+		<slide> 
+			<url>http://www.3rd-infantry-division.org/modules/cu3er/images/agwc3.png</url> 
+		</slide>	
+		
+		<transition num="3" slicing="horizontal" direction="left" delay="0.05"/>			
+		
+		<slide> 
+			<url>http://www.3rd-infantry-division.org/modules/cu3er/images/recruitmentGT.png</url> 
+		</slide> 
+			
+		<transition num="3"/>		
+		
+		<slide> 
+			<url>http://www.3rd-infantry-division.org/modules/cu3er/images/arma2move.png</url>  
+		</slide>				
+			
+	</slides> 
+</cu3er>

@@ -162,6 +162,12 @@ class Bayonet_SQL
   	
     return mysqli_num_rows($result);
   }
+  
+  public function InsertID(){
+  	decho("Fetching insert id for auto increment");
+  	
+  	return mysqli_insert_id($GLOBALS['___mysqli_ston']);  
+  }
 }
 
 ?>

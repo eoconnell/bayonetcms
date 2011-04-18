@@ -11,6 +11,9 @@
 		if($_GET['add']){
 			AddAwardRecord($_GET['award']);
 		}
+	}else if(isset($_GET['delete'])){
+		$record_id = $_GET['delete'];
+		DeleteAwardRecord($record_id);
 	}else{
 	
 		echo "<div style=\"text-align:left;\">".LinkInternal('Back to Roster', '?op=rudi&show=members')."</div>";
