@@ -1,7 +1,7 @@
 <?php
 
 //basename(dirname('.'))
-$dirname = "/home/thirdid/3rd-infantry-division.org";
+$dirname = "/path/to/bayonet/here";
 
 define('BAYONET_ROOT', $dirname);
 define('BAYONET_INCLUDE', BAYONET_ROOT . '/include');

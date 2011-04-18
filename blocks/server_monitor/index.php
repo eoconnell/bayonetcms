@@ -1,6 +1,8 @@
 <?php
 
-$feed = fopen("http://module.game-monitor.com/216.245.211.59:28910/data/server.php","r");
+$server_ip = "123.123.123.123";
+$server_port = "12345";
+$feed = fopen("http://module.game-monitor.com/$server_ip:$server_port/data/server.php","r");
 $tmp = fgets($feed);
 $server = unserialize($tmp);
 
