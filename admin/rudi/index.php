@@ -43,6 +43,9 @@
 				break;
 			case 'drills':
 				include $basedir.'rudi/views/view.drills.php';
+				break;
+			case 'battles':
+				include $basedir.'rudi/views/view.battles.php';
 				break;       
 		}	
 	}else{
@@ -50,7 +53,8 @@
         $td = array(
 			LinkInternal('Roster','?op=rudi&show=members'),
 			LinkInternal('Units','?op=rudi&show=units'),
-			LinkInternal('Awards', '?op=rudi&show=awards')   
+			LinkInternal('Awards', '?op=rudi&show=awards'),
+			LinkInternal('Battles', '?op=rudi&show=battles')  
         );
         
         //render administration table

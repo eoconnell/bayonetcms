@@ -28,6 +28,7 @@ include 'modules/news/functions.php';
 $logged_id = 2;
 
 if(!defined('INDEX_MODULE')){
+	define('BLOCK_RIGHT_DISABLE', true);
 	$page_num = 1;
 	$page_num = $_GET['page']; //get variable for page number
 	
@@ -50,10 +51,11 @@ if(isset($_GET['id']))
 }
 else
 {
-	$news = getNews(null, $limit, $index);
-	displayNews($news);
-	OpenContent();
+
 	if(defined('INDEX_MODULE')){
+		$news = getNews(null, $limit, $index);
+		displayNews($news, true);
+		OpenContent();
 ?>
 		<div style="float:right;">
 			<a href="?load=news">Read All</a>&nbsp;
@@ -61,6 +63,26 @@ else
 
 <?php
 	}else{
+		
+		$news = getNews(null, $limit, $index);
+		
+		OpenContent();
+		if($page_num > 0)
+			echo "&nbsp;<a href=\"?load=news&page={$page_num}\">More Recent News</a>";
+		if(count($news) == $limit){
+?>
+			<div style="float:right;">
+				<a href="?load=news&page=<?php echo ($page_num+2); ?>">Older News</a>&nbsp;
+			</div>
+			<div class="clear"></div>	
+<?php
+		}
+		
+		CloseContent();
+		echo "<br />";
+		displayNews($news);
+		OpenContent();
+		
 		if($page_num > 0)
 			echo "&nbsp;<a href=\"?load=news&page={$page_num}\">More Recent News</a>";
 		

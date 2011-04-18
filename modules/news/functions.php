@@ -130,10 +130,11 @@ function getNumOfComments($id){
 function getNews($id = NULL, $limit = NULL, $index = 0){
 
 	global $db;
-	$query = "SELECT n.news_id, n.title, n.message, n.date, n.category_id, u.username AS author, c.name AS catname, c.image AS catimage ".
+	$query = "SELECT n.news_id, n.title, n.message, n.date, n.edited, n.category_id, u.username AS author, e.username AS eauthor, c.name AS catname, c.image AS catimage ".
                      "FROM `bayonet_news` AS n ".
                      "INNER JOIN `bayonet_news_categories` AS c ON c.category_id = n.category_id ".
-                     "LEFT OUTER JOIN `mybb_users` AS u ON u.uid = n.author_id ";
+                     "LEFT OUTER JOIN `bayonet_users` AS u ON u.user_id = n.author_id ".
+                     "LEFT OUTER JOIN `bayonet_users` AS e ON e.user_id = n.edited_id ";
  	if(isset($id)){
  		$query = $query."WHERE n.news_id = '$id' ";
 	}else{
@@ -155,7 +156,7 @@ function getNews($id = NULL, $limit = NULL, $index = 0){
   * Function that takes an array of news and displays it as html
   * @param data - associative array of news from the database
   */  
-function displayNews($data){
+function displayNews($data, $short = false){
 	
 	date_default_timezone_set("America/New_York");
 	
@@ -182,7 +183,19 @@ function displayNews($data){
 			</div>
 			<div class="content">
 				<img src="modules/news/categories/<?php echo $news['catimage']; ?>" alt="<?php echo $news['catname']; ?>" align="right" />
-				<?php echo bbcode_format($news['message']); ?>
+				<?php 
+					if($short) {
+						echo substr(bbcode_format($news['message']), 0, 1000)."...";
+						echo '<br /><br /><a href="?load=news&id='. $news['news_id'] .'">Continue reading.</a>';
+					} else {
+						echo bbcode_format($news['message']);
+					}
+				?>
+<?php 
+					if(!is_null($news['eauthor'])){ 
+						echo "<br /><div style=\"text-align:right; font-size: 10px; font-style:italic;\">Last edit: ".date('F j, Y, g:i a T', strtotime($news['edited']))." by ".$news['eauthor']."</div>";					
+					}
+?>
 			</div>	
 			<div class="contentFooter">
 				<table width="100%">
@@ -190,7 +203,7 @@ function displayNews($data){
 						<td style="text-align:left;">
 							View Comments: <a href="<?php echo $_SERVER['PHP_SELF']; ?>?load=news&amp;id=<?php echo $news['news_id']; ?>"><?php echo $numComments;?> Comments</a>
 						</td>
-						<td style="text-align:right;">Posted on: <?php echo date('D M j, Y g:i a T', strtotime($news['date'])); ?></td>
+						<td style="text-align:right;">Posted: <?php echo date('D F j, Y, g:i a T', strtotime($news['date'])); ?></td>
 					</tr>
 				</table>
 			</div>

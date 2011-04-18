@@ -38,7 +38,7 @@ timezone="EST"
 dir="logs/"
 
 [debug]
-enabled=true
+enabled=false
 show_messages=true
 repeat_messages=false
 

@@ -1,25 +1,22 @@
-table.rudi {
-	/* background: green; */
-}
 /*
-table{
+table.rudi{
   border:1px solid #000;  
 }
 
-tr{
+table.rudi tr{
   border:1px solid #000;
 }
 
-th{
+table.rudi th{
   padding:5px;
   border:1px solid #000;
-}
+} 
 
-td{
+table.rudi td{
   text-align:center;
   padding:2px;
   border:1px solid #000;
-} */
+}*/
 
 table.rudi td.data{
   text-align:left;
@@ -36,17 +33,19 @@ table.rudi th {
 table.rudi td {
 	text-align:center;
 	vertical-align: middle;
-	/* border: 1px solid #a1a1a1; */
+	/*border: 1px solid #a1a1a1;*/
 }
 
-table.rudi td.roster {
+
+/*table.rudi td.roster {
 	text-align:center;
 	vertical-align: middle;
 	border: 1px solid #a1a1a1;
-}
+	height: 40px;
+}*/
 
 table.rudi th.header {
-  /* table has a 5px padding so everything is 10px bigger than these values */
+  /*table has a 5px padding so everything is 10px bigger than these values*/
   width:100px;
   height:19px;
   color: #FFF;
@@ -54,7 +53,8 @@ table.rudi th.header {
   border: 1px solid #666;
   font-family: arial, helvetica, sans-serif;
   font-size:12px;
-}
+} 
+
 
 table.rudi td.info {
 	color: #333;
@@ -64,8 +64,54 @@ table.rudi td.info {
 	border: 1px solid #666;
 	font-family: arial, helvetica, sans-serif;
 	font-size:12px;
-}
+} 
 
 #thin {
   border:1px outset #333;
 }
+
+	table.rudiroster {
+		font-family: verdana;
+		font-size: 10px;	
+		width: 850px;
+		text-align: center;
+		color: #2c2921;
+		/*background-color: #b0aea2;*/
+		background-color: #6b675c;
+	}
+	
+	.rudiroster th {
+		background-color: #575551;
+		color: white;
+	}
+	.rudiroster td {
+		font-size: 10px;	
+		height: 25px;	
+	}
+	.rudiroster tr {
+		height: 25px;
+		/*background-color: #78756c;*/
+		background-color: #d6d6d6;
+	}
+	.rudiroster tr.unfilled {
+		background-color: #7e7e7e;
+		color: #9d9d9d;	
+	}
+	table.rudiroster td img {
+		padding:0px;	
+	}
+	
+	tr.null {
+		height: 10px;	
+	}
+	
+	.rudiroster tr.high {
+	/*	background-color: #898577;	*/
+		background-color: #e4e6e8;
+	}
+	
+	a.rosterlink, a.rosterlink:hover, a.rosterlink:visited {
+		font-size: 10px;	
+		color: #2c2921;
+		text-decoration: none;	
+	}

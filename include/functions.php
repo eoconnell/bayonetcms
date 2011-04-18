@@ -51,11 +51,13 @@ function bbcode_format ($str)
     '/\[url\=(.*?)\](.*?)\[\/url\]/is',
     '/\[align\=(.*?)\](.*?)\[\/align\]/is',
     '/\[size\=(.*?)\](.*?)\[\/size\]/is',
-    '/\[img\=(.*?)\](.*?)\[\/img\]/is',
+    '/\[img\](.*?)\[\/img\]/is',
     '/\[img align\=(.+?)\](.+?)\[\/img\]/is',
     '/\[mail\](.*?)\[\/mail\]/is',
     '/\[mail\=(.*?)\](.*?)\[\/mail\]/is',
-  	'/\[list\](.*?)\[\/list\]/is'
+    '/\[list\](.*?)\[\/list\]/is',
+    '/\[list=1\](.*?)\[\/list\]/is',
+    '/\[\*\]/is'
     );
 
   $simple_replace = array(
@@ -75,13 +77,16 @@ function bbcode_format ($str)
     '<a href="$1">$2</a>',
     '<div style="text-align: $1">$2</align>',
     '<font style="font-size:$1px;">$2</font>',
-    '<img src="$1" alt="$2"/>',
-    '<img src=\"$2\" align=\"$1\" />',
+    '<img src="$1"/>',
+    '<img src="$2" align="$1" style="padding:5px;" />',
     '<a href="mailto:$1">$1</a>',
     '<a href="mailto:$1">$2</a>',
-    '<li style="list-style-position: inside; padding:10px">$1</li>'
+    '<ul class="listbullet">$1</ul>',
+    '<ol>$1</ol>',
+    '<li>'
     );
     
+  
   $str = preg_replace ($simple_search, $simple_replace, $str);
   $str = nl2br($str);
   return $str;

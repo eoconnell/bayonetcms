@@ -55,6 +55,23 @@ include 'header.php';
     //this is so dirty...  sigh.
     if(is_loggedin())
     {
+	
+    	//GET ADMIN USER INFO - DEFINE IMPORTANT INFO
+    	$username = $_SESSION['username'];
+    	$result = $db->Query("SELECT user_id, level FROM bayonet_users WHERE username = '$username' LIMIT 1");
+    	$row = $db->FetchRow($result);
+    	define("ADMIN_USERNAME", $username);
+    	define("ADMIN_ID", $row['user_id']);
+    	define("ADMIN_LEVEL", $row['level']);
+    	
+    	
+   		if(isset($_GET['op'])){
+   		?>
+    		<script type="text/javascript">
+					window.location = window.location+"#operation";
+			</script>
+	  <?php   	
+    	}
       ?>
 
  <center>
@@ -65,7 +82,7 @@ include 'header.php';
 		<td><a href="index.php"><img src="images/bayonet_logo.jpg" alt="bayonet online web admin" /></a></td>
 		<td style="text-align:right">
 			<a href="?op=settings">Account Settings</a> &nbsp;|&nbsp;
-			<a href="?op=logout">Logout, <?php echo $_SESSION['username']; ?></a>
+			<a href="?op=logout">Logout, <?php echo ADMIN_USERNAME; ?></a>
 		</td>
 	</tr>
 </table>
@@ -109,6 +126,7 @@ include 'header.php';
  	</fieldset>
 
 <br />
+<a name="operation"></a>
 <div style="text-align:center"><?php include 'operation.php' ?></div>
 
   </div>

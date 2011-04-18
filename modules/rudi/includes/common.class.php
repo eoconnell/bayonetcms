@@ -2,6 +2,7 @@
 
 define('RUDI_PROFILE_SMALL', true);
 define('RUDI_PROFILE_BIG', false);
+define('RUDI_ROSTER_RESERVES', 12);
 
 class Soldier
 {
@@ -444,20 +445,60 @@ class RUDI_Common
    */
   protected function getCombatRecord($member_id)
   { 
+
   	$data = NULL;
     $query = sprintf( 
-      "SELECT c.date, c.status, u1.name, u1.website, u.war_id "
+      "SELECT s.title, s.date, s.status, u1.name, u1.website, s.war_id, s.home_score, s.visit_score "
       ."FROM rudi_combat_record AS c "
-      ."RIGHT OUTER JOIN rudi_war_stats AS u ON u.visit_unit_id = c.visitor_id "
-      ."RIGHT OUTER JOIN rudi_war_units AS u1 ON u1.name "
-      ."LEFT OUTER JOIN rudi_unit_members AS m ON m.member_id = c.member_id "
-      ."WHERE c.member_id = %d ORDER BY c.date DESC ", 
+      ."RIGHT OUTER JOIN rudi_war_stats AS s ON s.war_id = c.war_id "
+      ."RIGHT OUTER JOIN rudi_war_units AS u1 ON u1.visitor_id = s.visit_unit_id "
+      ."WHERE c.member_id = %d ORDER BY s.date DESC ", 
     (int)$member_id);
     
     $result = $this->db->Query($query);
+
     $data = $this->db->FetchObject($result,'CombatRecord');
 	
     return $data;
+  }
+  
+ /**
+   * RUDI_Common::getUnitArr()
+   *
+   * @param member_id $mID
+   * @return an array of the member's units orders from Team - Unit with name, id, & leader
+   */
+  function getUnitArr($mID){
+  	$unitArr = array();
+  	
+  		$result = $this->db->Query("SELECT * FROM `rudi_unit_members` WHERE `member_id` = $mID LIMIT 1");
+  		$member = $this->db->FetchRow($result);
+		$curUnit = $member['cunit_id'];
+
+		$i = 0;
+	
+	$subOf = $curUnit;
+	while($subOf != 0){
+		$unitID = $subOf; 
+		$result = $this->db->Query("SELECT * FROM `rudi_combat_units` WHERE `unit_id` = $subOf LIMIT 1");
+		$data = $this->db->fetch($result);
+		foreach($data as $units){ 
+			$subOf = $units['detachment'];
+			$leader = $units['leader_id'];
+			$name = $units['name'];
+    	}
+
+		$unitArr[$i]['unit_id'] = $unitID;
+		$unitArr[$i]['leader_id'] = $leader;
+		$unitArr[$i]['name'] = $name;
+				
+		
+	//	echo "Unit ID: ".$unitArr[$i]['unit_id']."<br />Name: ".$unitArr[$i]['name']."<br />Leader ID: ".$unitArr[$i]['leader_id']."<br /><br />";
+			
+		$i++;	
+	}
+				
+		return array_reverse($unitArr);
   }
 
   /**
@@ -557,6 +598,7 @@ class RUDI_Common
   protected function getSuperiorTrue($id)
   {
     $superior =& $this->data[$id]->superior; //Reference only the data we need to use
+
     $name =& $this->data[$id]->name;
     $leader = NULL; //Set the return value to null
     
@@ -576,6 +618,48 @@ class RUDI_Common
     
     return $leader;
   }
+  
+    /**
+   * RUDI_Core::getSuperior($unit_id)
+   *
+   * @param mixed $unit_id
+   * @return
+   */
+  protected function getSuperior($id)
+  {
+  	$leader = NULL;
+  	$unit_id = $this->data[$id]->unit_id;
+
+  	$result = $this->db->Query("SELECT `leader_id`, `detachment` FROM `rudi_combat_units` WHERE `unit_id` = '$unit_id' LIMIT 1");
+  	$row = $this->db->FetchRow($result);
+  	
+  	$detachment = $row['detachment'];
+  	$leader_id = $row['leader_id'];
+	if($leader_id == $id){
+		$leader_id = 0;	
+	}
+  	while($leader_id == 0){
+			if($detachment == 0){
+				break;			
+			}
+  		  	$result = $this->db->Query("SELECT `leader_id`, `detachment` FROM `rudi_combat_units` WHERE `unit_id` = '$detachment' LIMIT 1");
+		  	$row = $this->db->FetchRow($result);	
+		  	$detachment = $row['detachment'];
+  			$leader_id = $row['leader_id'];
+  	}
+  	
+ 	if($leader_id != 0){
+ 		$result = $this->db->Query("SELECT CONCAT(r.shortname, ' ', m.last_name) AS name FROM rudi_unit_members AS m LEFT OUTER JOIN rudi_ranks AS r ON r.rank_id = m.rank_id WHERE m.member_id = '$leader_id' LIMIT 1");
+	    $row = $this->db->FetchRow($result);
+	    
+		$leader->name = $row['name'];
+		$leader->leader_id = $leader_id; 	
+ 	}
+    
+    return $leader;
+  }
+  
+  
   
   /**
    * RUDI_Core::getUnit()
@@ -667,17 +751,34 @@ class RUDI_Common
    * @param int $leader_id
    */  
   public function printRoster($unit_id, $leader_id){
+  	$num = 0;
 		foreach($this->data as $member){
-			if($member->unit_id == $unit_id && $member->status_id < 4){
-?>
-		<tr>
+			if($member->unit_id == $unit_id && $member->status_id < 3){
+				decho($member);
+			 	if($num%2==0){ 
+					echo "<tr>";
+   				}
+				else { 
+		  			echo '<tr class="high">';
+				}
+ ?>
           <!-- Rank -->
-          <td class="roster"><img src="<?php echo "modules/rudi/images/ranks/small/{$member->rank_short}.png"; ?>" alt="<?php echo $member->rank_short; ?>" /></td>
+          <td class="roster">
+          	<?php 
+			  	if(file_exists("modules/rudi/images/ranks/tiny/{$member->rank_short}.png")){
+          		   	echo "<img src=\"modules/rudi/images/ranks/tiny/{$member->rank_short}.png\" alt=\"{$member->rank_short}\" />";       	
+          		}else{
+          			//echo $member->rank_short;       		
+          		}
+		  	?>
+  		  </td>
           <!-- Name -->
-          <td class="roster"><a class="rudi_roster" href="?load=rudi&amp;profile=<?php echo $member->member_id ?>"><?php echo $member->last_name . ', ' . $member->first_name; ?></a></td>
+          <td class="roster"><a class="rosterlink" href="?load=rudi&amp;profile=<?php echo $member->member_id ?>"><?php echo $member->rank_long . ' ' . $member->first_name . ' ' . $member->last_name; ?></a></td>
             <!-- Roles -->
             <td class="roster">
+            <?php echo $member->role_name; ?>
             <?php
+            /*
             decho(count($member->Roles) . ' roles attached to: ' . $member->last_name);
             for($role = 0; $role < count($member->Roles); ++$role)
             {            	
@@ -688,9 +789,9 @@ class RUDI_Common
 						echo $member->Roles[$role]->role_name;
 						if($role < count($member->Roles) - 1) echo ', ';
 					
-					echo '&nbsp;';
+					//echo '&nbsp;';
 				}           		
-			}
+			} */
             ?> 
             </td>
           <!-- Weapon -->        
@@ -698,10 +799,135 @@ class RUDI_Common
           <!-- Status -->
           <td class="roster"><?php echo $member->status; ?></td>
         </tr>
-<?php		
-			}								
+<?php		$num++;	
+			}
+									
 		} 
-  } 
+  }
+  
+   /**
+   * RUDI_Core::printReserves()
+   *
+   */  
+  public function printReserves(){
+  	$num = 0;
+		foreach($this->data as $member){
+			if($member->status_id == 3 || $member->unit_id == RUDI_ROSTER_RESERVES){
+				decho($member);
+				
+				if($num == 0)
+					echo "<tr><th colspan=\"5\">Reserves</th></tr>";
+				
+				if($num%2==0){ 
+					echo "<tr>";
+   				}
+				else { 
+		  			echo '<tr class="high">';
+				}
+ ?>
+          <!-- Rank -->
+          <td class="roster">
+          	<?php 
+			  	if(file_exists("modules/rudi/images/ranks/tiny/{$member->rank_short}.png")){
+          		   	echo "<img src=\"modules/rudi/images/ranks/tiny/{$member->rank_short}.png\" alt=\"{$member->rank_short}\" />";       	
+          		}else{
+          			//echo $member->rank_short;       		
+          		}
+		  	?>
+  		  </td>
+          <!-- Name -->
+          <td class="roster"><a class="rosterlink" href="?load=rudi&amp;profile=<?php echo $member->member_id ?>"><?php echo $member->rank_long . ' ' . $member->first_name . ' ' . $member->last_name; ?></a></td>
+            <!-- Roles -->
+            <td class="roster">
+            <?php echo $member->role_name; ?>
+            <?php
+            /*
+            decho(count($member->Roles) . ' roles attached to: ' . $member->last_name);
+            for($role = 0; $role < count($member->Roles); ++$role)
+            {            	
+				if($member->Roles[$role]->role_name)
+				{
+					//decho($role . " = (" . $member->Roles[$role]->role_name . ")");
+					
+						echo $member->Roles[$role]->role_name;
+						if($role < count($member->Roles) - 1) echo ', ';
+					
+					//echo '&nbsp;';
+				}           		
+			} */
+            ?> 
+            </td>
+          <!-- Weapon -->        
+          <td class="roster"><?php echo $member->weapon_model; ?></td>
+          <!-- Status -->
+          <td class="roster"><?php echo $member->status; ?></td>
+        </tr>
+<?php		$num++;	
+			}
+									
+		}	
+  }
+  
+ /**
+   * RUDI_Core::printPastRoster()
+   *
+   */  
+  public function printPastRoster(){
+  	decho($this->data);
+  	$num=0;
+  			foreach($this->data as $member){
+			if($member->status_id >= 4){
+				decho($member);
+?>
+<?php 	if($num%2==0){ 
+			echo "<tr>";
+   		}
+		else { 
+		  	echo '<tr class="high">';
+		}
+ ?>
+          <!-- Rank -->
+          <td class="roster">
+<?php 
+			  	if(file_exists("modules/rudi/images/ranks/tiny/{$member->rank_short}.png")){
+          		   	echo "<img src=\"modules/rudi/images/ranks/tiny/{$member->rank_short}.png\" alt=\"{$member->rank_short}\" />";       	
+          		}else{
+          			//echo $member->rank_short;       		
+          		}
+?>
+  		  </td>
+          <!-- Name -->
+          <td><a class="rosterlink" href="?load=rudi&amp;profile=<?php echo $member->member_id ?>"><?php echo $member->rank_long . ' ' . $member->first_name . ' ' . $member->last_name; ?></a></td>
+            <!-- Roles -->
+            <td class="roster">
+            <?php echo $member->role_name; ?>
+<?php
+           /* decho(count($member->Roles) . ' roles attached to: ' . $member->last_name);
+            for($role = 0; $role < count($member->Roles); ++$role)
+            {            	
+				if($member->Roles[$role]->role_name)
+				{
+					//decho($role . " = (" . $member->Roles[$role]->role_name . ")");
+					
+						echo $member->Roles[$role]->role_name;
+						if($role < count($member->Roles) - 1) echo ', ';
+					
+					//echo '&nbsp;';
+				}           		
+			} */
+?> 
+            </td>
+          <!-- Weapon -->        
+          <td class="roster"><?php echo $this->getDiffTime($member->date_enlisted, $member->date_discharged); ?></td>
+          <!-- Status -->
+          <td class="roster"><?php echo $member->status; ?></td>
+        </tr>
+<?php
+			$num++;
+			}
+		
+		}  
+  }
   /**
    * RUDI_Core::displayUnitsRec()
    *
@@ -711,8 +937,13 @@ class RUDI_Common
 	    $result = $this->db->Query("SELECT * FROM `rudi_combat_units` WHERE `detachment` = '$unit_id' ORDER BY `weight`");
 	    $row = $this->db->FetchObject($result,'UnitInfo');
 	 	foreach($row as $unit){	
-			echo "<tr><th colspan=\"5\">{$unit->name} : {$unit->callsign}</th></tr>";
-			$this->printRoster($unit->unit_id, $unit->leader_id);   
+	 		$num = 0;
+	 		$check = $this->db->Query("SELECT `member_id` FROM `rudi_unit_members` WHERE `cunit_id` = '$unit->unit_id' AND `date_discharged` IS NULL LIMIT 1");
+	 		$num = $this->db->Rows($check);
+	 		if($num >= 1 && $unit->unit_id != RUDI_ROSTER_RESERVES){
+	 			echo "<tr><th colspan=\"5\">{$unit->name} : {$unit->callsign}</th></tr>";
+				$this->printRoster($unit->unit_id, $unit->leader_id);   	 		
+	 		}
 			$this->displayUnitsRec($unit->unit_id);		 
 		}
   }
@@ -742,6 +973,9 @@ class RUDI_Common
           ."m.location_city, "
           ."m.location_province, "
           ."m.primary_mos, "
+          ."m.points, "
+          ."m.drillcount, "
+          ."m.attendcount, "
           ."r.rank_id, "
           ."r.image AS rank_image, "
           ."r.longname AS rank_long, "
@@ -759,9 +993,14 @@ class RUDI_Common
           ."t.team_id, "
           ."t.name AS team_name, "
           ."t.leader_id AS team_leader_id, "
+          ."ro.role_id, "
+          ."ro.name AS role_name, "
           ."w.weapon_id, "
           ."w.manufacturer AS weapon_manufacturer, "
           ."w.model AS weapon_model, "
+          ."w2.weapon_id, "
+          ."w2.manufacturer AS weapon2_manufacturer, "
+          ."w2.model AS weapon2_model, "
           ."co.country_id, "
           ."co.name AS country_name, "
           ."co.image AS country_image, "
@@ -780,7 +1019,9 @@ class RUDI_Common
           
         ."FROM rudi_unit_members AS m "
             ."LEFT OUTER JOIN rudi_weapons AS w ON w.weapon_id = m.weapon_id "
-            ."LEFT OUTER JOIN rudi_units AS u ON u.unit_id = m.unit_id "
+            ."LEFT OUTER JOIN rudi_weapons AS w2 ON w2.weapon_id = m.weapon2_id "
+            ."LEFT OUTER JOIN rudi_roles AS ro ON ro.role_id = m.role_id "
+            ."LEFT OUTER JOIN rudi_combat_units AS u ON u.unit_id = m.cunit_id "
             ."LEFT OUTER JOIN rudi_squads AS s ON s.squad_id = m.squad_id "
             ."LEFT OUTER JOIN rudi_teams AS t ON t.team_id = m.team_id "
             ."LEFT OUTER JOIN rudi_platoons AS p ON p.platoon_id = m.platoon_id "
@@ -799,6 +1040,7 @@ class RUDI_Common
           ."m.status_id, "
           ."m.date_promotion, "
           ."m.date_enlisted, "
+          ."m.date_discharged, "
           ."m.primary_mos, "
           ."r.rank_id, "
           ."r.image AS rank_image, "
@@ -816,6 +1058,8 @@ class RUDI_Common
           ."st.status_id, "
           ."t.team_id, "
           ."t.name AS team_name, "
+          ."ro.role_id, "
+          ."ro.name AS role_name, "
           ."w.weapon_id, "
           ."w.manufacturer AS weapon_manufacturer, "
           ."w.model AS weapon_model, "
@@ -825,6 +1069,7 @@ class RUDI_Common
           
         ."FROM rudi_unit_members AS m "
             ."LEFT OUTER JOIN rudi_weapons AS w ON w.weapon_id = m.weapon_id "
+            ."LEFT OUTER JOIN rudi_roles AS ro ON ro.role_id = m.role_id "
             ."LEFT OUTER JOIN rudi_combat_units AS u ON u.unit_id = m.cunit_id "
             ."LEFT OUTER JOIN rudi_squads AS s ON s.squad_id = m.squad_id "
             ."LEFT OUTER JOIN rudi_teams AS t ON t.team_id = m.team_id "
@@ -848,22 +1093,24 @@ class RUDI_Common
     {
       $count = $member->member_id;
       $this->data[$member->member_id] = $member;
-      $this->data[$count]->Roles = $this->getRoles($member->member_id,$member->rank_id);
+    /*  $this->data[$count]->Roles = $this->getRoles($member->member_id,$member->rank_id);
       if(is_object($this->data[$count]->Roles))
 	  {
 	  	$this->data[$count]->Roles = array((object)$nothing);
-	  }
+	  } */
 	  
       if($query_t != RUDI_PROFILE_SMALL)
       {
         $this->data[$count]->service_record = $this->getServiceRecord($member->member_id);
         $this->data[$count]->award_record = $this->getAwardRecord($member->member_id);
         $this->data[$count]->combat_record = $this->getCombatRecord($member->member_id);
-        $this->data[$count]->superior->unit = $this->getSuperiorUnit($member->unit_id);
+        //$this->data[$count]->superior_next = $this->getSuperiorTrue($member->member_id);
+		$this->data[$count]->superior = $this->getSuperior($member->member_id);
+		        $this->data[$count]->superior->unit = $this->getSuperiorUnit($member->unit_id);
         $this->data[$count]->superior->platoon = $this->getSuperiorPlatoon($member->platoon_id);
         $this->data[$count]->superior->squad = $this->getSuperiorSquad($member->squad_id);
         $this->data[$count]->superior->team = $this->getSuperiorTeam($member->team_id);
-        $this->data[$count]->superior_next = $this->getSuperiorTrue($member->member_id);               
+        $this->data[$count]->superior_next = $this->getSuperiorTrue($member->member_id);                 
       }
       $count++;      
     } 
@@ -876,7 +1123,7 @@ class RUDI_Common
     $query = "SELECT a.award_id, a.image, a.name, a.description, a.class_id, c.name AS class_name "
       ."FROM rudi_awards AS a "
       ."LEFT OUTER JOIN rudi_award_classes AS c ON c.class_id = a.class_id "
-      ."ORDER BY c.class_id, a.award_id ASC";
+      ."ORDER BY a.weight, c.class_id, a.award_id ASC";
     $result = $this->db->Query($query);
     $row = $this->db->FetchObject($result,'Award');
     return $row;  
@@ -889,6 +1136,16 @@ class RUDI_Common
     $row = $this->db->FetchObject($result,'AwardClass');
     return $row;
   }
+  
+  protected function getWeapons($order = "")
+  {
+    $query = "SELECT weapon_id, manufacturer, model, role, caliber FROM rudi_weapons";
+    $query = $query ." ". $order;
+    $result = $this->db->Query($query);
+    $row = $this->db->Fetch($result);
+    return $row;
+  }
+  
   
   protected function getRanks()
   {

@@ -48,9 +48,17 @@
  	
  	function GetRoles(){
  		global $db;
-		$result = $db->Query("SELECT * FROM `rudi_roles`");
-		$row = $db->Fetch($result);
-		return $row; 	
+ 		$data = array();
+		$result = $db->Query("SELECT * FROM `rudi_role_classes` ORDER BY `weight` ASC");
+		$classes = $db->Fetch($result);
+		
+		foreach($classes as $class){
+			$rclass_id = $class['rclass_id'];
+			$result2 = $db->Query("SELECT * FROM rudi_roles WHERE rclass_id = '$rclass_id' ORDER BY `weight` ASC");
+			$data[] = array("name" => $class['name'], "roles" => $db->Fetch($result2));	
+		}
+		
+		return $data; 	
  	}
  	
  	function GetCountry(){
@@ -177,7 +185,7 @@
 				<td><?php echo date("M j Y", strtotime($record['date_added'])); ?></td>
 				<td><?php echo $record['record_note']; ?></td>
 				<td><a href="?op=rudi&show=members&award=<?php echo $member_id; ?>&edit=<?php echo $record['record_id']; ?>">Edit</a></td>
-				<td><a href="?op=rudi&show=members&award=<?php echo $row['member_id']; ?>&delete=<?php echo $record['record_id']; ?>">Delete</a></td>
+				<td><a href="?op=rudi&show=members&award=<?php echo $member_id; ?>&delete=<?php echo $record['record_id']; ?>">Delete</a></td>
 			</tr>	
 <?php	
 		}	
@@ -222,6 +230,38 @@
 		CloseTable();
 		$form->__destruct();
 		
+ 	}
+ 	
+ 	function DeleteAwardRecord($record_id){
+ 		  global $db;
+  
+		  $result = $db->Query("SELECT r.date_added, r.record_note, r.member_id, a.name FROM rudi_award_record AS r LEFT OUTER JOIN rudi_awards AS a ON a.award_id = r.award_id WHERE r.record_id = '$record_id' LIMIT 1");
+		  $record = $db->FetchRow($result);
+		  decho($record_id);
+		  decho($record);
+		  $form = new BayonetForm("", "POST");
+		  
+		  if(isset($_POST['proceed']))
+		  {
+		    echo "Award '{$record['name']}', was deleted from that soldiers record.";
+		    $db->Query("DELETE FROM `rudi_award_record` WHERE `record_id` = '$record_id' LIMIT 1");
+		    PageRedirect(2, "?op=rudi&show=members&award={$record['member_id']}");
+		    return;
+		  }
+		  if(isset($_POST['cancel']))
+		  {
+		    echo "User cancelled deletion of award: '{$record['name']}'";
+		    PageRedirect(2, "?op=rudi&show=members&award={$award['member_id']}");
+		    return;
+		  }
+		  
+		  OpenTable();
+?>
+		  <th>Are you <u>SURE</u> you want to delete the award record: '<?php echo $record['name'];?>'? for this member?<br />All changes are final.</th>
+		  <tr><th><button name="proceed">Yes</button>&nbsp;&nbsp;&nbsp;<button name="cancel">No</button></th></tr>
+<?php
+  		  CloseTable();
+		  $form->__destruct(); 	
  	}
  	
  	function AddAwardRecord($member_id){

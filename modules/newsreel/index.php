@@ -1,6 +1,7 @@
 <!-- START News Reel -->
 <link rel="stylesheet" type="text/css" href="modules/newsreel/style.css" media="screen"/>
 <?php OpenContent(); ?>
+<div class="content" style="padding: 0px; color: white;">
 <script type="text/javascript">
 
 var current = "0";
@@ -92,8 +93,10 @@ window.onload = init_Slides;	//starts the reels movement
 
 </script>
 
-<div class="content1"><div class="content2">
-	<img src="modules/newsreel/slides/<?php echo $startSRC; ?>" name="myBanner" alt="newsreel" />
+
+	<a href="http://www.3rd-infantry-division.org/forums/index.php?board=13.0"><img src="modules/newsreel/slides/<?php echo $startSRC; ?>" name="myBanner" alt="newsreel" style="padding:0px;" /></a>
+
+</div>
 	<table border="0" cellspacing="0" cellpadding="0" style="height:21px;" width="100%">
 	<tr>
 <?php
@@ -108,6 +111,6 @@ $y=0;
 ?>
 	</tr>
 	</table>
-</div></div>
+
 <?php CloseContent(); ?>
 <!-- END News Reel -->
