@@ -1,13 +1,22 @@
 <?php
 /**
- * Bayonet Conent Management System
- * Copyright (C) Joseph Hunkeler & Evan O'Connell
- * 
- * Purpose of this software is to allow users to manage their website
- * with ease and without needing to have any coding knowledge in order 
- * to maintain it. Visit www.eodesign.com/cms for any updates or feedback. 
+ * Bayonet Content Management System
+ * Copyright (C) 2008-2011  Joseph Hunkeler & Evan O'Connell
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- ?>
+?>
 &nbsp;&nbsp;&nbsp;<a href="index.php">HOME</a>&nbsp;&nbsp;&nbsp;
 <?php
   

@@ -1,7 +1,7 @@
 <?php
 /**
  * Bayonet Content Management System
- * Copyright (C) 2008  Joseph Hunkeler
+ * Copyright (C) 2008-2011  Joseph Hunkeler & Evan O'Connell
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
  
 define("RUDI_DEBUG",true);
 define("RUDI_DEBUG_LEVEL",true);
