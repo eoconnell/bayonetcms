@@ -36,9 +36,6 @@ $debug_output = sprintf("Page generated in %.3f seconds | Memory: real(%.3fmb) p
 <?php echo $config['product']['name'] . ' ' . $config['product']['version'] . ' ' . $config['product']['release'] ?><br />
 <?php echo stripslashes($config['product']['copyright']); ?><br />
 <?php if($config['debug']['enabled']) echo $debug_output ?><br />
-
-<a href="http://www.dreamhost.com/r.cgi?145892" target="_blank"><img src="http://www.dreamhost.com/images/rewards/80x15-e.png" /></a><br /><br />
-
 </div>
 
 <?php

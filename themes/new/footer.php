@@ -39,7 +39,7 @@ $debug_output = sprintf("Page generated in %.3f seconds | Memory: real(%.3fmb) p
  
 <div id="bottomBarContainer"> 
 	<div id="bottomBar"> 
-		<div id="copyright">All logos and trademarks on this site are property of their respective owner. The comments are property of their posters, all the rest &copy; 2001-<?php echo date('Y'); ?> 3rd Infantry Division. &nbsp;&nbsp;<a href="http://www.dreamhost.com/r.cgi?145892" target="_blank"><img src="http://www.dreamhost.com/images/rewards/80x15-e.png" /></a></div> 
+		<div id="copyright">All logos and trademarks on this site are property of their respective owner. The comments are property of their posters, all the rest &copy; 2001-<?php echo date('Y'); ?> 3rd Infantry Division. &nbsp;&nbsp;</div> 
 	</div><!--end bottomBar--> 
 </div><!--end bottomBarContainer--> 
 
