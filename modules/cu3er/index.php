@@ -45,7 +45,7 @@
 </div>
 <?php CloseContent(); ?>
 
-<?//php include'cuber.html'; 
+<?php //include'cuber.html'; ?> 
 
 /* <description> 
 				<link target="_blank">http://www.3rd-infantry-division.org/forums/index.php?board=13.0</link>	
