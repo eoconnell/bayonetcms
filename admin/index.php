@@ -17,13 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
- 
+
 session_start();
- 
-include '../include/debug.php';
-include '../include/config.php'; 
-include '../include/sql.class.php';
-include '../include/functions.php';
+
+define('BAYONET_INCLUDE', '../include');
+define('BAYONET_CONFIG', '../include/config.ini');
+
+include BAYONET_INCLUDE . '/debug.php';
+include BAYONET_INCLUDE . '/sql.class.php';
+include BAYONET_INCLUDE . '/functions.php';
+require_once BAYONET_INCLUDE . '/classes.php';
+
+Bayonet_Config::init();
+$config = Bayonet_Config::$ini;
 
 $db = new Bayonet_SQL();
 $db->Connect(
