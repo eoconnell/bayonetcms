@@ -23,15 +23,13 @@ $starttime = explode(' ', microtime());
 $starttime = $starttime[1] + $starttime[0];
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US" dir="ltr">
+<!DOCTYPE html>
+<html>
 
 <head>
-<title>3rd Infantry Division - 8 years strong - ArmaII Unit</title>
+<title>Bayonet CMS</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <?php if(isset($config['site']['favicon'])): ?>
-<!--<link rel="shortcut icon" href="<?php echo $config['site']['favicon']; ?>" type="image/x-icon" />-->
 <link rel="shortcut icon" href="<?php echo $config['site']['favicon']; ?>" type="image/png" />
 <?php endif; ?>
 <link rel="stylesheet" type="text/css" href="<?php echo self::$primary_css; ?>" media="screen"/>

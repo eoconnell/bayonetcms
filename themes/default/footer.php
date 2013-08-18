@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 $phpversion = preg_replace('/[a-z-]/', '', phpversion());
 $mtime = explode(' ', microtime());
 $totaltime = $mtime[0] + $mtime[1] - $starttime;
@@ -26,25 +26,19 @@ $debug_output = sprintf("Page generated in %.3f seconds | Memory: real(%.3fmb) p
 
 <div class="footer">
 
-		<br />
-		<span class="footer-text">	
-			All logos and trademarks on this site are property of their respective owner. The comments are property of their posters, all the rest &copy; 2001-<?php echo date('Y'); ?> 3rd Infantry Division.</span>
-		
-		<br /><br />
-
-      <a href="admin/">Administrative Control Panel</a><br />
+<a href="admin/">Administrative Control Panel</a><br />
 <?php echo $config['product']['name'] . ' ' . $config['product']['version'] . ' ' . $config['product']['release'] ?><br />
 <?php echo stripslashes($config['product']['copyright']); ?><br />
 <?php if($config['debug']['enabled']) echo $debug_output ?><br />
+
 </div>
 
 <?php
- if($config['debug']['enabled']){ 
+if($config['debug']['enabled']){
 	logQueueFlush();
- } 
+}
 ?>
 
 </body>
 </html>
 <?php ob_flush();?>
- 

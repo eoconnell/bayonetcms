@@ -33,12 +33,12 @@ include self::$header;
 <div class="container">
 
 <!-- banner -->
- <div class="banner"><a href="index.php"><img src="<?php echo self::$image_path . '/logo.jpg'; ?>" alt="3rd Infantry Division - ArmAII Unit" /></a></div>
+ <div class="banner"><h1>Bayonet CMS</h1></div>
 <!-- navigation -->
  <div class="nav"><?php require_once self::$root_path . '/navigation.php'; ?></div>
 
 <!-- content -->
-<table border="0" cellspacing="15px" cellpadding="0"  class="main" width="100%">
+<table border="0" cellspacing="0px" cellpadding="0" class="main" width="100%">
 	<tr>
 		<td class="midcol">
 	    	<?php  require_once 'modules.php'; ?>
@@ -46,7 +46,7 @@ include self::$header;
  		
 	  <!-- block area RIGHT -->
 	  <?php  if(!defined('BLOCK_RIGHT_DISABLE')): ?>
-	    <td class="rightcol">
+	    <td class="rightcol" style="padding-left: 15px;">
 	      	<?php GetBlocks(BLOCK_RIGHT); ?>
 	    </td>    
 	  <?php endif; ?>
