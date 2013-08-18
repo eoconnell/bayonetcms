@@ -67,6 +67,59 @@
 		echo "<input type=\"submit\" name=\"processed\" value=\"Update Points\" /></form>";
 
 	}
+
+/****** NEW CODE ADDED LARRABEE 11-20-2012 ********/
+        function EditPoints2(){
+
+                global $db;
+
+                $result = $db->Query("SELECT * FROM `rudi_unit_members` JOIN `rudi_ranks` ON rudi_unit_members.rank_id=rudi_ranks.rank_id WHERE rudi_unit_members.status_id < 4  ORDER BY rudi_ranks.weight DESC , rudi_unit_members.date_promotion ASC , rudi_unit_members.date_enlisted ASC");
+                $row = $db->Fetch($result);
+
+                if(isset($_POST['processed'])){
+                        echo "Updating data... Please wait.";
+                        foreach($row as $soldier){
+                                $mID = $soldier['member_id'];
+                        $missed = $_POST[$mID.'missed'];
+                        $attended = $_POST[$mID.'attended'];
+                        $points = $_POST[$mID.'points'];
+
+                        if($missed !="" && $points != ""){
+                                $db->Query("UPDATE `rudi_unit_members` SET `points` = $points, `drillcount` = $missed, `attendcount` = $attended WHERE `member_id` = $mID LIMIT 1");
+                        }else{
+                                ReportError("Error updating points for soldier id# '$mID'. Please contact administrator.");
+                        }
+                        }
+                        PageRedirect(1,"?op=adjutant&edit=pointsnew");
+                        return;
+                }
+?>
+                <form method="POST" action="<?php $_SERVER['PHP_SELF']?>">
+                <table style="text-align:center;" width="100%" cellspacing="0">
+                <?php //OpenTable(); ?>
+                <tr><th>Rank</th><th>Soldier</th><th>Status</th><th>Points</th><th>Drills Missed</th><th>Drills Attended</th></tr>
+<?php
+                foreach($row as $soldier){
+                        $memberID = $soldier['member_id'];
+                        if($soldier['status_id'] != 1)
+                                echo "<tr class=\"inactive\">";
+                        else
+                                echo "<tr>";
+                        echo "<td>{$soldier['shortname']}</td>
+          <td>{$soldier['first_name']} {$soldier['last_name']}</td>
+          <td>".getStatus($soldier['status_id'])."</td>
+          <td><input type=\"text\" class=\"lrg\" value=\"{$soldier['points']}\" name=\"{$memberID}points\" size=\"1\" maxlength=\"3\" />/100</td>
+          <td><input type=\"text\" class=\"lrg\" value=\"{$soldier['drillcount']}\" name=\"{$memberID}missed\" size=\"1\" maxlength=\"1\" />/3</td>
+          <td><input type=\"text\" class=\"lrg\" value=\"{$soldier['attendcount']}\" name=\"{$memberID}attended\" size=\"1\" maxlength=\"1\" />/3</td>";
+
+
+                echo "<input type=\"hidden\" value=\"{$memberID}\" name=\"{$memberID}id\" />\n";
+                }
+                CloseTable();
+                echo "<input type=\"submit\" name=\"processed\" value=\"Update Points\" /></form>";
+
+        }
+/****** END NEW CODE ADDED *******/
 	
 	function EditLOAs($status_id = 1){
 	

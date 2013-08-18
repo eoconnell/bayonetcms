@@ -29,7 +29,8 @@
 <script type="text/javascript">
 function openEvent(date)
 {
-     myWindow = window.open('http://testbed.3rd-infantry-division.org/cms/blocks/mini_calendar/event.php?date='+date+'','','width=300,height=300')
+<?php echo "myWindow = window.open('". Bayonet_Config::$ini['site']['url'] . "blocks/mini_calendar/event.php?date='+date+'','','width=300,height=300');"; ?>
+     myWindow = window.open('blocks/mini_calendar/event.php?date='+date+'','','width=300,height=300')
      myWindow.focus();
 }
 </script>

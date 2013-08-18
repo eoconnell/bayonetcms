@@ -21,7 +21,7 @@
 session_start();
 
 define('BAYONET_INCLUDE', '../include');
-define('BAYONET_CONFIG', '../include/config.ini');
+define('BAYONET_CONFIG', '../include/config.php');
 
 include BAYONET_INCLUDE . '/debug.php';
 include BAYONET_INCLUDE . '/sql.class.php';

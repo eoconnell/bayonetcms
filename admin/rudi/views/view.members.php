@@ -1,17 +1,31 @@
 <?php
 		include $basedir.'rudi/includes/functions.members.php';
-		if(isset($_GET['profile'])){
+		if(isset($_GET['profile']))
+		{
 			$member_id = $_GET['profile'];
 			include 'view.members.profile.php';	
-		}else if(isset($_GET['service'])){
+		}
+		else if(isset($_GET['delete']))
+		{
+			$member_id = $_GET['delete'];
+			include 'view.members.delete.php';
+		}
+		else if(isset($_GET['service']))
+		{
 			$member_id = $_GET['service'];
 			include 'view.members.service.php';
-		}else if(isset($_GET['award'])){
+		}
+		else if(isset($_GET['award']))
+		{
 			$member_id = $_GET['award'];
 			include 'view.members.award.php';
-		}else if(isset($_GET['create']) && $_GET['create'] == "soldier"){
+		}
+		else if(isset($_GET['create']) && $_GET['create'] == "soldier")
+		{
 			include 'view.members.new.php';
-		}else{
+		}
+		else
+		{
 					
 			 global $db;
 			 

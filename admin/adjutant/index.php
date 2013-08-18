@@ -19,8 +19,10 @@
  
  ?>
  <link rel="stylesheet" type="text/css" href="adjutant/style.css" media="screen"/>
+ <script type="text/javascript" src="scripts/jquery-ui-1.7.1.custom.min.js"></script>
  <div style="text-align:left;"><h2>- Adjutant Control Panel</h2></div>
  <a href="?op=adjutant&edit=points">Edit Points</a>&nbsp;&nbsp;
+ <a href="?op=adjutant&edit=pointsnew">Edit Points *NEW*</a>&nbsp;&nbsp;
  <a href="?op=adjutant&edit=loas">Edit LOAs</a>
  <table class="panel" width="100%">
  	<tr><td style="text-align:center; vertical-align:top;">
@@ -39,6 +41,10 @@
  			echo "<h3>Edit Points</h3>";
  			EditPoints();
  		} 
+    if($_GET['edit'] == "pointsnew"){
+       echo "<h3>Edit Points *NEW*</h3>";
+       EditPoints();
+    }                    
  		if($_GET['edit'] == "loas"){
  			echo "<h3>Edit LOAs</h3>";
  			if(isset($_GET['member'])){
@@ -52,6 +58,11 @@
  				EditLOAs($status_id);
  			}
  		} 	
+ 	}
+ 	else if(isset($_GET['drills'])){
+ 		if($_GET['drills'] == "new"){
+ 			
+ 		}
  	}
  ?>
  	</td></tr>

@@ -97,13 +97,13 @@ class Bayonet_Theme extends Bayonet_Layout
 class Bayonet_Config
 {
     static $ini;
+
     static function init()
     {
         decho('Parsing configuration data');
         if (file_exists(BAYONET_CONFIG))
         {
-            self::$ini = parse_ini_file(BAYONET_CONFIG, true);
-            decho(self::$ini);
+            self::$ini = require_once 'config.php';
         }
         else  die(BAYONET_CONFIG . ' not found');
     }

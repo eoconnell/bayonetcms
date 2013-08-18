@@ -37,8 +37,13 @@
  	function GetMembersRoles($member_id){
  		global $db;
 	  	$row = NULL;
-		$query = sprintf("SELECT r.role_id, r.name AS role_name FROM rudi_roles AS r LEFT OUTER JOIN rudi_roles_container AS rl USING(role_id) INNER JOIN rudi_unit_members AS rm USING(member_id) WHERE rm.member_id = %d AND r.name IS NOT NULL ORDER BY r.role_id ASC", 
-		(int)$member_id);	
+		$query = sprintf("SELECT r.role_id, r.name AS role_name 
+		                  FROM rudi_roles AS r 
+		                  LEFT OUTER JOIN rudi_roles_container AS rl USING(role_id) 
+		                  INNER JOIN rudi_unit_members AS rm USING(member_id) 
+		                  WHERE rm.member_id = %d 
+		                  AND r.name IS NOT NULL 
+		                  ORDER BY r.role_id ASC", (int)$member_id);	
 	    
 	    $result = $db->Query($query);
 	    $row = $db->Fetch($result);
@@ -299,4 +304,39 @@
 		CloseTable();
 		$form->__destruct(); 	
  	}
+ 	
+ 	
+ 	
+ 	
+ 	function DeleteMember($member_id)
+ 	{
+ 		// FROM unit_members, service_record, award_record FOR member_id
+ 		global $db;
+ 		
+ 		$db->Query("DELETE FROM `rudi_unit_members`, 
+                              `rudi_service_record`, 
+                              `rudi_award_record`, 
+                              `rudi_combat_record`, 
+                              `rudi_drills_record`
+                 USING `rudi_unit_members`
+                       INNER JOIN `rudi_award_record` USING(member_id)
+                       INNER JOIN `rudi_service_record` USING(member_id)
+                       INNER JOIN `rudi_combat_record` USING(member_id)
+                       INNER JOIN `rudi_drills_record` USING(member_id) 
+                 WHERE `member_id` = $member_id");
+ 		decho("DELETE FROM `rudi_unit_members`, 
+                              `rudi_service_record`, 
+                              `rudi_award_record`, 
+                              `rudi_combat_record`, 
+                              `rudi_drills_record`
+                 USING `rudi_unit_members`
+                       INNER JOIN `rudi_award_record` USING(member_id)
+                       INNER JOIN `rudi_service_record` USING(member_id)
+                       INNER JOIN `rudi_combat_record` USING(member_id)
+                       INNER JOIN `rudi_drills_record` USING(member_id) 
+                 WHERE `member_id` = $member_id");
+ 		decho("Done.");
+ 		return;
+ 	}
+ 	
 ?>

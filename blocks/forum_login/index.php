@@ -25,8 +25,6 @@ if (isset($GLOBALS['ID_MEMBER']) && $GLOBALS['ID_MEMBER'] != 0): ?>
 		<p>
 			<center>
 				<b>Your IP:</b> <?php echo $ip; ?><br />
-				<?php /* fix this, what about avatars that arent saved no our site */ ?>
-				<img src="<?php echo $avatar_path . $avatar; ?>" alt="<?php echo 'No Avatar'; ?>" /><br/>
 				<b>Total posts:</b> <?php echo $posts; ?><br />
 			</center>
 		</p>

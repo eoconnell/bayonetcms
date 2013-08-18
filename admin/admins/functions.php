@@ -101,25 +101,15 @@
 			ReportError("The email and or username you entered is already in use.");
 			return;
 		}
-		
-		
-		$Name = "Rocky the Marne Dog";
-		$subject = "3rd ID Admin Password";
-		$header = "From: ". $Name . " < DO NOT RESPOND >\r\n"; //optional headerfields 
-		$mail_body = "Do not respond to this email.\n\n------------------------------\nUsername: ".$username."\nPassword: ".$password."\n------------------------------\n\nTo login click on this link. http://testbed.3rd-infantry-division.org/cms/admin/ \n\nIt is recommended that you change your password once you login. To do so, click on Account Settings>Change Password.";
-		
-		$sent = mail($email, $subject, $mail_body, $header);
-		if(!$sent){
-			ReportError("Error validating email. This user was not saved.");
-			return;		
-		} 
-				
+
+		EmailPassword($username, $password, $email);
+
 		$db->Query("INSERT INTO `bayonet_users` (`user_id` ,`username` ,`password` ,`lastname` ,`firstname` ,`email` ,`joined` ,`level` ,`all` ,`squadleader` ,`adjutant` ,`quartermaster`) VALUES (NULL, '$username', '$cryptpassword', '$last', '$first', '$email', CURRENT_TIMESTAMP, $level, $all, $squadleader, $adjutant, $quartermaster)");
 									
    		echo "Admin, '$username' level '$level' has been added. An email has been sent to him with his username and password.\n <br /><br /> 
 			Please wait while you are redirected. <br /><br /> 
 			<a href=\"?op=admins\">Click here if you don't feel like waiting.</a>";
-					
+
 	    // 3 second redirect to go back to the edit page
    		PageRedirect(2, "?op=admins");
 	    return;
@@ -156,6 +146,22 @@
 		</form>
 </center>
 <?php
+ }
+ 
+ function EmailPassword($username, $password, $email)
+ {
+ 		$name = "Bayonet CMS";
+		$subject = "Bayonet CMS Admin Password";
+		$header = "From: ". $name . " < DO NOT RESPOND >\r\n"; //optional headerfields 
+		$mail_body = "Do not respond to this email.\n\n------------------------------\nUsername: ".$username."\nPassword: ".$password."\n------------------------------\n\nTo login click on this link. ".Bayonet_Config::$ini['site']['url']."admin/ \n\nIt is recommended that you change your password once you login. To do so, click on Account Settings>Change Password.";
+
+		$sent = mail($email, $subject, $mail_body, $header);
+		if(!$sent){
+			ReportError("Error validating email. This user was not saved.");
+			return false;		
+		}
+		
+		return true;
  }
  
  function GetPermissions($user = NULL)
@@ -217,7 +223,7 @@
     while(strlen($string)<$length) { 
         $string .= substr($possible_charactors, rand()%(strlen($possible_charactors)),1); 
     } 
-    return($string); 
+    return($string);
  }
  
  function EditAdmin($user_id)
@@ -264,7 +270,11 @@
 		Edit the attributes of this administrator.<br />
 		<form method="POST" action="<?php $_SERVER['PHP_SELF']?>">
 		<table>
-			<tr><th>Username:</th><td><input type="text" value="<?php echo $admin['username']; ?>" name="username" /></td></tr>
+			<tr><th>Username:</th><td><input type="text" value="<?php echo $admin['username']; ?>" name="username" />
+		<?php if($maxLevel >= 2): ?>
+			<a href="?op=admins&resetpassword=<?php echo $user_id; ?>"><input type="button" value="Reset Password" /></a>
+		<?php endif; ?>
+			</td></tr>
 			<tr>
 				<th>Level:</th>
 				<td>
@@ -299,8 +309,8 @@
 	global $db;
 	$maxLevel = $_SESSION['level'];
 		  
-	$result = $db->Query("SELECT `username` FROM `bayonet_users` WHERE `user_id` = '$user_id'");
-	$admin = $db->Fetch($result);
+	$result = $db->Query("SELECT `username` FROM `bayonet_users` WHERE `user_id` = '$user_id' LIMIT 1");
+	$admin = $db->FetchRow($result);
 		  
 	if(isset($_POST['proceed']))
 	{
@@ -320,6 +330,51 @@
 	<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 	<table>
 	<th>Are you SURE you want to delete the administrative user: '<?php echo $admin['username']?>'?</th>
+	<tr><th><button name="proceed">Yes</button>&nbsp;&nbsp;&nbsp;<button name="cancel">No</button></th></tr>
+	</table>
+	</form>
+	</center>
+	<?php
+ }
+ 
+ function ResetPassword($user_id)
+ {
+ 	global $db;
+ 	$result = $db->Query("SELECT `username`, `email` FROM `bayonet_users` WHERE `user_id` = '$user_id' LIMIT 1");
+ 	$admin = $db->FetchRow($result);
+ 	decho($admin);
+ 	
+ 	if(isset($_POST['proceed']))
+ 	{
+ 		$password = GeneratePassword(8);		
+		$cryptpassword = crypt(md5($password),'iamnotadirtywhorebitch');
+		
+		$status = EmailPassword($admin['username'], $password, $admin['email']);
+		
+		if($status)
+		{
+			$db->Query("UPDATE `bayonet_users` SET `password` = '$cryptpassword' WHERE `user_id` = '$user_id' LIMIT 1");
+			echo "Password has been reset and emailed to '{$admin['username']}'";
+ 			PageRedirect(3, "?op=admins");
+		}
+		else
+		{
+			ReportError("An error has occured emailing the new password. It will not take effect.");
+		}
+ 		
+ 		return;
+ 	}
+ 	if(isset($_POST['cancel']))
+ 	{
+ 		echo "The password <b>WILL NOT</b> be reset for '{$admin['username']}'";
+ 		PageRedirect(3, "?op=admins");
+ 		return;
+ 	}
+ 	?>
+	<center>
+	<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+	<table>
+	<th>Are you SURE you want to reset this user's password: '<?php echo $admin['username']?>'?</th>
 	<tr><th><button name="proceed">Yes</button>&nbsp;&nbsp;&nbsp;<button name="cancel">No</button></th></tr>
 	</table>
 	</form>

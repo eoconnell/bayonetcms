@@ -23,7 +23,7 @@
 				$class_id = $_GET['cid'];
 				$awards = getAwardsByClass($class_id);
 				echo "<h3>Awards</h3>";
-				echo LinkInternal('<img src="images/add.png" />&nbsp;Add New Award','?op=rudi&show=awards&cid={$class_id}&add=true');
+				echo LinkInternal('<img src="images/add.png" />&nbsp;Add New Award','?op=rudi&show=awards&cid='.$class_id.'&add=true');
 				OpenTable();
 				foreach($awards as $award){
 					echo "<tr><td>".$award['name']."</td>

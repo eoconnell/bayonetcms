@@ -48,6 +48,10 @@ else if(isset($_GET['delete'])){
 else if(isset($_GET['create'])){
   NewAdmin();
 }
+else if(isset($_GET['resetpassword'])){
+  $user_id = $_GET['resetpassword'];
+  ResetPassword($user_id);
+}
 ?>
 	</td>
 	</tr>

@@ -117,7 +117,7 @@ window.onload = init_Slides;	//starts the reels movement
 	<a href="http://www.3rd-infantry-division.org/forums/index.php?board=13.0"><img src="modules/newsreel/slides/<?php echo $startSRC; ?>" name="myBanner" alt="newsreel" style="padding:0px;" /></a>
 
 </div>
-	<table border="0" cellspacing="0" cellpadding="0" style="height:21px;" width="100%">
+	<table border="0" cellspacing="0" cellpadding="0" style="height:21px;" width="640px">
 	<tr>
 <?php
 $y=0; 

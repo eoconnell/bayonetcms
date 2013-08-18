@@ -181,7 +181,7 @@ function displayNews($data, $short = false){
 						</tr>
 					</table>
 			</div>
-			<div class="content">
+			<div class="content news">
 				<img src="modules/news/categories/<?php echo $news['catimage']; ?>" alt="<?php echo $news['catname']; ?>" align="right" />
 				<?php 
 					if($short) {

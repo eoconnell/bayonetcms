@@ -6,12 +6,13 @@
 		global $db;
 		$name = $form->request['name'];
 		$text = $form->request['text'];
+		decho("INSERT INTO `rudi_awards` SET `class_id` = '$class_id', `name` = '$name', `description` = '$text'");
 		$db->Query("INSERT INTO `rudi_awards` SET `class_id` = '$class_id', `name` = '$name', `image` = '', `description` = '$text'");
 		
-		PageRedirect(1, "?op=rudi&show=awards&cid={$class_id}");
+		PageRedirect(1, "?op=rudi&show=awards&cid=".$class_id);
 		return;		
 	}
-	echo LinkInternal("Cancel","?op=rudi&show=awards&cid={$class_id}");
+	echo LinkInternal("Cancel","?op=rudi&show=awards&cid=".$class_id);
 	OpenTable();
 ?>
 

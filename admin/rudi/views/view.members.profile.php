@@ -219,7 +219,14 @@
 		<br />
 		<table width="100%" style="text-align:center;">
 		<tr><th colspan="2" style="background-color:#c4c4c4;">Personal Bio</th></tr>
-		<tr><td><textarea rows="7" name="bio" cols="60"><?php echo $member['bio'];?></textarea></td></tr>
-		<tr><td colspan="2"><input type="submit" value="Submit" name="processed" /></td>
+		<tr><td colspan="2"><textarea rows="7" name="bio" cols="60"><?php echo $member['bio'];?></textarea></td></tr>
+		<tr>
+			<td class="right" width="55%"><input type="submit" value="Submit" name="processed" /></td>
+			<td class="right">
+				<a href="?op=rudi&show=members&delete=<?php echo $member_id; ?>">
+					<input type="button" value="Delete Soldier" />
+				</a>
+			</td>
+		</tr>
 		</table>
 		</form>
