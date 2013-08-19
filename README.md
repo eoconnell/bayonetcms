@@ -18,11 +18,11 @@ This project is not actively managed. Use this software at your own risk.
 
 Initialize your database with this [schema](schema.sql).
 
-__Admin account__
-Username: admin
-Password: password
+#### Admin account
+    Username: admin
+    Password: password
 
-Configure and rename `[config.example.php](include/config.example.php)` to `config.php`
+Configure and rename [config.example.php](include/config.example.php) to `config.php`
 
 
 ## Contributors
